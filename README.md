@@ -40,12 +40,7 @@ A self-improving Claude Code plugin for Divi 5 development. Validates CSS compat
 
 ## MCP Servers
 
-This plugin includes optional MCP server configurations:
-
-| Server | Purpose |
-|--------|---------|
-| `a11y-mcp` | WCAG accessibility testing for Divi pages |
-| `playwright-mcp` | Browser automation for testing layouts |
+No MCP servers are configured by default. You can add your own to `.mcp.json` if needed (e.g., accessibility testing, browser automation).
 
 ## Configuration
 
@@ -65,13 +60,17 @@ A template is available at `templates/divi5-toolkit.local.md`.
 
 ## Installation
 
+### Plugin Structure
+This plugin uses the standard layout with the manifest at `.claude-plugin/plugin.json`
+and all components (commands, agents, skills, hooks) at the repository root.
+
 ### From Local Directory
 ```bash
 claude --plugin-dir "C:\Users\casey\Documents\Divi5-ToolKit"
 ```
 
 ### Add to Project
-Copy the plugin to your project's `.claude-plugin/` directory.
+Copy the entire plugin folder to your desired location, keeping the directory structure intact.
 
 ## Divi 5 Quick Reference
 
@@ -82,8 +81,8 @@ Copy the plugin to your project's `.claude-plugin/` directory.
 - All standard units: `px`, `em`, `rem`, `%`, `vw`, `vh`
 
 ### NOT Supported
-- `ch` unit (use `rem` instead: 75ch ≈ 60rem)
-- `ex` unit (use `em` instead: 1ex ≈ 0.5em)
+- `ch` unit (use `rem` instead: 75ch -> 60rem)
+- `ex` unit (use `em` instead: 1ex -> 0.5em)
 - Container queries (coming soon)
 
 ### Button Override Pattern

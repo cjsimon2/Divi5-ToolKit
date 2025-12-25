@@ -14,7 +14,7 @@ When reviewing CSS for Divi 5, check for these issues:
 
 | Feature | Status | Fix |
 |---------|--------|-----|
-| `ch` unit | NOT SUPPORTED | Use `rem` (75ch ≈ 60rem) |
+| `ch` unit | NOT SUPPORTED | Use `rem` (75ch -> 60rem) |
 | `ex` unit | NOT SUPPORTED | Use `em` or `rem` |
 | Container Queries | NOT YET | Coming in future update |
 | `@container` | NOT YET | Use media queries |
@@ -48,11 +48,11 @@ max-width: 75ch;
 width: 60ch;
 
 /* VALID - use rem instead */
-max-width: 60rem;  /* 75ch ≈ 60rem */
-width: 48rem;      /* 60ch ≈ 48rem */
+max-width: 60rem;  /* 75ch -> 60rem */
+width: 48rem;      /* 60ch -> 48rem */
 ```
 
-**Conversion formula:** 1ch ≈ 0.8rem (varies by font)
+**Conversion formula:** 1ch -> approx. 0.8rem (varies by font)
 
 ### Rule 2: Button Specificity
 ```css
@@ -239,7 +239,7 @@ Check:
 ## Divi-Specific CSS Debugging
 
 ### Using Browser DevTools
-1. Right-click element → Inspect
+1. Right-click element -> Inspect
 2. Look at Styles panel
 3. Check for:
    - Crossed-out styles (being overridden)

@@ -8,8 +8,6 @@ allowed-tools:
   - Grep
   - WebSearch
   - WebFetch
-  - mcp__plugin_context7_context7__resolve-library-id
-  - mcp__plugin_context7_context7__get-library-docs
 ---
 
 # Divi 5 CSS Generator
@@ -38,7 +36,7 @@ Look for existing design tokens or CSS:
 Apply these Divi 5 requirements:
 
 ### Mandatory Rules
-1. **No `ch` or `ex` units** - Use `rem` instead (75ch ≈ 60rem)
+1. **No `ch` or `ex` units** - Use `rem` instead (75ch -> 60rem)
 2. **Button overrides need:**
    - `body .et_pb_button` selector (body prefix)
    - `!important` on ALL properties
@@ -51,7 +49,7 @@ Apply these Divi 5 requirements:
 ```css
 /* ==========================================================================
    [Component Name] - Theme Options CSS
-   Paste into: Divi → Theme Options → Custom CSS
+   Paste into: Divi -> Theme Options -> Custom CSS
    ========================================================================== */
 
 /* Your CSS here - no <style> tags */
@@ -93,7 +91,7 @@ Before presenting, verify:
 
 Tell the user:
 1. Where to paste the CSS
-2. What classes to add to Divi modules (via Advanced → Attributes)
+2. What classes to add to Divi modules (via Advanced -> Attributes)
 3. Any additional configuration needed
 
 ## Example Output
@@ -103,7 +101,7 @@ For a "primary button" request with Theme Options format:
 ```css
 /* ==========================================================================
    Primary Button Override - Theme Options CSS
-   Paste into: Divi → Theme Options → Custom CSS
+   Paste into: Divi -> Theme Options -> Custom CSS
    ========================================================================== */
 
 body .et_pb_button {
@@ -124,4 +122,4 @@ body .et_pb_button:hover {
 }
 ```
 
-**Usage:** This applies to ALL buttons site-wide. For variants, add a custom class like `my-btn--secondary` via Advanced → Attributes → class.
+**Usage:** This applies to ALL buttons site-wide. For variants, add a custom class like `my-btn--secondary` via Advanced -> Attributes -> class.

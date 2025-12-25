@@ -19,7 +19,7 @@ Divi 5 is a complete architecture overhaul featuring:
 ## CSS Integration Methods
 
 ### Method 1: Theme Options (Global Styles)
-**Location:** Divi → Theme Options → Custom CSS
+**Location:** Divi -> Theme Options -> Custom CSS
 **Format:** Raw CSS without `<style>` tags
 
 ```css
@@ -46,7 +46,7 @@ Divi 5 is a complete architecture overhaul featuring:
 **Format:** Standard CSS file
 
 ### Method 4: Free-Form CSS (Per-Element)
-**Location:** Module → Advanced → Custom CSS → Free-Form CSS
+**Location:** Module -> Advanced -> Custom CSS -> Free-Form CSS
 **Format:** Use `selector` keyword to target element
 
 ```css
@@ -130,7 +130,7 @@ Use a unique prefix to avoid conflicts with Divi's classes:
 
 ### Adding Classes in Divi 5
 1. Select the module
-2. Go to **Advanced Tab → Attributes**
+2. Go to **Advanced Tab -> Attributes**
 3. Click **Add Attribute**
 4. Set **Name** to `class`
 5. Set **Value** to your class

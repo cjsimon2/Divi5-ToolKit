@@ -1,4 +1,5 @@
 ---
+name: divi5-validator
 description: Use this agent after writing or editing CSS files to validate Divi 5 compatibility. Triggers on CSS file changes and checks for unsupported units (ch, ex), missing !important on Divi overrides, button specificity issues, and other compatibility problems.
 tools:
   - Read
@@ -33,7 +34,7 @@ Check recent tool calls for:
 ```
 Pattern: \d+ch|\d+ex
 Issue: Unsupported unit
-Fix: Use rem (75ch ≈ 60rem)
+Fix: Use rem (75ch -> 60rem)
 
 Pattern: @container
 Issue: Container queries not supported
@@ -77,7 +78,7 @@ validation_mode: advisory  # or "strict"
 ⚠ Divi 5 Compatibility Check: [X] issue(s) found
 
 CRITICAL:
-1. Line 45: `75ch` not supported → use `60rem`
+1. Line 45: `75ch` not supported -> use `60rem`
 
 WARNINGS:
 1. Line 23: Missing !important on .et_pb_section

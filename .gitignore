@@ -1,0 +1,17 @@
+# Claude Code local settings
+.claude/settings.local.json
+.claude/*.local.json
+
+# Windows reserved names (can't be deleted normally)
+nul
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Node (if MCP servers are installed locally)
+node_modules/

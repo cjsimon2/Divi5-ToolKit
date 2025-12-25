@@ -1,4 +1,5 @@
 ---
+name: divi5-error-learner
 description: Use this agent when the user pastes Divi error messages, console errors from Divi pages, or describes CSS issues they encountered in Divi 5. Analyzes the error, provides solutions, and updates the plugin's knowledge base to prevent future occurrences.
 tools:
   - Read
@@ -6,8 +7,6 @@ tools:
   - Edit
   - WebSearch
   - WebFetch
-  - mcp__plugin_context7_context7__resolve-library-id
-  - mcp__plugin_context7_context7__get-library-docs
 model: sonnet
 ---
 

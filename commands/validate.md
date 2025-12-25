@@ -43,7 +43,7 @@ These WILL break in Divi 5.
 ```
 CRITICAL: Unsupported unit found
 Line X: `max-width: 75ch;`
-Fix: `max-width: 60rem;` (75ch ≈ 60rem)
+Fix: `max-width: 60rem;` (75ch -> 60rem)
 ```
 
 ### Check 2: Button Specificity (P0 - Critical)

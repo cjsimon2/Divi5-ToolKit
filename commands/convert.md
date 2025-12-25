@@ -31,13 +31,13 @@ Ask if not specified:
 
 ### Conversion 1: Unit Replacement
 ```
-75ch → 60rem
-60ch → 48rem
-45ch → 36rem
-30ch → 24rem
-Xch → (X * 0.8)rem
+75ch -> 60rem
+60ch -> 48rem
+45ch -> 36rem
+30ch -> 24rem
+Xch -> (X * 0.8)rem
 
-Xex → (X * 0.5)em
+Xex -> (X * 0.5)em
 ```
 
 ### Conversion 2: Button Specificity
@@ -177,7 +177,7 @@ DIVI 5 CSS CONVERSION COMPLETE
 ========================================
 
 Changes Made:
-1. Line 12: 75ch → 60rem
+1. Line 12: 75ch -> 60rem
 2. Line 23: Added body prefix and !important to button
 3. Line 45: Added !important to section background
 4. Lines 1-5: Wrapped in <style> tags for Code Module

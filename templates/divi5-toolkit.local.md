@@ -8,7 +8,7 @@
 validation_mode: advisory
 
 # Default Output Format
-# - theme-options: Global CSS for Divi → Theme Options (no tags)
+# - theme-options: Global CSS for Divi -> Theme Options (no tags)
 # - code-module: Page-specific CSS with <style> tags
 # - child-theme: Standard CSS file for child theme
 default_format: theme-options
@@ -40,10 +40,10 @@ This file stores project-specific settings for the Divi5 Toolkit plugin.
 ## Quick Reference
 
 ### Commands
-- `/divi5-toolkit:generate` - Generate Divi 5-ready CSS
-- `/divi5-toolkit:validate` - Validate CSS compatibility
-- `/divi5-toolkit:convert` - Convert CSS to Divi 5 format
-- `/divi5-toolkit:research` - Research latest Divi 5 updates
+- /divi5-toolkit:generate - Generate Divi 5-ready CSS
+- /divi5-toolkit:validate - Validate CSS compatibility
+- /divi5-toolkit:convert - Convert CSS to Divi 5 format
+- /divi5-toolkit:research - Research latest Divi 5 updates
 
 ### Design Tokens
 Your project uses the `--cjs-*` prefix for CSS variables.

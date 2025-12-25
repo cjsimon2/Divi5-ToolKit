@@ -1,6 +1,6 @@
 # Divi 5 Unit Conversion Reference
 
-## Character Units → REM
+## Character Units to REM
 
 The `ch` unit is NOT supported in Divi 5. Use this conversion table:
 
@@ -14,20 +14,20 @@ The `ch` unit is NOT supported in Divi 5. Use this conversion table:
 | 75ch | 60rem | 960px | Max width text |
 | 80ch | 64rem | 1024px | Full width text |
 
-**Note:** Conversion assumes average character width of ~0.8rem. Actual width varies by font.
+**Note:** Conversion assumes average character width of approx. 0.8rem. Actual width varies by font.
 
 ## Formula
 
 ```
-rem = ch × 0.8
+rem = ch * 0.8
 ```
 
 For more precision with specific fonts:
 ```
-rem = ch × (average-char-width / root-font-size)
+rem = ch * (average-char-width / root-font-size)
 ```
 
-## x-height Units → EM
+## x-height Units to EM
 
 The `ex` unit is NOT supported in Divi 5. Use `em` instead:
 
@@ -39,7 +39,7 @@ The `ex` unit is NOT supported in Divi 5. Use `em` instead:
 
 **Formula:**
 ```
-em = ex × 0.5
+em = ex * 0.5
 ```
 
 ## Recommended Alternatives

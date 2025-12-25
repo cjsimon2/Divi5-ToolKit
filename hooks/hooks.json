@@ -3,7 +3,7 @@
     {
       "event": "PostToolUse",
       "matcher": {
-        "toolName": "Write|Edit",
+        "toolName": ["Write", "Edit"],
         "filePattern": ".*\\.css$"
       },
       "hook": {

@@ -7,8 +7,6 @@ allowed-tools:
   - Edit
   - WebSearch
   - WebFetch
-  - mcp__plugin_context7_context7__resolve-library-id
-  - mcp__plugin_context7_context7__get-library-docs
 ---
 
 # Divi 5 Research Command
