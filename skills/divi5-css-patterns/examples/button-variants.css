@@ -1,0 +1,89 @@
+/* ==========================================================================
+   DIVI 5 BUTTON VARIANTS
+   Example: Multiple button styles for Divi 5
+
+   Usage: Add class via Advanced → Attributes → class
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Primary Button (Default Black)
+   -------------------------------------------------------------------------- */
+body .et_pb_button {
+  background-color: #000000 !important;
+  border-radius: 0 !important;
+  letter-spacing: 4px !important;
+  text-transform: uppercase !important;
+  font-family: 'Lato', Helvetica, sans-serif !important;
+  font-weight: 400 !important;
+  border: 1px solid #000000 !important;
+  padding: 0.75em 1.5em !important;
+  transition: all 0.3s ease !important;
+}
+
+body .et_pb_button:hover {
+  background-color: #222222 !important;
+  border-color: #222222 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Secondary Button (Gold)
+   Class: btn-secondary
+   -------------------------------------------------------------------------- */
+body .et_pb_button.btn-secondary {
+  background-color: #b2a065 !important;
+  border-color: #b2a065 !important;
+}
+
+body .et_pb_button.btn-secondary:hover {
+  background-color: #9a8a57 !important;
+  border-color: #9a8a57 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Outline Button (Black Border)
+   Class: btn-outline
+   -------------------------------------------------------------------------- */
+body .et_pb_button.btn-outline {
+  background-color: transparent !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+body .et_pb_button.btn-outline:hover {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   Outline White Button (For Dark Sections)
+   Class: btn-outline-white
+   -------------------------------------------------------------------------- */
+body .et_pb_button.btn-outline-white {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+body .et_pb_button.btn-outline-white:hover {
+  background-color: #ffffff !important;
+  color: #1d1f22 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Large Button
+   Class: btn-large
+   -------------------------------------------------------------------------- */
+body .et_pb_button.btn-large {
+  padding: 1em 2em !important;
+  font-size: 1.125rem !important;
+}
+
+/* --------------------------------------------------------------------------
+   Small Button
+   Class: btn-small
+   -------------------------------------------------------------------------- */
+body .et_pb_button.btn-small {
+  padding: 0.5em 1em !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 2px !important;
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "a11y-mcp": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/a11y-mcp"],
+      "description": "Accessibility testing for WCAG compliance - validates Divi pages for accessibility issues"
+    },
+    "playwright-mcp": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/playwright-mcp"],
+      "description": "Browser automation for testing Divi layouts across breakpoints and visual regression testing"
+    }
+  }
+}

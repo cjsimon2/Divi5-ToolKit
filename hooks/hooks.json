@@ -1,0 +1,22 @@
+{
+  "hooks": [
+    {
+      "event": "PostToolUse",
+      "matcher": {
+        "toolName": "Write|Edit",
+        "filePattern": ".*\\.css$"
+      },
+      "hook": {
+        "type": "prompt",
+        "prompt": "A CSS file was just modified. Check if the divi5-toolkit plugin's auto_validate setting is enabled in .claude/divi5-toolkit.local.md. If enabled (auto_validate: true), use the divi5-validator agent to quickly validate the CSS for Divi 5 compatibility. Keep the validation brief and non-intrusive - only report critical issues inline. If auto_validate is false or the setting file doesn't exist, skip validation."
+      }
+    },
+    {
+      "event": "SessionStart",
+      "hook": {
+        "type": "prompt",
+        "prompt": "Check if .claude/divi5-toolkit.local.md exists. If it does, read the last_research date. If more than 7 days have passed since last research, mention to the user: 'Divi 5 knowledge may be outdated. Run /divi5-toolkit:research for latest updates.' Do not auto-run research, just notify."
+      }
+    }
+  ]
+}
