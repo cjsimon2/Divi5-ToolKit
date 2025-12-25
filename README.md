@@ -38,9 +38,90 @@ A self-improving Claude Code plugin for Divi 5 development. Validates CSS compat
 | `divi5-css-patterns` | Writing CSS for Divi, styling Divi modules |
 | `divi5-compatibility` | Validating CSS, troubleshooting Divi issues |
 
-## MCP Servers
+## Optional MCP Servers
 
-No MCP servers are configured by default. You can add your own to `.mcp.json` if needed (e.g., accessibility testing, browser automation).
+No MCP servers are required. The plugin works fully without them. If you want extended capabilities, add any of these to your `.mcp.json`:
+
+### Context7 (Up-to-date Documentation)
+Fetches current library docs directly into your prompts.
+
+**Mac/Linux:**
+```json
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    }
+  }
+}
+```
+
+**Windows:**
+```json
+{
+  "mcpServers": {
+    "context7": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@upstash/context7-mcp@latest"]
+    }
+  }
+}
+```
+
+### Playwright (Browser Testing)
+Test Divi layouts across breakpoints. Official Microsoft package.
+
+**Mac/Linux:**
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    }
+  }
+}
+```
+
+**Windows:**
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@playwright/mcp@latest"]
+    }
+  }
+}
+```
+
+### A11y (Accessibility Testing)
+WCAG compliance checking using axe-core.
+
+**Mac/Linux:**
+```json
+{
+  "mcpServers": {
+    "a11y": {
+      "command": "npx",
+      "args": ["-y", "a11y-mcp"]
+    }
+  }
+}
+```
+
+**Windows:**
+```json
+{
+  "mcpServers": {
+    "a11y": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "a11y-mcp"]
+    }
+  }
+}
+```
 
 ## Configuration
 
