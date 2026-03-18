@@ -1,7 +1,7 @@
 ---
 name: Divi 5 CSS Patterns
 description: Use this skill when the user is writing CSS for Divi 5, creating styles for WordPress/Divi, working with Divi modules, or mentions Divi theme development. Provides CSS patterns, class naming conventions, selector specificity guidance, and Divi-specific best practices.
-version: 1.0.0
+user-invocable: false
 ---
 
 # Divi 5 CSS Development Patterns

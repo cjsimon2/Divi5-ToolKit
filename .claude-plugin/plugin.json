@@ -1,6 +1,6 @@
 {
   "name": "divi5-toolkit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Divi 5 development assistant: validates CSS compatibility, generates Divi-ready code, and learns from errors to improve over time.",
   "author": {
     "name": "Casey Simon",

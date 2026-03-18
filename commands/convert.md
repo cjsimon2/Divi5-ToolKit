@@ -1,12 +1,8 @@
 ---
 name: convert
 description: Convert existing CSS to Divi 5-compatible format. Fixes unsupported units, adds proper specificity, wraps for Code Module or strips tags for Theme Options.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - Glob
-  - Grep
+argument-hint: <file-or-css>
+allowed-tools: Read, Write, Edit, Glob, Grep
 ---
 
 # Divi 5 CSS Converter

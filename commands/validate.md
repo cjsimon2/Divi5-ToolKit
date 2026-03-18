@@ -1,10 +1,9 @@
 ---
 name: validate
 description: Validate CSS for Divi 5 compatibility. Checks for unsupported units, missing !important, specificity issues, and other common problems. Use ultrathink mode for thorough analysis.
-allowed-tools:
-  - Read
-  - Glob
-  - Grep
+argument-hint: <file-or-css>
+allowed-tools: Read, Glob, Grep
+context: fork
 ---
 
 # Divi 5 CSS Validator

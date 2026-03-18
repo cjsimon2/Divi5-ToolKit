@@ -1,10 +1,7 @@
 ---
 name: divi5-validator
 description: Use this agent after writing or editing CSS files to validate Divi 5 compatibility. Triggers on CSS file changes and checks for unsupported units (ch, ex), missing !important on Divi overrides, button specificity issues, and other compatibility problems.
-tools:
-  - Read
-  - Glob
-  - Grep
+tools: Read, Glob, Grep
 model: haiku
 ---
 

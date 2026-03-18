@@ -1,13 +1,8 @@
 ---
 name: generate
 description: Generate Divi 5-ready CSS for a component, section, or page element. Outputs in the format you specify (Theme Options, Code Module, or Child Theme).
-allowed-tools:
-  - Read
-  - Write
-  - Glob
-  - Grep
-  - WebSearch
-  - WebFetch
+argument-hint: <component-or-element>
+allowed-tools: Read, Write, Glob, Grep, WebSearch, WebFetch
 ---
 
 # Divi 5 CSS Generator

@@ -1,12 +1,7 @@
 ---
 name: research
 description: Research the latest Divi 5 updates, features, CSS compatibility changes, and best practices. Updates plugin knowledge base with new findings.
-allowed-tools:
-  - Read
-  - Write
-  - Edit
-  - WebSearch
-  - WebFetch
+allowed-tools: Read, Write, Edit, WebSearch, WebFetch
 ---
 
 # Divi 5 Research Command

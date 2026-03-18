@@ -1,7 +1,7 @@
 ---
 name: Divi 5 Compatibility
 description: Use this skill when validating CSS for Divi 5 compatibility, checking for unsupported features, troubleshooting Divi CSS issues, or when the user mentions CSS not working in Divi. Provides compatibility rules, validation patterns, and fixes for common issues.
-version: 1.0.0
+user-invocable: false
 ---
 
 # Divi 5 Compatibility Reference

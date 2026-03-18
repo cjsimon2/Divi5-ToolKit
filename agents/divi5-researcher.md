@@ -1,12 +1,7 @@
 ---
 name: divi5-researcher
 description: Use this agent to research the latest Divi 5 updates, features, and compatibility changes. Triggers automatically when plugin knowledge is stale (>7 days since last research) or on-demand when user asks about Divi 5 updates, new features, or compatibility questions.
-tools:
-  - Read
-  - Write
-  - Edit
-  - WebSearch
-  - WebFetch
+tools: Read, Write, Edit, WebSearch, WebFetch
 model: sonnet
 ---
 
