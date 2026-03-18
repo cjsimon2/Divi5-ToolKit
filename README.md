@@ -1,34 +1,37 @@
 # Divi5 Toolkit
 
-A self-improving Claude Code plugin for Divi 5 development. Validates CSS compatibility, generates Divi-ready code, and learns from your errors to get smarter over time.
+The first Claude Code plugin for Divi 5 development. Validates CSS compatibility, generates Divi-ready code, learns from your errors, and stays current with Divi 5 updates — all powered by Claude instead of GPT-3.5.
+
+**For Divi 5.1+** (released February 26, 2026)
+
+## Why This Exists
+
+Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives you Claude's superior code generation with deep Divi 5 knowledge — from your terminal, editor, or CI/CD pipeline. It knows Divi's selectors, specificity rules, breakpoints, Design Variables, Free-Form CSS, and the full module library so you don't have to provide that context manually.
 
 ## Features
 
-- **CSS/HTML Development**: Guided patterns for Divi 5 CSS structure, class naming, and selector specificity
-- **Compatibility Validation**: Checks for unsupported features (`ch`/`ex` units), missing `!important`, specificity issues
-- **Code Generation**: Generates Divi 5-ready CSS in three formats:
-  - Theme Options (global CSS, no wrapper)
-  - Code Module (with `<style>` tags)
-  - Child Theme (standard CSS file)
-- **Self-Improving**: Learns from errors you paste and researches latest Divi 5 updates
-- **Ultrathink Mode**: Deep analysis for complex validation and research tasks
-- **MCP Integrations**: A11y accessibility testing and Playwright browser automation
+- **CSS Generation**: Divi 5-ready CSS in four formats (Theme Options, Code Module, Child Theme, Free-Form CSS)
+- **Compatibility Validation**: Checks button specificity, numbered selectors, `!important` usage, CSS variable scope, format correctness
+- **Divi 5 Knowledge Base**: Complete selector reference, 8 new D5 modules, Design Variable system, Preset hierarchy, responsive breakpoints
+- **Error Learning**: Paste Divi errors — the plugin analyzes, fixes, and remembers the pattern
+- **Self-Updating**: Researches Divi 5 updates weekly and updates its own knowledge base
+- **Migration Support**: Converts Divi 4 CSS patterns for Divi 5 compatibility
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/divi5-toolkit:generate` | Generate Divi 5-ready CSS |
-| `/divi5-toolkit:validate` | Validate CSS for Divi 5 compatibility (uses ultrathink) |
+| `/divi5-toolkit:generate` | Generate Divi 5-ready CSS for any component |
+| `/divi5-toolkit:validate` | Validate CSS for Divi 5 compatibility |
 | `/divi5-toolkit:convert` | Convert existing CSS to Divi 5 format |
-| `/divi5-toolkit:research` | Research latest Divi 5 updates (uses ultrathink) |
+| `/divi5-toolkit:research` | Research latest Divi 5 updates |
 
 ## Agents
 
 | Agent | Triggers When |
 |-------|---------------|
 | `divi5-validator` | After writing/editing CSS files |
-| `divi5-error-learner` | When you paste Divi error messages (uses ultrathink) |
+| `divi5-error-learner` | When you paste Divi error messages |
 | `divi5-researcher` | On-demand or when knowledge is stale (>7 days) |
 
 ## Skills
@@ -38,14 +41,52 @@ A self-improving Claude Code plugin for Divi 5 development. Validates CSS compat
 | `divi5-css-patterns` | Writing CSS for Divi, styling Divi modules |
 | `divi5-compatibility` | Validating CSS, troubleshooting Divi issues |
 
+## What the Plugin Knows
+
+### Divi 5 Architecture
+- React 18-based, no Shadow DOM — standard DOM with `et_pb_*` classes
+- JSON block storage (no shortcodes)
+- Dynamic CSS (94% smaller stylesheets)
+- Critical CSS (eliminates render-blocking requests)
+
+### CSS Integration Methods
+1. Theme Options (global, no tags)
+2. Page-Level CSS
+3. **Free-Form CSS** with `selector` keyword (new in D5)
+4. Module Element fields (properties only)
+5. Code Module (with `<style>` tags)
+6. **Custom HTML Wrappers** (new in D5)
+7. **Semantic Elements** (new in D5)
+8. Child Theme
+9. **Attributes Panel** (replaces old CSS ID & Classes)
+
+### Module Library
+- 40+ built-in modules with complete selector reference
+- 8 new D5 modules: Group, Carousel Group, Before/After Image, Canvas Portal, Dropdown, Icon List, Link, Lottie
+- 17 WooCommerce product modules
+
+### Design System
+- 6 Design Variable types (Colors, Fonts, Numbers, Images, Text, Links)
+- 4-tier Preset hierarchy (Option Group, Element, Stacked, Nested)
+- CSS custom properties fully supported
+
+### Responsive Design
+- 7 breakpoints (3 active by default: Phone 767px, Tablet 980px, Desktop)
+- 4 optional: Phone Wide 860px, Tablet Wide 1024px, Widescreen 1280px, Ultra Wide 2560px
+- All breakpoint widths customizable
+
+### Troubleshooting Knowledge
+- Cache plugin conflicts (WP Rocket RUCSS, LiteSpeed, Autoptimize)
+- Security plugin issues (Wordfence firewall)
+- WooCommerce styling problems
+- Divi 4 to 5 migration patterns
+- Debugging with Safe Mode, DevTools, D5 Dev Tool
+
 ## Optional MCP Servers
 
-No MCP servers are required. The plugin works fully without them. If you want extended capabilities, add any of these to your `.mcp.json`:
+No MCP servers required. For extended capabilities, add to your `.mcp.json`:
 
-### Context7 (Up-to-date Documentation)
-Fetches current library docs directly into your prompts.
-
-**Mac/Linux:**
+### Context7 (Documentation Lookup)
 ```json
 {
   "mcpServers": {
@@ -57,22 +98,7 @@ Fetches current library docs directly into your prompts.
 }
 ```
 
-**Windows:**
-```json
-{
-  "mcpServers": {
-    "context7": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@upstash/context7-mcp@latest"]
-    }
-  }
-}
-```
-
 ### Playwright (Browser Testing)
-Test Divi layouts across breakpoints. Official Microsoft package.
-
-**Mac/Linux:**
 ```json
 {
   "mcpServers": {
@@ -84,22 +110,7 @@ Test Divi layouts across breakpoints. Official Microsoft package.
 }
 ```
 
-**Windows:**
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@playwright/mcp@latest"]
-    }
-  }
-}
-```
-
 ### A11y (Accessibility Testing)
-WCAG compliance checking using axe-core.
-
-**Mac/Linux:**
 ```json
 {
   "mcpServers": {
@@ -111,88 +122,33 @@ WCAG compliance checking using axe-core.
 }
 ```
 
-**Windows:**
-```json
-{
-  "mcpServers": {
-    "a11y": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "a11y-mcp"]
-    }
-  }
-}
-```
+**Windows users:** Wrap in `"command": "cmd", "args": ["/c", "npx", "-y", "..."]`
 
 ## Configuration
 
-Create `.claude/divi5-toolkit.local.md` in your project to customize:
+Create `.claude/divi5-toolkit.local.md` in your project:
 
 ```yaml
 ---
 validation_mode: advisory    # or "strict"
-default_format: theme-options # or "code-module", "child-theme"
-auto_validate: true          # trigger validation after CSS changes
-last_research: 2024-12-25    # auto-updated by researcher
-css_prefix: cjs              # your CSS variable prefix
+default_format: theme-options # or "code-module", "child-theme", "free-form"
+auto_validate: true
+divi_version: "5.1"
+css_prefix: my              # your CSS variable prefix
 ---
 ```
 
-A template is available at `templates/divi5-toolkit.local.md`.
+Template at `templates/divi5-toolkit.local.md`.
 
 ## Installation
 
-### Plugin Structure
-This plugin uses the standard layout with the manifest at `.claude-plugin/plugin.json`
-and all components (commands, agents, skills, hooks) at the repository root.
-
 ### From Local Directory
 ```bash
-claude --plugin-dir "C:\Users\casey\Documents\Divi5-ToolKit"
+claude --plugin-dir "/path/to/Divi5-ToolKit"
 ```
 
 ### Add to Project
-Copy the entire plugin folder to your desired location, keeping the directory structure intact.
-
-## Divi 5 Quick Reference
-
-### Supported CSS Features
-- CSS Variables (`--custom-property`)
-- `calc()`, `clamp()`, `min()`, `max()`
-- Flexbox and CSS Grid
-- All standard units: `px`, `em`, `rem`, `%`, `vw`, `vh`
-
-### NOT Supported
-- `ch` unit (use `rem` instead: 75ch -> 60rem)
-- `ex` unit (use `em` instead: 1ex -> 0.5em)
-- Container queries (coming soon)
-
-### Button Override Pattern
-```css
-body .et_pb_button {
-  background-color: #000000 !important;
-  border-radius: 0 !important;
-  letter-spacing: 4px !important;
-}
-```
-
-### Section Override Pattern
-```css
-.et_pb_section.my-dark-section {
-  background-color: #1d1f22 !important;
-}
-
-.et_pb_section.my-dark-section h1,
-.et_pb_section.my-dark-section p {
-  color: #ffffff !important;
-}
-```
-
-### Text Width Pattern
-```css
-.et_pb_text_inner p {
-  max-width: 60rem;  /* NOT 75ch */
-}
-```
+Copy the plugin folder to your desired location, keeping the directory structure intact.
 
 ## Directory Structure
 
@@ -221,37 +177,18 @@ divi5-toolkit/
 │   └── hooks.json           # Event handlers
 ├── templates/
 │   └── divi5-toolkit.local.md
-├── .mcp.json                # MCP server configs
+├── .mcp.json
 └── README.md
 ```
 
-## Validation Modes
+## Community Resources
 
-### Advisory Mode (Default)
-- Reports issues as warnings
-- Suggests fixes
-- Allows proceeding with warnings
-
-### Strict Mode
-- Reports issues as errors
-- Requires fixes before proceeding
-- Blocks incompatible CSS
-
-## Workflow
-
-1. **Generate CSS**: Use `/divi5-toolkit:generate` to create Divi-ready CSS
-2. **Auto-Validate**: Plugin automatically validates CSS after changes
-3. **Fix Issues**: Use `/divi5-toolkit:convert` to auto-fix problems
-4. **Learn from Errors**: Paste any Divi errors to improve plugin knowledge
-5. **Stay Updated**: Plugin researches Divi 5 updates weekly
-
-## Alternative Resources
-
-For complex edge cases, also consult:
-- **Codex** - General WordPress/Divi questions
-- **ChatGPT** - Complex CSS problem-solving
-- **Elegant Themes Forum** - Community solutions
-- **Divi 5 Release Notes** - Official changelog
+- [Elegant Themes Help Center](https://help.elegantthemes.com)
+- [Divi 5 Changelog](https://victorduse.com/divi-5-changelog/)
+- [WP Zone CSS Guide](https://wpzone.co/the-divi-css-and-child-theme-guide/)
+- [Quiroz.co Snippets](https://quiroz.co/divi-tutorials-much/divi-snippets-css-php/)
+- [D5 Dev Tool](https://github.com/elegantthemes/d5-dev-tool)
+- [D5 Extension Examples](https://github.com/elegantthemes/d5-extension-example-modules)
 
 ## License
 

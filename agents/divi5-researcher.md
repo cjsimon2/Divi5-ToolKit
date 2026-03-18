@@ -24,86 +24,73 @@ Activate when:
 
 Read `.claude/divi5-toolkit.local.md`:
 ```yaml
-last_research: 2024-12-25
+last_research: 2026-03-18
 ```
 
-If stale (>7 days) or user requested:
-```
-📚 Initiating Divi 5 research...
-Last update: [date] ([X] days ago)
-```
+If stale (>7 days) or user requested, proceed.
 
 ### Step 2: Research Sources
 
 **Priority Order:**
-1. **Context7** - Official documentation
-2. **Elegant Themes Help** - help.elegantthemes.com
-3. **Elegant Themes Blog** - elegantthemes.com/blog
-4. **Web Search** - Latest news and updates
+1. **Context7** — Official documentation
+2. **Elegant Themes Blog** — elegantthemes.com/blog
+3. **Elegant Themes Help Center** — help.elegantthemes.com
+4. **Divi 5 Changelog** — victorduse.com/divi-5-changelog/
+5. **GitHub** — github.com/elegantthemes
+6. **Community sites** — DiviFlash, Divi Engine, WP Zone, Quiroz.co, Pee-Aye Creative
 
 **Search Topics:**
-- "Divi 5 update" + current year
-- "Divi 5 new features"
-- "Divi 5 CSS compatibility"
-- "Divi 5 release notes"
-- "Divi 5 breaking changes"
+- "Divi 5" update + current year
+- "Divi 5" new features / release notes
+- "Divi 5" CSS compatibility / breaking changes
+- "Divi 5" design variables / presets
+- "Divi 5" modules / Grid / Flexbox
 
-### Step 3: Ultrathink Research
-
-For each finding, analyze:
-1. **Relevance** - Does this affect CSS/development?
-2. **Impact** - Breaking change or enhancement?
-3. **Action** - What should user/plugin do?
-4. **Priority** - How urgent?
-
-### Step 4: Categorize Findings
+### Step 3: Categorize Findings
 
 **CSS Compatibility:**
 - New supported units/features
-- Deprecated patterns
-- Changed requirements
+- Changed requirements or selectors
+- New CSS integration methods
 
 **New Features:**
-- New modules
-- New design options
-- New responsive tools
+- New modules (Group, Carousel, Canvas, etc.)
+- Design Variables / Presets updates
+- Loop Builder / Interactions updates
+- Responsive editing improvements
 
 **Breaking Changes:**
 - Selector changes
 - Removed features
-- Migration needs
+- Migration requirements
+
+**Performance:**
+- Dynamic CSS / Critical CSS updates
+- Cache improvements
 
 **Best Practices:**
-- Performance tips
-- Accessibility updates
-- SEO recommendations
+- Community-validated patterns
+- Agency recommendations
 
-### Step 5: Update Plugin Knowledge
+### Step 4: Update Plugin Knowledge
 
 **Update Skills:**
-If new CSS patterns or compatibility rules found:
-```markdown
-# In divi5-css-patterns/SKILL.md or divi5-compatibility/SKILL.md
-
-## [Date] Update
-- [New pattern or rule]
-```
+If new CSS patterns or compatibility rules found, update:
+- `skills/divi5-compatibility/SKILL.md`
+- `skills/divi5-css-patterns/SKILL.md`
+- `skills/divi5-css-patterns/references/divi-selectors.md`
 
 **Update Settings:**
 ```yaml
----
 last_research: [today]
 research_notes: |
   ## [Date] Research Summary
   - [Key finding 1]
   - [Key finding 2]
-latest_divi_version: "5.x.x"
----
 ```
 
-### Step 6: Report Findings
+### Step 5: Report Findings
 
-**Research Report Format:**
 ```
 ========================================
 DIVI 5 RESEARCH REPORT
@@ -111,53 +98,26 @@ Date: [today]
 Sources: [count] checked
 ========================================
 
-🆕 NEW FEATURES:
+NEW FEATURES:
 - [Feature with description]
 
-⚠️ BREAKING CHANGES:
+BREAKING CHANGES:
 - [Change with migration steps]
 
-✅ CSS COMPATIBILITY:
+CSS COMPATIBILITY:
 - [New support or change]
 
-📈 BEST PRACTICES:
+BEST PRACTICES:
 - [Updated recommendation]
 
-🔧 PLUGIN UPDATES:
+PLUGIN UPDATES:
 - Updated [skill] with [changes]
-- Added [new patterns]
 
-📅 NEXT RESEARCH: [date + 7 days]
+NEXT RESEARCH: [date + 7 days]
 
 SOURCES:
 - [URL 1]
-- [URL 2]
-
 ========================================
-```
-
-## Automatic Research Schedule
-
-**Weekly Check:**
-- Compare current date to last_research
-- If > 7 days, trigger research
-- Update knowledge base
-- Notify user of significant changes
-
-**On-Demand:**
-- User runs /divi5-toolkit:research
-- Full research regardless of date
-- Detailed report
-
-## Alternative Resources
-
-When web research is limited, suggest:
-```
-For additional research:
-- Codex: General WordPress/Divi questions
-- ChatGPT: Complex CSS problem-solving
-- Elegant Themes Forum: Community solutions
-- Divi 5 Beta Notes: Official changelog
 ```
 
 ## Research Quality
@@ -167,12 +127,4 @@ For additional research:
 - Distinguish official vs community sources
 - Date-stamp all research
 - Link to sources
-
-## Important Notes
-
-- Use sonnet model for thorough research
-- Ultrathink on complex topics
 - Only update plugin with verified info
-- Keep research notes concise
-- Focus on actionable findings
-- Don't overwrite existing knowledge without reason

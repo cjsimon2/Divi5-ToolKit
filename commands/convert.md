@@ -1,6 +1,6 @@
 ---
 name: convert
-description: Convert existing CSS to Divi 5-compatible format. Fixes unsupported units, adds proper specificity, wraps for Code Module or strips tags for Theme Options.
+description: Convert existing CSS to Divi 5-compatible format. Fixes specificity issues, adds proper overrides, handles format wrapping, and supports Divi 4 to Divi 5 migration.
 argument-hint: <file-or-css>
 allowed-tools: Read, Write, Edit, Glob, Grep
 ---
@@ -19,25 +19,23 @@ Options:
 ## Step 2: Determine Target Format
 
 Ask if not specified:
-- **Theme Options** - Global CSS, no `<style>` tags
-- **Code Module** - Page-specific, WITH `<style>` tags
-- **Child Theme** - Standard CSS file, no tags
+- **Theme Options** — Global CSS, no `<style>` tags
+- **Code Module** — Page-specific, WITH `<style>` tags
+- **Child Theme** — Standard CSS file, no tags
+- **Free-Form CSS** — Using `selector` keyword, for per-element styling
 
-## Step 3: Apply Conversions
+## Step 3: Detect Migration Context
 
-### Conversion 1: Unit Replacement
-```
-75ch -> 60rem
-60ch -> 48rem
-45ch -> 36rem
-30ch -> 24rem
-Xch -> (X * 0.8)rem
+Check if the CSS appears to be from Divi 4:
+- Contains shortcode references (`[et_pb_*]`)
+- Uses old CSS ID & Classes patterns
+- Targets selectors that changed between D4 and D5
 
-Xex -> (X * 0.5)em
-```
+If migrating from D4, note specific changes needed.
 
-### Conversion 2: Button Specificity
-Transform:
+## Step 4: Apply Conversions
+
+### Conversion 1: Button Specificity
 ```css
 /* Before */
 .et_pb_button {
@@ -52,7 +50,7 @@ body .et_pb_button {
 }
 ```
 
-### Conversion 3: Divi Module Overrides
+### Conversion 2: Divi Module Overrides
 Add `!important` to all `.et_pb_*` selectors:
 ```css
 /* Before */
@@ -64,6 +62,16 @@ Add `!important` to all `.et_pb_*` selectors:
 .et_pb_section {
   background: #1d1f22 !important;
 }
+```
+
+### Conversion 3: Numbered Selectors to Custom Classes
+```css
+/* Before — fragile */
+.et_pb_text_0 { color: red; }
+
+/* After — stable */
+.my-intro-text { color: red; }
+/* Note: Add class via Advanced > Attributes > class */
 ```
 
 ### Conversion 4: CSS Variable Hoisting
@@ -95,126 +103,70 @@ Move variables to `:root`:
 
 **For Theme Options:**
 ```css
-/* Converted CSS here - no tags */
+/* Converted CSS here — no tags */
 ```
 
-**For Child Theme:**
+**For Free-Form CSS:**
 ```css
-/*
-Theme Name: Child Theme
-Template: Divi
-*/
-
-/* Converted CSS here */
+/* Replace specific selectors with `selector` keyword */
+selector { /* styles */ }
+selector:hover { /* hover styles */ }
 ```
 
-### Conversion 6: Container Query Replacement
+### Conversion 6: Fluid Responsive Values
+Where fixed sizes are used, suggest fluid alternatives:
 ```css
 /* Before */
-@container (min-width: 400px) {
-  .card { padding: 2rem; }
-}
+font-size: 3rem;
+padding: 4rem;
 
-/* After - approximation with media query */
-@media (min-width: 400px) {
-  .card { padding: 2rem; }
-}
-/* NOTE: Container queries not supported in Divi 5.
-   Using media query as fallback - behavior may differ. */
+/* After — fluid */
+font-size: clamp(1.5rem, 3vw, 3rem);
+padding: clamp(1rem, 3vw, 4rem);
 ```
 
 ### Conversion 7: Add Hover States
 If button/interactive element lacks hover:
 ```css
-/* Add corresponding hover */
 body .et_pb_button:hover {
   background: #222222 !important;
-  /* Darken by ~10-15% or use design token */
 }
 ```
 
-## Step 4: Add Header Comment
+## Step 5: Add Header Comment
 
 ```css
 /* ==========================================================================
    DIVI 5 CONVERTED CSS
 
    Original: [source file or "provided directly"]
-   Format: [Theme Options | Code Module | Child Theme]
+   Format: [Theme Options | Code Module | Child Theme | Free-Form CSS]
    Converted: [date]
 
    Changes made:
-   - Replaced Xch units with Xrem
-   - Added !important to Divi overrides
-   - [other changes]
+   - [list of changes]
    ========================================================================== */
 ```
 
-## Step 5: Validate Converted CSS
+## Step 6: Validate Converted CSS
 
 Run validation checks to ensure all issues are resolved:
-- No `ch`/`ex` units remaining
 - All button overrides have `body` prefix
 - All Divi overrides have `!important`
+- No numbered selectors
 - Correct wrapping for format
+- CSS variables in `:root`
 
-## Step 6: Output Results
+## Step 7: Output Results
 
 Provide:
 1. **Converted CSS** (ready to use)
 2. **Changelog** (what was modified)
-3. **Usage instructions** (where to paste)
-
-### Example Output:
-
-```
-========================================
-DIVI 5 CSS CONVERSION COMPLETE
-========================================
-
-Changes Made:
-1. Line 12: 75ch -> 60rem
-2. Line 23: Added body prefix and !important to button
-3. Line 45: Added !important to section background
-4. Lines 1-5: Wrapped in <style> tags for Code Module
-
-Original: 156 lines
-Converted: 162 lines
-
-CONVERTED CSS:
-----------------------------------------
-<style>
-/* ==========================================================================
-   DIVI 5 CONVERTED CSS
-   Format: Code Module
-   Converted: 2024-12-25
-   ========================================================================== */
-
-:root {
-  --accent: gold;
-}
-
-body .et_pb_button {
-  background: #000000 !important;
-  border-radius: 0 !important;
-}
-
-/* ... rest of CSS ... */
-</style>
-----------------------------------------
-
-USAGE:
-1. Copy the CSS above (including <style> tags)
-2. In Divi Builder, add a Code Module
-3. Paste the CSS
-4. Save and preview
-
-Would you like me to save this to a file?
-```
+3. **Usage instructions** (where to paste, how to add classes via Attributes panel)
 
 ## Conversion Complete
 
 Offer:
 1. Save to file
 2. Run validation to confirm
-3. Generate additional format (e.g., also Theme Options version)
+3. Generate additional format (e.g., also provide Free-Form CSS version)

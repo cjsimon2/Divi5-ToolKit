@@ -1,6 +1,6 @@
 ---
 name: validate
-description: Validate CSS for Divi 5 compatibility. Checks for unsupported units, missing !important, specificity issues, and other common problems. Use ultrathink mode for thorough analysis.
+description: Validate CSS for Divi 5 compatibility. Checks for button specificity, selector issues, format correctness, and other common problems. Use ultrathink mode for thorough analysis.
 argument-hint: <file-or-css>
 allowed-tools: Read, Glob, Grep
 context: fork
@@ -8,7 +8,7 @@ context: fork
 
 # Divi 5 CSS Validator
 
-You are validating CSS for Divi 5 compatibility. **Use ultrathink mode** - be extremely thorough in your analysis.
+You are validating CSS for Divi 5 compatibility. **Use ultrathink mode** — be extremely thorough.
 
 ## Step 1: Get Validation Mode
 
@@ -31,21 +31,7 @@ Options:
 
 **CRITICAL: Analyze every line carefully. Do not miss issues.**
 
-### Check 1: Unsupported Units (P0 - Critical)
-Scan for:
-```regex
-\d+ch|\d+ex
-```
-These WILL break in Divi 5.
-
-**Report:**
-```
-CRITICAL: Unsupported unit found
-Line X: `max-width: 75ch;`
-Fix: `max-width: 60rem;` (75ch -> 60rem)
-```
-
-### Check 2: Button Specificity (P0 - Critical)
+### Check 1: Button Specificity (P0 - Critical)
 Look for `.et_pb_button` without:
 - `body` prefix
 - `!important`
@@ -55,6 +41,19 @@ Look for `.et_pb_button` without:
 CRITICAL: Button override missing specificity
 Line X: `.et_pb_button { background: red; }`
 Fix: `body .et_pb_button { background: red !important; }`
+```
+
+### Check 2: Numbered Selector Usage (P0 - Critical)
+Scan for positional selectors that break when modules are reordered:
+```regex
+\.et_pb_\w+_\d+
+```
+
+**Report:**
+```
+CRITICAL: Fragile numbered selector — breaks when modules reorder
+Line X: `.et_pb_text_0 { color: red; }`
+Fix: Add a custom class via Advanced > Attributes > class instead
 ```
 
 ### Check 3: CSS Variables Scope (P1 - High)
@@ -70,20 +69,7 @@ Line X: `.section { --my-color: red; }`
 Fix: Move to `:root { --my-color: red; }` for global access
 ```
 
-### Check 4: Container Queries (P0 - Critical)
-Scan for:
-```regex
-@container
-```
-
-**Report:**
-```
-CRITICAL: Container queries not supported in Divi 5
-Line X: `@container (min-width: 400px) { }`
-Fix: Use @media queries instead
-```
-
-### Check 5: Missing !important on Divi Overrides (P1 - High)
+### Check 4: Missing !important on Divi Overrides (P1 - High)
 Check `.et_pb_*` selectors for missing `!important`:
 
 **Report:**
@@ -93,11 +79,20 @@ Line X: `.et_pb_section { background: #000; }`
 Fix: `.et_pb_section { background: #000 !important; }`
 ```
 
-### Check 6: Code Module Format (P1 - High)
+### Check 5: Code Module Format (P1 - High)
 If file is intended for Code Module, verify `<style>` wrapper.
 
-### Check 7: Theme Options Format (P1 - High)
+### Check 6: Theme Options Format (P1 - High)
 If file is intended for Theme Options, verify NO `<style>` wrapper.
+
+### Check 7: Module Element CSS with Selectors (P1 - High)
+Detect full CSS rulesets that look like they belong in Free-Form CSS but were placed in a Module Element field (Title, Body, Main Element):
+
+**Report:**
+```
+WARNING: Module Element CSS fields accept property declarations only
+If you need full rulesets with selectors, use Free-Form CSS instead
+```
 
 ### Check 8: Font Stack (P2 - Medium)
 Check for font-family without fallbacks:
@@ -110,64 +105,64 @@ Fix: `font-family: 'Custom Font', system-ui, sans-serif;`
 ```
 
 ### Check 9: Hover States (P2 - Medium)
-If element has styles, check for corresponding :hover:
+If interactive element has styles, check for corresponding :hover:
 
 **Report:**
 ```
 SUGGESTION: Element may need hover state
 Line X: `.my-button { background: #000; }`
-Consider adding: `.my-button:hover { background: #222; }`
+Consider: `.my-button:hover { background: #222; }`
+```
+
+### Check 10: Responsive Coverage (P2 - Medium)
+If CSS has fixed sizes, check for responsive handling:
+
+**Report:**
+```
+SUGGESTION: Consider fluid values or media queries
+Line X: `font-size: 3rem;`
+Consider: `font-size: clamp(1.5rem, 3vw, 3rem);`
 ```
 
 ## Step 4: Generate Report
 
-### Advisory Mode Report:
+### Advisory Mode:
 ```
 ========================================
 DIVI 5 COMPATIBILITY REPORT (Advisory)
 ========================================
 
 CRITICAL ISSUES (must fix):
-1. Line 45: `ch` unit not supported
-   - Current: max-width: 75ch
-   - Fix: max-width: 60rem
+1. ...
 
 WARNINGS (should fix):
-1. Line 23: Missing !important on button
-   - Current: .et_pb_button { background: red }
-   - Fix: body .et_pb_button { background: red !important }
+1. ...
 
 SUGGESTIONS (optional):
-1. Line 67: Consider adding hover state
+1. ...
 
 SUMMARY:
-- 1 critical issue(s)
-- 1 warning(s)
-- 1 suggestion(s)
+- X critical issue(s)
+- X warning(s)
+- X suggestion(s)
 
-Status: NEEDS ATTENTION
+Status: PASSED / NEEDS ATTENTION
 ========================================
 ```
 
-### Strict Mode Report:
+### Strict Mode:
 ```
 ========================================
 DIVI 5 COMPATIBILITY REPORT (Strict)
 ========================================
 
 ERRORS (blocking):
-1. Line 45: `ch` unit not supported [BLOCKING]
-   - Current: max-width: 75ch
-   - Fix: max-width: 60rem
-
-2. Line 23: Missing !important on button [BLOCKING]
-   - Current: .et_pb_button { background: red }
-   - Fix: body .et_pb_button { background: red !important }
+1. ... [BLOCKING]
 
 SUMMARY:
-- 2 blocking error(s)
+- X blocking error(s)
 
-Status: FAILED - Fix errors before using in Divi 5
+Status: PASSED / FAILED
 ========================================
 ```
 

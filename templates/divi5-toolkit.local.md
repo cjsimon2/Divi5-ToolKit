@@ -8,9 +8,10 @@
 validation_mode: advisory
 
 # Default Output Format
-# - theme-options: Global CSS for Divi -> Theme Options (no tags)
+# - theme-options: Global CSS for Divi > Theme Options (no tags)
 # - code-module: Page-specific CSS with <style> tags
 # - child-theme: Standard CSS file for child theme
+# - free-form: Per-element CSS using selector keyword
 default_format: theme-options
 
 # Auto-Validate CSS
@@ -19,11 +20,24 @@ auto_validate: true
 
 # Last Research Date
 # Auto-updated by divi5-researcher agent
-last_research: 2024-12-25
+last_research: 2026-03-18
+
+# Divi Version
+# Track which Divi version this project targets
+divi_version: "5.1"
 
 # Project Design Tokens (optional)
 # Define your project's CSS variable prefix
-css_prefix: cjs
+css_prefix: my
+
+# Active Breakpoints
+# Which of Divi 5's 7 breakpoints are enabled for this project
+# Default: phone (767px), tablet (980px), desktop (base)
+# Optional: phone-wide (860px), tablet-wide (1024px), widescreen (1280px), ultra-wide (2560px)
+active_breakpoints:
+  - phone
+  - tablet
+  - desktop
 
 # Learned Errors (auto-populated by divi5-error-learner)
 learned_errors: []
@@ -45,13 +59,23 @@ This file stores project-specific settings for the Divi5 Toolkit plugin.
 - /divi5-toolkit:convert - Convert CSS to Divi 5 format
 - /divi5-toolkit:research - Research latest Divi 5 updates
 
-### Design Tokens
-Your project uses the `--cjs-*` prefix for CSS variables.
+### CSS Integration Methods (Divi 5)
+1. **Theme Options** — Divi > Theme Options > Custom CSS (global, no tags)
+2. **Page-Level CSS** — Page Settings > Advanced > Custom CSS
+3. **Free-Form CSS** — Module > Advanced > Custom CSS > Free-Form (uses `selector` keyword)
+4. **Module Elements** — Module > Advanced > Custom CSS > Title/Body/etc. (properties only)
+5. **Code Module** — Add Code Module, wrap in `<style>` tags
+6. **Custom HTML Wrappers** — Module > Advanced > HTML > Before/After
+7. **Child Theme** — child-theme/style.css
 
-### Validation Rules
-- No `ch` or `ex` units (use `rem`)
-- Button overrides need `body` prefix and `!important`
-- CSS variables must be in `:root`
+### Adding Classes in Divi 5
+Go to **Advanced > Attributes** (not the old CSS ID & Classes field).
+
+### Key Patterns
+- Button overrides: `body .et_pb_button { ... !important; }`
+- Use custom classes, not numbered selectors (`.et_pb_text_0`)
+- CSS variables in `:root` for global scope
+- Use `clamp()` for fluid responsive values
 
 ## Project Notes
 

@@ -1,6 +1,6 @@
 ---
 name: divi5-validator
-description: Use this agent after writing or editing CSS files to validate Divi 5 compatibility. Triggers on CSS file changes and checks for unsupported units (ch, ex), missing !important on Divi overrides, button specificity issues, and other compatibility problems.
+description: Use this agent after writing or editing CSS files to validate Divi 5 compatibility. Triggers on CSS file changes and checks for button specificity issues, numbered selectors, missing !important on Divi overrides, and other compatibility problems.
 tools: Read, Glob, Grep
 model: haiku
 ---
@@ -27,22 +27,18 @@ Check recent tool calls for:
 
 ### Step 2: Quick Validation Scan
 
-**CRITICAL ISSUES (P0) - Always Report:**
+**CRITICAL ISSUES (P0) — Always Report:**
 ```
-Pattern: \d+ch|\d+ex
-Issue: Unsupported unit
-Fix: Use rem (75ch -> 60rem)
-
-Pattern: @container
-Issue: Container queries not supported
-Fix: Use @media queries
-
 Pattern: \.et_pb_button\s*\{(?![^}]*!important)
 Issue: Button override missing !important
 Fix: Add body prefix and !important
+
+Pattern: \.et_pb_\w+_\d+
+Issue: Fragile numbered selector
+Fix: Use custom class via Advanced > Attributes instead
 ```
 
-**HIGH PRIORITY (P1) - Report in Advisory Mode:**
+**HIGH PRIORITY (P1) — Report in Advisory Mode:**
 ```
 Pattern: \.et_pb_\w+\s*\{(?![^}]*!important)
 Issue: Divi override may be ignored
@@ -64,18 +60,18 @@ validation_mode: advisory  # or "strict"
 
 **For Clean CSS:**
 ```
-✓ Divi 5 Compatibility Check PASSED
-  - No unsupported units
+Divi 5 Compatibility Check PASSED
   - Button overrides properly formatted
   - CSS variables correctly scoped
+  - No fragile selectors
 ```
 
 **For Issues Found (Advisory):**
 ```
-⚠ Divi 5 Compatibility Check: [X] issue(s) found
+Divi 5 Compatibility Check: [X] issue(s) found
 
 CRITICAL:
-1. Line 45: `75ch` not supported -> use `60rem`
+1. Line 45: Button missing body prefix and !important
 
 WARNINGS:
 1. Line 23: Missing !important on .et_pb_section
@@ -86,10 +82,10 @@ Run /divi5-toolkit:convert to auto-fix
 
 **For Issues Found (Strict):**
 ```
-✗ Divi 5 Compatibility Check FAILED
+Divi 5 Compatibility Check FAILED
 
 BLOCKING ISSUES:
-1. Line 45: `75ch` not supported [MUST FIX]
+1. Line 45: Button missing body prefix [MUST FIX]
 2. Line 23: Missing !important [MUST FIX]
 
 Fix issues before using in Divi 5.
@@ -113,7 +109,7 @@ Keep output concise:
 
 ## Important Notes
 
-- Be fast - use haiku model for quick validation
-- Don't over-report - focus on actionable issues
+- Be fast — use haiku model for quick validation
+- Don't over-report — focus on actionable issues
 - Learn from `.claude/divi5-toolkit.local.md` for project context
 - Reference divi5-compatibility skill for validation rules

@@ -8,28 +8,52 @@ user-invocable: false
 
 ## Overview
 
-Divi 5 is a complete architecture overhaul featuring:
-- **React-based framework** (faster, more responsive)
-- **Flexbox-first layout system** (sections, rows, columns use Flexbox by default)
-- **CSS Grid support** (for advanced layouts)
-- **Design Variables** (native token system)
-- **No shortcodes** (block-based like Gutenberg)
-- **7 responsive breakpoints** (vs 3 in Divi 4)
+**Divi 5** (released February 26, 2026, current version 5.1.0) is a complete architecture overhaul:
+- **React 18-based Visual Builder** — no Shadow DOM, standard DOM with `et_pb_*` classes
+- **Flexbox-first layout** — sections, rows, columns use Flexbox by default
+- **Native CSS Grid support** — convertible from Flexbox in builder
+- **Design Variable Manager** — 6 variable types (Colors, Fonts, Numbers, Images, Text, Links)
+- **Preset System** — Option Group, Element, Stacked, and Nested presets
+- **Block-based storage** — JSON format, no shortcodes
+- **7 responsive breakpoints** — 3 active by default, 4 optional
+- **Dynamic CSS** — 94% smaller stylesheets, per-page CSS generation
 
 ## CSS Integration Methods
 
 ### Method 1: Theme Options (Global Styles)
-**Location:** Divi -> Theme Options -> Custom CSS
+**Location:** Divi > Theme Options > Custom CSS
 **Format:** Raw CSS without `<style>` tags
+**Priority:** Loads after child theme — higher cascade priority
 
 ```css
-/* Paste directly - no tags needed */
 :root {
   --custom-color: #2ea3f2;
 }
 ```
 
-### Method 2: Code Module (Page-Specific)
+### Method 2: Page-Level Custom CSS
+**Location:** Page Settings > Advanced Tab > Custom CSS
+**Scope:** Single page only
+
+### Method 3: Module Custom CSS (Advanced Tab)
+**Location:** Any element > Advanced Tab > Custom CSS
+Organized into:
+- **Module Elements** (Title, Body, Button, etc.) — accepts property declarations only, no selectors
+- **Before / Main Element / After** — pseudo-element targeting
+- **Free-Form CSS** — full rulesets with the `selector` keyword
+
+### Method 4: Free-Form CSS (New in Divi 5)
+Uses the `selector` keyword as a placeholder for the current element:
+
+```css
+selector h4 { color: red; line-height: 1.5; }
+selector { display: grid; grid-template-columns: repeat(2, 1fr); }
+selector:hover { transform: scale(1.02); }
+```
+
+Multiple CSS blocks can be added per module. This is the most powerful per-element styling method.
+
+### Method 5: Code Module (Page-Specific)
 **Location:** Add Code Module to page
 **Format:** CSS wrapped in `<style></style>` tags
 
@@ -41,40 +65,52 @@ Divi 5 is a complete architecture overhaul featuring:
 </style>
 ```
 
-### Method 3: Child Theme (Production)
+### Method 6: Custom HTML Wrappers (New in Divi 5)
+**Location:** Advanced Tab > HTML option group
+- **HTML Before** and **HTML After** fields
+- Inject wrapper divs, data attributes, or helper markup around any element
+- Available on every element (sections, rows, columns, modules)
+- Often replaces Code Modules for structural wrapper needs
+
+### Method 7: Semantic Elements (New in Divi 5)
+**Location:** Advanced Tab > HTML option group > Element Type dropdown
+Change any element's HTML tag: `section`, `nav`, `header`, `article`, `aside`, `footer`, `main`, `button`, etc.
+
+### Method 8: Child Theme (Production)
 **Location:** child-theme/style.css
-**Format:** Standard CSS file
+**Note:** Divi's `cached-inline-styles` loads after child theme. Use `!important` or Theme Options CSS for higher priority.
 
-### Method 4: Free-Form CSS (Per-Element)
-**Location:** Module -> Advanced -> Custom CSS -> Free-Form CSS
-**Format:** Use `selector` keyword to target element
+### Method 9: Attributes Panel (Replaces CSS ID & Classes)
+**Location:** Advanced Tab > Attributes
+- The old "CSS ID & Classes" toggle is gone in Divi 5
+- Supports: `id`, `class`, `aria-label`, `data-*`, `rel`, `title`, and any HTML attribute
+- Existing D4 IDs/classes auto-migrate to this panel
 
-```css
-selector {
-  background-color: #1d1f22;
-}
-selector h2 {
-  color: gold;
-}
-```
+## Adding Custom Classes in Divi 5
+
+1. Select the module
+2. Go to **Advanced Tab > Attributes**
+3. Click **Add Attribute**
+4. Set **Name** to `class`
+5. Set **Value** to your class name(s)
 
 ## Selector Specificity for Divi Overrides
 
-Divi uses inline styles and `!important` extensively. To override:
+Divi applies many styles inline or with `!important`. To override:
 
 ### Standard Override Pattern
 ```css
-/* May not work - too low specificity */
+/* May not work — too low specificity */
 .et_pb_button {
   background-color: black;
 }
 
-/* Better - higher specificity */
+/* Better — higher specificity */
 body .et_pb_button {
   background-color: black !important;
 }
 
-/* Best - with custom class */
+/* Best — with custom class */
 body .et_pb_button.custom-btn {
   background-color: black !important;
 }
@@ -100,7 +136,6 @@ body .et_pb_button:hover {
 
 ### Section Override Patterns
 ```css
-/* Dark section */
 .et_pb_section.custom-dark-section {
   background-color: #1d1f22 !important;
 }
@@ -110,11 +145,6 @@ body .et_pb_button:hover {
 .et_pb_section.custom-dark-section p {
   color: #ffffff !important;
 }
-
-/* Gray section */
-.et_pb_section.custom-gray-section {
-  background-color: rgba(150, 150, 150, 0.47) !important;
-}
 ```
 
 ## Class Naming Convention
@@ -123,31 +153,96 @@ Use a unique prefix to avoid conflicts with Divi's classes:
 
 | Pattern | Example | Purpose |
 |---------|---------|---------|
-| `{prefix}-btn` | `cjs-btn` | Button base |
-| `{prefix}-btn--variant` | `cjs-btn--primary` | Button variant |
-| `{prefix}-section--modifier` | `cjs-section--dark` | Section modifier |
-| `{prefix}-card` | `cjs-card` | Component |
+| `{prefix}-btn` | `my-btn` | Button base |
+| `{prefix}-btn--variant` | `my-btn--primary` | Button variant |
+| `{prefix}-section--modifier` | `my-section--dark` | Section modifier |
+| `{prefix}-card` | `my-card` | Component |
 
-### Adding Classes in Divi 5
-1. Select the module
-2. Go to **Advanced Tab -> Attributes**
-3. Click **Add Attribute**
-4. Set **Name** to `class`
-5. Set **Value** to your class
+**Avoid numbered classes** (`.et_pb_text_0`, `.et_pb_text_1`) — they're positional and change when modules are reordered.
 
 ## Common Divi Module Selectors
 
+### Structural Elements
+
 | Module | Selector | Notes |
 |--------|----------|-------|
-| Button | `.et_pb_button` | Needs `body` prefix and `!important` |
-| Text | `.et_pb_text`, `.et_pb_text_inner` | Inner for paragraphs |
-| Blurb | `.et_pb_blurb` | Card-like modules |
-| Section | `.et_pb_section` | Outer containers |
-| Row | `.et_pb_row` | Inner containers |
-| Column | `.et_pb_column` | Grid columns |
+| Section | `.et_pb_section` | Outer container |
+| Fullwidth Section | `.et_pb_fullwidth_section` | Full-width variant |
+| Row | `.et_pb_row` | Content row |
+| Column | `.et_pb_column` | Grid column |
+| Column (1/2) | `.et_pb_column.et_pb_column_1_2` | Half-width |
+| Column (1/3) | `.et_pb_column.et_pb_column_1_3` | Third-width |
+| Column (1/4) | `.et_pb_column.et_pb_column_1_4` | Quarter-width |
+
+### Content Modules
+
+| Module | Selector | Inner Selectors |
+|--------|----------|-----------------|
+| Text | `.et_pb_text` | `.et_pb_text_inner` |
+| Button | `.et_pb_button` | (self-contained) |
+| Image | `.et_pb_image` | `.et_pb_image_wrap` |
+| Blurb | `.et_pb_blurb` | `.et_pb_blurb_content`, `.et_pb_blurb_container` |
+| CTA | `.et_pb_promo` | `.et_pb_promo_description` |
 | Heading | `.et_pb_module h1/h2/h3` | Use module prefix |
-| Image | `.et_pb_image` | Image modules |
-| CTA | `.et_pb_promo` | Call-to-action |
+| Slider | `.et_pb_slider` | `.et_pb_slide`, `.et_pb_slide_content` |
+| Blog | `.et_pb_blog_grid` | `.et_pb_post`, `.et_pb_post_content` |
+| Contact Form | `.et_pb_contact_form` | `.et_pb_contact_field` |
+| Toggle/Accordion | `.et_pb_toggle` | `.et_pb_toggle_title`, `.et_pb_toggle_content` |
+| Tabs | `.et_pb_tabs` | `.et_pb_tab`, `.et_pb_tabs_controls` |
+| Gallery | `.et_pb_gallery` | `.et_pb_gallery_item` |
+| Video | `.et_pb_video` | `.et_pb_video_overlay` |
+| Code | `.et_pb_code` | `.et_pb_code_inner` |
+| Counter/Bar | `.et_pb_counter` | `.et_pb_counter_container`, `.et_pb_counter_amount` |
+| Number Counter | `.et_pb_number_counter` | `.percent` |
+| Testimonial | `.et_pb_testimonial` | `.et_pb_testimonial_description` |
+| Pricing Table | `.et_pb_pricing` | `.et_pb_pricing_heading`, `.et_pb_pricing_content_top` |
+| Divider | `.et_pb_divider` | `.et_pb_divider_internal` |
+| Social Media | `.et_pb_social_media_follow` | `.et_pb_social_media_follow_network_link` |
+| Search | `.et_pb_search` | `.et_pb_s` (input field) |
+| Login | `.et_pb_login` | `.et_pb_login_form` |
+| Portfolio | `.et_pb_portfolio` | `.et_pb_portfolio_item` |
+| Map | `.et_pb_map` | `.et_pb_map_container` |
+| Audio | `.et_pb_audio_module` | `.et_pb_audio_module_content` |
+| Sidebar | `.et_pb_widget_area` | Standard WP widget classes |
+| Comments | `.et_pb_comments_module` | Standard WP comment classes |
+| Countdown | `.et_pb_countdown_timer` | `.et_pb_countdown_timer_container` |
+
+### New Divi 5 Modules
+
+| Module | Purpose |
+|--------|---------|
+| Group | Container for grouping modules with shared styles |
+| Carousel Group | Flexible slider with any module per slide |
+| Before/After Image | Interactive image comparison slider |
+| Canvas Portal | Off-canvas overlays, side panels, popups |
+| Dropdown | Drop-down content with customizable interactions |
+| Icon List | Lists with per-item icons and global styles |
+| Link | Standalone link element for navigation |
+| Lottie | Native Lottie animation integration |
+
+## Divi 5 Design Variable System
+
+Divi 5 introduces 6 types of Design Variables (managed via the Visual Builder UI):
+
+| Type | Purpose | Example |
+|------|---------|---------|
+| **Colors** | Brand palette, supports HSL adjustments | Primary brand color |
+| **Fonts** | Typography choices | Heading font family |
+| **Numbers** | Sizing values (spacing, radius, etc.) | Border radius, padding |
+| **Images** | Recurring visual assets | Logo, background |
+| **Text** | Repeated text content | Company address |
+| **Links** | URL values | Social media links |
+
+Design Variables complement CSS custom properties — they don't replace them. Use Design Variables for no-code workflows and CSS variables for developer control.
+
+### Preset Hierarchy
+
+1. **Option Group Presets** — Modular building blocks for individual properties (e.g., "Primary Button Style")
+2. **Element Presets** — Complete design packages for entire module types (e.g., "Hero Section")
+3. **Stacked Presets** — Multiple presets layered on one element, merged intelligently
+4. **Nested Presets** — Option Group Presets inside Element Presets, individually swappable
+
+**Recommended workflow:** Define Design Variables → Build Option Group Presets → Nest into Element Presets → Use Inspector to audit consistency.
 
 ## Typography Patterns
 
@@ -177,13 +272,11 @@ body .et_pb_module h2 {
 
 ### Text Line Length (Readability)
 ```css
-/* Limit text width for optimal readability */
 .et_pb_text_inner p,
 .et_pb_text_inner li {
-  max-width: 60rem; /* ~960px, replaces 75ch */
+  max-width: 60rem;
 }
 
-/* Center when in centered modules */
 .et_pb_text_align_center .et_pb_text_inner p {
   margin-left: auto;
   margin-right: auto;
@@ -192,39 +285,53 @@ body .et_pb_module h2 {
 
 ## Responsive Breakpoints
 
-Divi 5 supports 7 breakpoints. Key ones:
+Divi 5 has 7 breakpoints (3 active by default). Key ones for custom CSS:
 
 ```css
-/* Tablet landscape */
-@media (max-width: 1024px) { }
-
-/* Tablet portrait */
+/* Tablet (default active) */
 @media (max-width: 980px) { }
 
-/* Phone landscape */
+/* Phone (default active) */
 @media (max-width: 767px) { }
 
-/* Phone portrait */
-@media (max-width: 479px) { }
+/* Widescreen (must enable in builder) */
+@media (min-width: 1280px) { }
 
-/* Ultrawide monitors */
-@media (min-width: 2560px) {
-  :root { font-size: 17px; }
-  .et_pb_row { max-width: 1500px !important; }
-}
+/* Ultra Wide (must enable in builder) */
+@media (min-width: 2560px) { }
+```
 
-@media (min-width: 3440px) {
-  :root { font-size: 18px; }
-  .et_pb_row { max-width: 1600px !important; }
-}
+**Best practice:** Use `clamp()`, `vw`, `calc()` for fluid responsive values to reduce breakpoint overrides:
+```css
+font-size: clamp(1rem, 2vw + 0.5rem, 2rem);
+padding: clamp(1rem, 3vw, 4rem);
+```
 
-@media (min-width: 3840px) {
-  :root { font-size: 19px; }
-  .et_pb_row { max-width: 1800px !important; }
+## Layout Patterns
+
+### Flexbox (Default in Divi 5)
+```css
+.et_pb_row {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 2rem !important;
+  flex-wrap: wrap !important;
 }
 ```
 
-## Card Pattern
+### CSS Grid
+```css
+/* Free-Form CSS on a row or section */
+selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+```
+
+## Component Patterns
+
+### Card Pattern
 ```css
 .et_pb_blurb.custom-card,
 .et_pb_column.custom-card {
@@ -242,7 +349,7 @@ Divi 5 supports 7 breakpoints. Key ones:
 }
 ```
 
-## Quote Block Pattern
+### Quote Block Pattern
 ```css
 .et_pb_text.custom-quote {
   border-left: 4px solid #b2a065;
@@ -253,7 +360,7 @@ Divi 5 supports 7 breakpoints. Key ones:
 }
 ```
 
-## Info Box Pattern
+### Info Box Pattern
 ```css
 .custom-info-box {
   background-color: #f5f5f5;
@@ -302,16 +409,34 @@ Divi 5 supports 7 breakpoints. Key ones:
 }
 ```
 
-## Best Practices
+## Performance Best Practices
 
-1. **Always use !important** when overriding Divi button and module styles
-2. **Prefix all custom classes** to avoid conflicts
-3. **Use CSS Variables** for maintainability (supported in Divi 5)
-4. **Test on all 7 breakpoints** before production
-5. **Use body prefix** for higher specificity: `body .et_pb_button`
-6. **Use 60rem instead of 75ch** for text width (ch not supported)
-7. **Wrap Code Module CSS** in `<style></style>` tags
-8. **Theme Options CSS** goes without tags
+1. **Enable Dynamic CSS** — 94% smaller stylesheets
+2. **Enable Critical CSS** — eliminates render-blocking requests
+3. **Disable Static CSS during development** — enable after finalization
+4. **Don't combine Divi Critical CSS with WP Rocket RUCSS** — they conflict
+5. **Use `clamp()` and fluid values** to reduce breakpoint-specific CSS
+
+## Accessibility Patterns
+
+1. **Use Semantic Elements** to change `<div>` to `<nav>`, `<section>`, `<header>`, etc.
+2. **Add ARIA attributes** via Attributes panel or accessibility plugins
+3. **Visible focus indicators** for keyboard navigation
+4. **Color contrast** — meet WCAG 2.1 AA standards
+5. **Recommended plugin:** Divi-Modules Accessibility Attributes
+
+## Best Practices Summary
+
+1. **Use Free-Form CSS** with `selector` keyword for per-element styling
+2. **Use `body` prefix and `!important`** when overriding Divi buttons and module styles
+3. **Prefix all custom classes** to avoid conflicts (e.g., `my-btn`)
+4. **Use CSS Variables in `:root`** for maintainability
+5. **Use Design Variables + Presets** for no-code consistency
+6. **Use Custom HTML Wrappers** instead of Code Modules for structural needs
+7. **Test all active breakpoints** before production
+8. **Use `clamp()` for fluid responsive values** to minimize breakpoint overrides
+9. **Avoid numbered classes** (`.et_pb_text_0`) — use custom classes
+10. **Clear Static CSS cache** after any style changes
 
 ## Reference Files
 
