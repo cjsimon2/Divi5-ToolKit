@@ -24,7 +24,7 @@ Activate when:
 
 Read `.claude/divi5-toolkit.local.md`:
 ```yaml
-last_research: 2026-03-18
+last_research: [YYYY-MM-DD]
 ```
 
 If stale (>7 days) or user requested, proceed.

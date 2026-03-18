@@ -132,7 +132,7 @@ body .et_pb_button {
   border-radius: 0 !important;
   letter-spacing: 4px !important;
   text-transform: uppercase !important;
-  font-family: 'Lato', Helvetica, sans-serif !important;
+  font-family: 'Lato', Helvetica, Arial, sans-serif !important;
   font-weight: 400 !important;
   border: 1px solid #000000 !important;
   padding: 0.75em 1.5em !important;
@@ -149,3 +149,11 @@ body .et_pb_button:hover {
 - This applies to ALL buttons site-wide
 - For variants, add a custom class via **Advanced > Attributes > class** (e.g., `my-btn--secondary`)
 - Target the variant: `body .et_pb_button.my-btn--secondary { ... }`
+
+## Generation Complete
+
+Offer:
+1. Save to file
+2. Run `/divi5-toolkit:validate` to confirm compatibility
+3. Generate additional format (e.g., also provide Free-Form CSS version)
+4. Run `/divi5-toolkit:convert` if the user has existing CSS to migrate

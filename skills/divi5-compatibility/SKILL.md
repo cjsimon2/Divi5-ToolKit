@@ -6,7 +6,7 @@ user-invocable: false
 
 # Divi 5 Compatibility Reference
 
-**Divi 5 Version:** 5.1.0 (released March 13, 2026)
+**Divi 5 Version:** 5.1.0 (released March 13, 2026 — Divi 5.0 released February 26, 2026)
 **Architecture:** React 18, no Shadow DOM, standard DOM with `et_pb_*` classes
 
 ## CSS Feature Support
@@ -137,13 +137,13 @@ Divi 5 ships with 7 breakpoints, but **only 3 are active by default**:
 
 | Breakpoint | Default Width | Active by Default | Query Type |
 |------------|---------------|-------------------|------------|
-| Phone | 767px | Yes | min-width |
-| Phone Wide | 860px | No (enable in builder) | min-width |
-| Tablet | 980px | Yes | min-width |
-| Tablet Wide | 1024px | No (enable in builder) | min-width |
+| Phone | 767px | Yes | max-width |
+| Phone Wide | 860px | No (enable in builder) | max-width |
+| Tablet | 980px | Yes | max-width |
+| Tablet Wide | 1024px | No (enable in builder) | max-width |
 | Desktop | (base) | Yes (cannot be disabled) | N/A |
-| Widescreen | 1280px | No (enable in builder) | max-width |
-| Ultra Wide | 2560px | No (enable in builder) | max-width |
+| Widescreen | 1280px | No (enable in builder) | min-width |
+| Ultra Wide | 2560px | No (enable in builder) | min-width |
 
 All breakpoint widths are customizable. Custom breakpoints configured via Sitewide Responsive Breakpoints modal in the Visual Builder.
 

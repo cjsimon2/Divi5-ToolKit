@@ -123,7 +123,7 @@ body .et_pb_button {
   border-radius: 0 !important;
   letter-spacing: 4px !important;
   text-transform: uppercase !important;
-  font-family: 'Lato', sans-serif !important;
+  font-family: 'Lato', Helvetica, Arial, sans-serif !important;
   font-weight: 400 !important;
   border: 1px solid #000000 !important;
 }

@@ -12,7 +12,7 @@ You are researching the latest Divi 5 updates and compatibility information. **U
 
 Read `.claude/divi5-toolkit.local.md`:
 ```yaml
-last_research: 2026-03-18
+last_research: [YYYY-MM-DD]
 ```
 
 If more than 7 days old or user explicitly requested, proceed with research.

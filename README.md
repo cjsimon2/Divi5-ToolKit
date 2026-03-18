@@ -30,9 +30,9 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 
 | Agent | Triggers When |
 |-------|---------------|
-| `divi5-validator` | After writing/editing CSS files |
-| `divi5-error-learner` | When you paste Divi error messages |
-| `divi5-researcher` | On-demand or when knowledge is stale (>7 days) |
+| `divi5-validator` | After writing/editing CSS files (via PostToolUse hook, if `auto_validate: true`) |
+| `divi5-error-learner` | When you paste Divi error messages or describe CSS issues |
+| `divi5-researcher` | On-demand via `/divi5-toolkit:research` or when unknown Divi errors need research |
 
 ## Skills
 
@@ -126,19 +126,22 @@ No MCP servers required. For extended capabilities, add to your `.mcp.json`:
 
 ## Configuration
 
-Create `.claude/divi5-toolkit.local.md` in your project:
+Create `.claude/divi5-toolkit.local.md` in your project root. Full template at `templates/divi5-toolkit.local.md`.
+
+Key settings:
 
 ```yaml
----
-validation_mode: advisory    # or "strict"
-default_format: theme-options # or "code-module", "child-theme", "free-form"
-auto_validate: true
+validation_mode: advisory    # "advisory" (warnings) or "strict" (blocking errors)
+default_format: theme-options # "theme-options", "code-module", "child-theme", "free-form"
+auto_validate: true          # validate CSS files automatically after Write/Edit
 divi_version: "5.1"
-css_prefix: my              # your CSS variable prefix
----
+css_prefix: my               # your CSS variable prefix
+active_breakpoints:          # which of Divi 5's 7 breakpoints to use
+  - phone
+  - tablet
+  - desktop
+last_research: 2026-03-18    # auto-updated by divi5-researcher
 ```
-
-Template at `templates/divi5-toolkit.local.md`.
 
 ## Installation
 
@@ -155,28 +158,32 @@ Copy the plugin folder to your desired location, keeping the directory structure
 ```
 divi5-toolkit/
 ├── .claude-plugin/
-│   └── plugin.json          # Plugin manifest
-├── commands/                 # Slash commands
+│   └── plugin.json              # Plugin manifest
+├── commands/                     # Slash commands
 │   ├── generate.md
 │   ├── validate.md
 │   ├── convert.md
 │   └── research.md
-├── agents/                   # Autonomous agents
+├── agents/                       # Autonomous agents
 │   ├── divi5-validator.md
 │   ├── divi5-error-learner.md
 │   └── divi5-researcher.md
-├── skills/                   # Auto-activating skills
+├── skills/                       # Auto-activating skills
 │   ├── divi5-css-patterns/
 │   │   ├── SKILL.md
 │   │   ├── examples/
+│   │   │   ├── button-variants.css
+│   │   │   └── design-tokens.css
 │   │   └── references/
+│   │       ├── divi-selectors.md
+│   │       └── unit-conversions.md
 │   └── divi5-compatibility/
 │       ├── SKILL.md
 │       └── references/
 ├── hooks/
-│   └── hooks.json           # Event handlers
+│   └── hooks.json               # Event handlers
 ├── templates/
-│   └── divi5-toolkit.local.md
+│   └── divi5-toolkit.local.md   # Configuration template
 ├── .mcp.json
 └── README.md
 ```
