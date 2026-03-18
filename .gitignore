@@ -1,6 +1,7 @@
 # Claude Code local settings
 .claude/settings.local.json
 .claude/*.local.json
+.claudify/
 
 # Windows reserved names (can't be deleted normally)
 nul
