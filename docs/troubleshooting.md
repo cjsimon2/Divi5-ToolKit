@@ -22,17 +22,50 @@ These are issues with the Divi5 Toolkit Claude Code plugin itself.
 **Symptom:** Typing `/divi5-toolkit:` in Claude Code shows nothing.
 
 **Likely causes:**
-1. Plugin not loaded
+1. Plugin not loaded for this session
 2. Plugin path is wrong
 3. `plugin.json` is invalid
+4. `marketplace.json` missing or invalid (only matters if you're using the marketplace approach)
+5. `extraKnownMarketplaces` / `enabledPlugins` not configured (only matters if you're using the marketplace approach)
 
-**Fix:**
-1. Verify you started Claude Code with `--plugin-dir` pointing at the plugin root:
+**Diagnosis tree:**
+
+**If you're using `--plugin-dir` (per-session loading):**
+1. Verify you actually passed the flag when starting Claude Code:
    ```bash
    claude --plugin-dir "/path/to/Divi5-ToolKit"
    ```
 2. Confirm the path contains a `.claude-plugin/plugin.json` file at its root.
 3. Validate `plugin.json` is well-formed JSON (no trailing commas, all strings quoted).
+
+**If you're using the marketplace approach (`.claude/settings.local.json` or `~/.claude/settings.json`):**
+1. Confirm `marketplace.json` exists at the plugin root. Without it, the directory cannot act as a marketplace.
+   ```bash
+   ls /path/to/Divi5-ToolKit/marketplace.json
+   ```
+   If missing, you're on a plugin version older than v2.1.3 — `git pull` to update.
+2. Confirm both `extraKnownMarketplaces` and `enabledPlugins` are in your settings file. Both are required:
+   ```json
+   {
+     "extraKnownMarketplaces": {
+       "divi5-local": {
+         "source": { "source": "directory", "path": "/absolute/path/to/Divi5-ToolKit" }
+       }
+     },
+     "enabledPlugins": {
+       "divi5-toolkit@divi5-local": true
+     }
+   }
+   ```
+3. The marketplace name (`divi5-local` above) must appear in BOTH `extraKnownMarketplaces` (as the key) AND `enabledPlugins` (after the `@`). They must match exactly.
+4. The plugin name before the `@` (`divi5-toolkit`) must match the `name` field in `marketplace.json` and `.claude-plugin/plugin.json`.
+5. The `path` MUST be an absolute path. Relative paths and `~` are not expanded.
+6. Validate the JSON parses:
+   ```bash
+   python3 -m json.tool .claude/settings.local.json
+   ```
+7. Restart Claude Code after editing settings — changes don't apply mid-session.
+8. On first load of a new marketplace, Claude Code may prompt for trust confirmation. Approve it and restart.
 
 ### Config file isn't being read
 

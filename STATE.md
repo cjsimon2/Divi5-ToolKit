@@ -2,7 +2,7 @@
 
 ## Version
 
-- **Current:** 2.1.2 (released 2026-04-12)
+- **Current:** 2.1.3 (released 2026-04-13)
 - **Target Divi version:** 5.2 (Composable Settings, Canvas system, Loop Builder, Interaction Builder)
 
 ## Plugin Components
@@ -50,7 +50,7 @@ button-variants.css, design-tokens.css, animations.css, dark-mode.css, woocommer
 
 ## Recent Changes
 
-See the **Changelog** in `README.md`. v2.1.2 added end-user documentation in `docs/`: `usage.md`, `configuration.md`, `workflows.md`, and `troubleshooting.md`, plus README Quickstart and Documentation sections. v2.1.1 wired three orphan config keys (`accessibility_level`, `flag_composable_alternatives`, `scaffold_style`) into the consuming commands and agent, added `CLAUDE.md` and `STATE.md`, and ran a cross-reference / CSS-header consistency sweep. v2.1.0 added `/scaffold` and `/audit` commands, the `divi5-accessibility` agent, four new CSS example files, and full Divi 5.2 support.
+See the **Changelog** in `README.md`. v2.1.3 added the missing `marketplace.json` at the plugin root, fixing persistent (per-project / global) plugin loading via `extraKnownMarketplaces`. Without this file, only the per-session `--plugin-dir` flag worked. Also expanded README Installation and `docs/workflows.md` First-Time Setup with the three loading approaches, expanded `docs/troubleshooting.md` autocomplete diagnostic, and added a marketplace.json version-sync rule to CLAUDE.md. v2.1.2 added end-user documentation in `docs/`. v2.1.1 wired three orphan config keys into the consuming commands and agent, added `CLAUDE.md` and `STATE.md`. v2.1.0 added `/scaffold` and `/audit` commands, the `divi5-accessibility` agent, four new CSS example files, and full Divi 5.2 support.
 
 ## Research
 

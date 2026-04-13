@@ -1,0 +1,14 @@
+{
+  "$schema": "https://code.claude.com/schemas/marketplace.json",
+  "plugins": [
+    {
+      "name": "divi5-toolkit",
+      "version": "2.1.3",
+      "description": "Divi 5 development assistant: validates CSS compatibility, generates Divi-ready code, scaffolds page sections, audits project CSS health, checks accessibility, and learns from errors. Updated for Divi 5.2 with Composable Settings, Canvas system, and Loop Builder support.",
+      "source": {
+        "source": "directory",
+        "path": "./"
+      }
+    }
+  ]
+}

@@ -237,18 +237,64 @@ last_research: 2026-04-12             # auto-updated by divi5-researcher
 
 ## Installation
 
-### From Local Directory
+There are two ways to load the plugin: per-session (one-off) or persistent (auto-loads in specific projects or globally).
+
+### Option 1 — Per-session (one-off, no setup)
+
+From your project directory, start Claude Code with the `--plugin-dir` flag:
+
 ```bash
 claude --plugin-dir "/path/to/Divi5-ToolKit"
 ```
 
-### Add to Project
-Copy the plugin folder to your desired location, keeping the directory structure intact.
+The plugin loads for that session only. Use this for testing or occasional use.
+
+### Option 2 — Per-project (recommended for active Divi work)
+
+Auto-load the plugin whenever you start Claude Code in a specific project. This uses Claude Code's local marketplace mechanism — no actual marketplace publication required.
+
+In your website project root, create `.claude/settings.local.json` (gitignored — keeps your absolute path machine-local):
+
+```json
+{
+  "extraKnownMarketplaces": {
+    "divi5-local": {
+      "source": {
+        "source": "directory",
+        "path": "/absolute/path/to/Divi5-ToolKit"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "divi5-toolkit@divi5-local": true
+  }
+}
+```
+
+Make sure `.claude/settings.local.json` is in your project's `.gitignore` so the absolute path doesn't get committed:
+
+```
+.claude/settings.local.json
+.claude/*.local.json
+```
+
+Then start Claude Code from the project directory — `/divi5-toolkit:` should autocomplete.
+
+### Option 3 — Global (always loaded everywhere)
+
+Same JSON as Option 2, but write it to `~/.claude/settings.json` instead of the per-project file. The plugin will be available in every Claude Code session on your machine.
+
+### How it works
+
+The Divi5-ToolKit ships with a `marketplace.json` at its root that registers `divi5-toolkit` as a directory-source plugin. The `extraKnownMarketplaces` entry in your settings tells Claude Code to treat the local directory as a marketplace; the `enabledPlugins` entry activates the plugin from that marketplace.
+
+No publication, validation, or CLI registration step is needed — Claude Code reads `marketplace.json` directly from the directory you point at.
 
 ## Directory Structure
 
 ```
 divi5-toolkit/
+├── marketplace.json              # Marketplace manifest (directory source)
 ├── .claude-plugin/
 │   └── plugin.json              # Plugin manifest
 ├── commands/                     # Slash commands
@@ -295,6 +341,13 @@ divi5-toolkit/
 ```
 
 ## Changelog
+
+### v2.1.3 (April 13, 2026)
+- **Fixed (critical):** Added `marketplace.json` at the plugin root. Without this file, the local-marketplace loading mechanism (`extraKnownMarketplaces` in user settings) couldn't discover the plugin — only the per-session `--plugin-dir` flag worked. Persistent / per-project / global loading now works as documented.
+- **New:** README **Installation** section now documents three loading approaches: per-session (`--plugin-dir`), per-project (`extraKnownMarketplaces` in `.claude/settings.local.json`), and global (same JSON in `~/.claude/settings.json`). Includes the exact JSON schema and gitignore rule for keeping absolute paths out of git.
+- **Updated:** `docs/workflows.md` First-Time Setup workflow now shows the marketplace approach as the recommended persistent setup.
+- **Updated:** `docs/troubleshooting.md` "Slash commands don't autocomplete" entry now lists missing `marketplace.json` and missing `extraKnownMarketplaces` registration as causes.
+- **Updated:** `CLAUDE.md` versioning checklist now requires keeping `marketplace.json` version in sync with `.claude-plugin/plugin.json` version on every release.
 
 ### v2.1.2 (April 12, 2026)
 - **New:** `docs/usage.md` — comprehensive reference for every command (purpose, args, example, output, tools used), every agent (triggers, behavior, model, output), every skill (activation triggers, content), every hook, every CSS example, and every template.

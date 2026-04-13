@@ -17,25 +17,68 @@ Step-by-step guides for common multi-command scenarios.
 
 ## First-Time Setup
 
-You just installed the plugin. Get it configured for your project in 2 minutes.
+You just installed the plugin. Get it configured for your project in 5 minutes.
+
+### Step 1 — Choose how to load the plugin
+
+The plugin has to be loaded by Claude Code before its slash commands appear. Pick one of three options:
+
+**A) Per-session (simplest, one-off):**
+```bash
+cd /path/to/your-project
+claude --plugin-dir "/path/to/Divi5-ToolKit"
+```
+The plugin loads for that session only.
+
+**B) Per-project (recommended for active Divi work):**
+
+In your project root, ensure `.claude/settings.local.json` is gitignored:
+```bash
+mkdir -p .claude
+echo ".claude/settings.local.json" >> .gitignore
+echo ".claude/*.local.json" >> .gitignore
+```
+
+Then create `.claude/settings.local.json`:
+```json
+{
+  "extraKnownMarketplaces": {
+    "divi5-local": {
+      "source": {
+        "source": "directory",
+        "path": "/absolute/path/to/Divi5-ToolKit"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "divi5-toolkit@divi5-local": true
+  }
+}
+```
+
+The plugin will auto-load every time you start Claude Code in this project.
+
+**C) Global (always loaded everywhere):**
+
+Same JSON, but in `~/.claude/settings.json`. The plugin loads in every Claude Code session on your machine.
+
+### Step 2 — Create the plugin's project config
+
+This is a separate file from the Claude Code settings above. It tells the plugin commands which prefix, breakpoints, and accessibility level to use for THIS project.
 
 ```bash
-# 1. From your project root, install the plugin
-claude --plugin-dir "/path/to/Divi5-ToolKit"
-
-# 2. Create the config directory in your project
-mkdir -p .claude
-
-# 3. Copy the config template
 cp /path/to/Divi5-ToolKit/templates/divi5-toolkit.local.md .claude/divi5-toolkit.local.md
 ```
 
 Then open `.claude/divi5-toolkit.local.md` and edit:
 - `css_prefix` — change `my` to your project's short prefix (e.g., `acme`)
 - `divi_version` — set to `"5.2"` if you're current
+- `accessibility_level` — `aa` for most projects, `aaa` for healthcare/government
 - `active_breakpoints` — leave defaults unless you need more
 
-In Claude Code, type `/divi5-toolkit:` to confirm autocomplete shows all 6 commands. You're done.
+### Step 3 — Verify
+
+In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 6 commands (generate, validate, convert, research, scaffold, audit).
 
 **Verify by running:**
 ```
@@ -43,6 +86,8 @@ In Claude Code, type `/divi5-toolkit:` to confirm autocomplete shows all 6 comma
 ```
 
 If you get back Divi 5-ready CSS with your prefix, the plugin is wired up correctly.
+
+**If autocomplete doesn't show the commands**, see [`docs/troubleshooting.md` → "Slash commands don't autocomplete"](troubleshooting.md#slash-commands-dont-autocomplete).
 
 ---
 
