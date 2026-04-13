@@ -2,8 +2,11 @@
    DIVI 5 WOOCOMMERCE PATTERNS
    Example: CSS patterns for styling WooCommerce with Divi 5
 
-   Usage: Paste into Divi > Theme Options > Custom CSS
-   Requires: WooCommerce plugin + Divi 5 native Woo modules
+   Paste into: Divi > Theme Options > Custom CSS
+   Apply:      Add classes (woo-product-card, woo-sale-badge, etc.) via
+               Advanced > Attributes > class on the relevant modules
+   Requires:   WooCommerce plugin + Divi 5 native Woo modules
+   Note:       Includes `prefers-reduced-motion` fallback at bottom
    ========================================================================== */
 
 /* --------------------------------------------------------------------------

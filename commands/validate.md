@@ -10,15 +10,33 @@ context: fork
 
 You are validating CSS for Divi 5 compatibility. **Use ultrathink mode** — be extremely thorough.
 
-## Step 1: Get Validation Mode
+This command performs a deep, single-file/CSS-block validation. For lightweight,
+automatic background validation on file save, the `divi5-validator` agent is
+invoked by the PostToolUse hook. For a full project-wide audit across many
+files, use `/divi5-toolkit:audit` instead.
 
-Check `.claude/divi5-toolkit.local.md` for:
+## Step 1: Read Project Config
+
+Check `.claude/divi5-toolkit.local.md` for these settings (use defaults if file or key is missing):
+
 ```yaml
-validation_mode: advisory  # or "strict"
+validation_mode: advisory                # "advisory" (warnings) or "strict" (blocking)
+accessibility_level: aa                   # "aa" | "aaa" | "off"
+flag_composable_alternatives: true        # true | false
 ```
 
-- **Advisory (default):** Report issues as warnings, suggest fixes
-- **Strict:** Report issues as errors, require fixes
+**Behavior:**
+
+- `validation_mode`
+  - **Advisory (default):** Report issues as warnings, suggest fixes
+  - **Strict:** Report issues as errors, require fixes
+- `accessibility_level`
+  - **`aa` (default):** Run Checks 11–12 at WCAG 2.1 AA strictness
+  - **`aaa`:** Also flag missing `prefers-color-scheme`, contrast below 7:1 for normal text, focus indicators thinner than 2px
+  - **`off`:** Skip Checks 11 and 12 entirely
+- `flag_composable_alternatives`
+  - **`true` (default):** Run Check 13 (Composable Settings opportunities)
+  - **`false`:** Skip Check 13 entirely
 
 ## Step 2: Gather CSS to Validate
 
@@ -125,6 +143,7 @@ Consider: `font-size: clamp(1.5rem, 3vw, 3rem);`
 ```
 
 ### Check 11: Accessibility — Focus Indicators (P1 - High)
+**Skip if `accessibility_level: off`.**
 Check for `outline: none` or `outline: 0` without replacement focus styles:
 
 **Report:**
@@ -136,6 +155,7 @@ WCAG: 2.4.7 Focus Visible (Level AA)
 ```
 
 ### Check 12: Accessibility — Reduced Motion (P2 - Medium)
+**Skip if `accessibility_level: off`.** **If `accessibility_level: aaa`, also flag any animation triggered by user interaction (hover/focus) without a reduced-motion fallback as P1 instead of P2.**
 If CSS contains animations or transitions, check for `prefers-reduced-motion`:
 
 **Report:**
@@ -147,6 +167,7 @@ Fix: Add reduced-motion media query to disable or simplify animations
 ```
 
 ### Check 13: Composable Settings Opportunity (P3 - Info)
+**Skip entirely if `flag_composable_alternatives: false`.**
 Flag CSS that could be replaced by Divi 5.2 Composable Settings:
 - Width/height/sizing on sub-elements (titles, buttons, images)
 - Simple borders, animations, or transforms on sub-elements

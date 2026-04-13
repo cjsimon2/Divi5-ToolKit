@@ -2,8 +2,11 @@
    DIVI 5 ANIMATION PATTERNS
    Example: CSS animations and transitions for Divi 5
 
-   Usage: Add class via Advanced > Attributes > class
-   Note: Always include prefers-reduced-motion fallback
+   Paste into:  Divi > Theme Options > Custom CSS
+   Apply:       Add class via Advanced > Attributes > class
+   Trigger:     Pair with Divi Interactions or IntersectionObserver to add
+                the `.is-visible` class on scroll/viewport enter
+   Note:        Always includes a `prefers-reduced-motion` fallback (bottom)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------

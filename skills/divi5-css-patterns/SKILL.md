@@ -1,6 +1,6 @@
 ---
 name: Divi 5 CSS Patterns
-description: Use this skill when the user is writing CSS for Divi 5, creating styles for WordPress/Divi, working with Divi modules, or mentions Divi theme development. Provides CSS patterns, class naming conventions, selector specificity guidance, and Divi-specific best practices.
+description: Use this skill when writing CSS for Divi 5 / Divi 5.2, styling Divi modules (buttons, sections, rows, blurbs, toggles, forms), working with Free-Form CSS and the `selector` keyword, overriding `.et_pb_*` classes, setting up design tokens or dark mode, adding animations with reduced-motion, styling WooCommerce with Divi, building accessible layouts, or developing a Divi child theme. Provides CSS patterns, class naming conventions, selector specificity guidance, Composable Settings alternatives, Canvas and Loop Builder patterns, and full example files for buttons, design tokens, animations, dark mode, WooCommerce, and accessibility.
 user-invocable: false
 ---
 
@@ -534,4 +534,4 @@ For complete examples, see:
 - `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/woocommerce.css` — WooCommerce styling patterns
 - `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/accessibility.css` — WCAG 2.1 AA accessibility fixes
 - `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/references/divi-selectors.md` — Complete selector reference
-- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/references/unit-conversions.md` — CSS unit reference
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-compatibility/references/unit-conversions.md` — CSS unit reference (in the compatibility skill)

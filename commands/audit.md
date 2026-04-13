@@ -10,7 +10,24 @@ context: fork
 
 You are performing a comprehensive CSS audit for Divi 5 compatibility. **Use ultrathink mode** for thorough analysis. This goes far beyond single-file validation — it analyzes the entire project holistically.
 
-## Step 1: Discover CSS Sources
+## Step 1: Read Project Config
+
+Read `.claude/divi5-toolkit.local.md` if it exists. Apply these settings (use defaults if missing):
+
+```yaml
+accessibility_level: aa                   # "aa" | "aaa" | "off"
+flag_composable_alternatives: true        # true | false
+css_prefix: my                            # custom class prefix
+divi_version: "5.2"                       # target Divi version
+```
+
+**Behavior:**
+- `accessibility_level: off` — Skip Category E entirely. Reweight remaining categories proportionally so the total still maxes at 100.
+- `accessibility_level: aaa` — Use stricter thresholds: 7:1 contrast for normal text (vs. 4.5:1), focus indicators must be ≥ 2px, flag any animation triggered by hover/focus without reduced-motion fallback.
+- `flag_composable_alternatives: false` — Skip the "Composable Settings Opportunities" report section in Step 6.
+- `divi_version: "5.0"` or `"5.1"` — Mention in the report that Composable Settings (5.2) and certain bug fixes are not available on the user's target version.
+
+## Step 2: Discover CSS Sources
 
 Scan the project for all CSS:
 ```
@@ -24,11 +41,9 @@ Scan the project for all CSS:
 **/*.php           (for inline styles)
 ```
 
-Also check:
-- `.claude/divi5-toolkit.local.md` for project settings
-- Any design token files
+Also check for any design token files.
 
-## Step 2: Collect Metrics
+## Step 3: Collect Metrics
 
 For each CSS file, gather:
 - Total lines of CSS
@@ -40,7 +55,7 @@ For each CSS file, gather:
 - Number of `clamp()`/`min()`/`max()` usage
 - Number of hardcoded colors vs. variable references
 
-## Step 3: Run Audit Checks
+## Step 4: Run Audit Checks
 
 ### Category A: Divi 5 Compatibility (Weight: 40%)
 
@@ -88,6 +103,9 @@ For each CSS file, gather:
 
 ### Category E: Accessibility (Weight: 15%)
 
+**Skipped entirely if `accessibility_level: off`** (reweight other categories to total 100%).
+**Stricter thresholds applied if `accessibility_level: aaa`.**
+
 | # | Check | Severity | Points |
 |---|-------|----------|--------|
 | E1 | Focus styles present (`:focus`, `:focus-visible`) | High | +10 if present, -15 if missing |
@@ -97,7 +115,7 @@ For each CSS file, gather:
 | E5 | Touch targets suggest adequate size (padding on buttons) | Medium | -5 if too small |
 | E6 | `outline: none` without replacement focus indicator | Critical | -20 each |
 
-## Step 4: Calculate Score
+## Step 5: Calculate Score
 
 ```
 Score = 100 + (sum of all points)
@@ -114,7 +132,7 @@ Capped at: 0 (minimum) — 100 (maximum)
 | 60-69 | D | Poor — significant compatibility or quality issues |
 | 0-59 | F | Critical — major rework needed |
 
-## Step 5: Generate Report
+## Step 6: Generate Report
 
 ```
 ╔══════════════════════════════════════════════════════════════╗
@@ -186,6 +204,7 @@ Capped at: 0 (minimum) — 100 (maximum)
 ║                                                              ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  COMPOSABLE SETTINGS OPPORTUNITIES                           ║
+║  (omitted if flag_composable_alternatives: false)            ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
 ║  These CSS rules could be replaced by Divi 5.2's             ║
@@ -196,11 +215,15 @@ Capped at: 0 (minimum) — 100 (maximum)
 ╚══════════════════════════════════════════════════════════════╝
 ```
 
-## Step 6: Offer Actions
+**Omit the entire COMPOSABLE SETTINGS OPPORTUNITIES block if `flag_composable_alternatives: false` in the project config.**
+
+## Step 7: Offer Actions
 
 After presenting the report:
 1. **Auto-fix critical issues** — Run `/divi5-toolkit:convert` on affected files
-2. **Generate missing design tokens** — Create `:root` variables from hardcoded values
-3. **Add accessibility CSS** — Generate focus indicators and reduced-motion queries
-4. **Export report** — Save audit report to file
-5. **Re-audit** — Run again after fixes to verify improvement
+2. **Validate individual files** — Run `/divi5-toolkit:validate` on the worst offenders
+3. **Generate missing design tokens** — Create `:root` variables from hardcoded values
+4. **Add accessibility CSS** — Generate focus indicators and reduced-motion queries
+5. **Scaffold missing sections** — Run `/divi5-toolkit:scaffold` to generate clean, audited section templates
+6. **Export report** — Save audit report to file
+7. **Re-audit** — Run again after fixes to verify improvement

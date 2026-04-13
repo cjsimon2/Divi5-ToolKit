@@ -1,6 +1,6 @@
 ---
 name: Divi 5 Compatibility
-description: Use this skill when validating CSS for Divi 5 compatibility, checking for unsupported features, troubleshooting Divi CSS issues, or when the user mentions CSS not working in Divi. Provides compatibility rules, validation patterns, and fixes for common issues.
+description: Use this skill when validating CSS for Divi 5 / Divi 5.2 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce), migrating from Divi 4 to Divi 5, understanding breakpoints, or fixing "styles not working" / "button override not working" / "static CSS cache" issues. Provides compatibility rules, validation patterns, specificity fixes, composable settings alternatives, and a full error-message reference.
 user-invocable: false
 ---
 
@@ -353,6 +353,11 @@ Configure in `.claude/divi5-toolkit.local.md`:
 ```yaml
 validation_mode: advisory  # or "strict"
 ```
+
+## Reference Files
+
+For complete details, see:
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-compatibility/references/unit-conversions.md` — CSS unit support, conversion tables, fluid responsive patterns
 
 ## Resources
 

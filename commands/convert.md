@@ -9,6 +9,21 @@ allowed-tools: Read, Write, Edit, Glob, Grep
 
 You are converting CSS to be Divi 5 compatible. Apply all necessary transformations.
 
+## Step 0: Read Project Config
+
+Read `.claude/divi5-toolkit.local.md` if it exists. Apply these settings (use defaults if missing):
+
+```yaml
+default_format: theme-options             # default target format
+flag_composable_alternatives: true        # whether to suggest builder-native alternatives
+css_prefix: my                            # custom class prefix
+```
+
+**Behavior:**
+- If the user does not specify a target format in Step 2, use `default_format`.
+- If `flag_composable_alternatives: false`, **skip Conversion 9 entirely** (do not suggest Composable Settings alternatives).
+- Use `css_prefix` when introducing new custom classes.
+
 ## Step 1: Get Source CSS
 
 Options:
@@ -157,6 +172,9 @@ Run validation checks to ensure all issues are resolved:
 - Correct wrapping for format
 - CSS variables in `:root`
 
+After conversion, recommend running `/divi5-toolkit:validate` to confirm the
+converted output passes full compatibility checks.
+
 ## Step 7: Output Results
 
 Provide:
@@ -184,6 +202,7 @@ If CSS has animations or interactive elements, add:
 ```
 
 ### Conversion 9: Composable Settings Audit (Divi 5.2+)
+**Skip entirely if `flag_composable_alternatives: false`.**
 Flag CSS that could be replaced by Composable Settings:
 ```
 COMPOSABLE SETTINGS OPPORTUNITIES:
@@ -199,6 +218,6 @@ Note these as optional — the CSS still works, but builder-native is preferred.
 
 Offer:
 1. Save to file
-2. Run validation to confirm
+2. Run `/divi5-toolkit:validate` to confirm compatibility
 3. Generate additional format (e.g., also provide Free-Form CSS version)
 4. Run `/divi5-toolkit:audit` for full project health check

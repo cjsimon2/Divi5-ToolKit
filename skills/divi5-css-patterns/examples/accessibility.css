@@ -2,8 +2,10 @@
    DIVI 5 ACCESSIBILITY CSS PATTERNS
    Example: Essential accessibility CSS for WCAG 2.1 AA compliance
 
-   Usage: Paste into Divi > Theme Options > Custom CSS
-   These styles fix common Divi accessibility gaps
+   Paste into: Divi > Theme Options > Custom CSS
+   Purpose:    Fix common Divi 5 accessibility gaps (focus rings, touch
+               targets, skip links, reduced motion, high contrast, print)
+   Standards:  WCAG 2.1 AA (see inline comments for specific criteria)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------

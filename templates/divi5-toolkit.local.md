@@ -41,19 +41,22 @@ active_breakpoints:
   - desktop
 
 # Accessibility Level
-# - aa: WCAG 2.1 Level AA (recommended minimum)
-# - aaa: WCAG 2.1 Level AAA (stricter)
-# - off: Skip accessibility checks
+# Read by: /validate, /audit, divi5-accessibility agent
+# - aa: WCAG 2.1 Level AA (recommended minimum, 4.5:1 contrast for normal text)
+# - aaa: WCAG 2.1 Level AAA (stricter — 7:1 contrast, 2px focus rings, animation rules)
+# - off: Skip accessibility checks entirely
 accessibility_level: aa
 
 # Composable Settings Awareness (Divi 5.2+)
-# When true, validator and converter will flag CSS that could be replaced
-# by Composable Settings in the builder
+# Read by: /validate (Check 13), /convert (Conversion 9), /audit (opportunities section)
+# When true, the toolkit flags CSS that could be replaced by Divi 5.2 Composable Settings
+# in the builder. Set to false to suppress these hints (e.g., on Divi 5.0 / 5.1 projects).
 flag_composable_alternatives: true
 
 # Scaffold Defaults
-# Default section style for /scaffold command
-scaffold_style: light  # "light", "dark", or "brand"
+# Read by: /scaffold (Step 1)
+# Default color scheme used by /scaffold when the user doesn't specify one.
+scaffold_style: light  # "light" | "dark" | "brand"
 
 # Learned Errors (auto-populated by divi5-error-learner)
 learned_errors: []

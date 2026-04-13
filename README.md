@@ -165,17 +165,35 @@ Create `.claude/divi5-toolkit.local.md` in your project root. Full template at `
 Key settings:
 
 ```yaml
-validation_mode: advisory    # "advisory" (warnings) or "strict" (blocking errors)
-default_format: theme-options # "theme-options", "code-module", "child-theme", "free-form"
-auto_validate: true          # validate CSS files automatically after Write/Edit
-divi_version: "5.2"
-css_prefix: my               # your CSS variable prefix
-active_breakpoints:          # which of Divi 5's 7 breakpoints to use
+validation_mode: advisory             # "advisory" (warnings) or "strict" (blocking errors)
+default_format: theme-options         # "theme-options" | "code-module" | "child-theme" | "free-form"
+auto_validate: true                   # validate CSS files automatically after Write/Edit
+divi_version: "5.2"                   # target Divi version — used by SessionStart hook
+css_prefix: my                        # your custom CSS class prefix
+active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
   - phone
   - tablet
   - desktop
-last_research: 2026-04-12    # auto-updated by divi5-researcher
+accessibility_level: aa               # "aa" | "aaa" | "off" — strictness of accessibility checks
+flag_composable_alternatives: true    # suggest builder-native alternatives to custom CSS (Divi 5.2+)
+scaffold_style: light                 # "light" | "dark" | "brand" — default color scheme for /scaffold
+last_research: 2026-04-12             # auto-updated by divi5-researcher
 ```
+
+**What each setting affects:**
+
+| Setting | Read by |
+|---------|---------|
+| `validation_mode` | `/validate`, `divi5-validator` |
+| `default_format` | `/generate`, `/scaffold`, `/convert` |
+| `auto_validate` | PostToolUse hook |
+| `divi_version` | SessionStart hook |
+| `css_prefix` | `/generate`, `/scaffold`, `/convert` |
+| `active_breakpoints` | `/generate`, `/scaffold` |
+| `accessibility_level` | `/validate`, `/audit`, `divi5-accessibility` |
+| `flag_composable_alternatives` | `/validate`, `/convert`, `/audit` |
+| `scaffold_style` | `/scaffold` |
+| `last_research` | SessionStart hook, `divi5-researcher` |
 
 ## Installation
 
@@ -216,8 +234,7 @@ divi5-toolkit/
 │   │   │   ├── woocommerce.css      # NEW
 │   │   │   └── accessibility.css    # NEW
 │   │   └── references/
-│   │       ├── divi-selectors.md
-│   │       └── unit-conversions.md
+│   │       └── divi-selectors.md
 │   └── divi5-compatibility/
 │       ├── SKILL.md
 │       └── references/
@@ -231,6 +248,22 @@ divi5-toolkit/
 ```
 
 ## Changelog
+
+### v2.1.1 (April 12, 2026)
+- **Fixed:** Three v2.1.0 config keys (`accessibility_level`, `flag_composable_alternatives`, `scaffold_style`) were defined in the template but not actually consumed by any command or agent. Now wired into `/validate`, `/audit`, `/convert`, `/scaffold`, and the `divi5-accessibility` agent. Each consuming file reads `.claude/divi5-toolkit.local.md` in a "Read Project Config" step.
+- **New:** `accessibility_level: aaa` adds stricter WCAG 2.1 AAA thresholds (7:1 contrast for normal text, ≥2px focus rings, hover-animation rules). `accessibility_level: off` skips accessibility checks entirely.
+- **New:** `CLAUDE.md` — developer guide for working ON the plugin (architecture, conventions, versioning, naming).
+- **New:** `STATE.md` — project state snapshot with component inventory.
+- **New:** "User Config Schema" policy in CLAUDE.md — every key in the template MUST be consumed somewhere; orphan keys are a bug.
+- **New:** "Product Name vs. Page Builder" naming convention table in CLAUDE.md, documenting the three intentional forms (`divi5-toolkit` / `Divi5 Toolkit` / `Divi 5`).
+- **New:** "When to Research" usage policies on `/generate`, `/scaffold`, and `divi5-accessibility` — bounds when WebSearch/WebFetch should be used.
+- **Updated:** README config block now lists all 10 settings with a "Read by" table mapping each to its consumer.
+- **Updated:** Cross-references between commands and agents (validate ↔ validator, convert/audit ↔ validate, scaffold ↔ audit, accessibility agent ↔ accessibility.css example).
+- **Updated:** Skill `description` fields expanded with richer auto-activation triggers.
+- **Updated:** All CSS example file headers standardized (paste location, apply target, reduced-motion note, consistent arrow notation).
+- **Updated:** Both reference files (`divi-selectors.md`, `unit-conversions.md`) now back-link to their parent skill.
+- **Fixed:** README directory tree referenced a nonexistent `unit-conversions.md` under `css-patterns/references/`. Removed.
+- **Fixed:** `/generate` referenced "v5.1+" — corrected to "v5.2+".
 
 ### v2.1.0 (April 12, 2026)
 - **New:** `/scaffold` command — generate complete page section templates (hero, pricing, FAQ, CTA, off-canvas menu, popup modal, WooCommerce grid, and 10 more)

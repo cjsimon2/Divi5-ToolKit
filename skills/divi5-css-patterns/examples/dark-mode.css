@@ -2,8 +2,10 @@
    DIVI 5 DARK MODE PATTERN
    Example: System-aware dark mode using CSS custom properties
 
-   Usage: Paste into Divi > Theme Options > Custom CSS
-   Supports: prefers-color-scheme media query + manual toggle
+   Paste into: Divi > Theme Options > Custom CSS
+   Supports:   prefers-color-scheme media query + manual toggle
+   Toggle:     Add `.dark-mode` class to <body> via JS (example at bottom)
+   Note:       Includes `prefers-reduced-motion` fallback at bottom
    ========================================================================== */
 
 /* --------------------------------------------------------------------------

@@ -2,7 +2,9 @@
    DIVI 5 BUTTON VARIANTS
    Example: Multiple button styles for Divi 5
 
-   Usage: Add class via Advanced -> Attributes -> class
+   Paste into: Divi > Theme Options > Custom CSS
+   Apply:      Add class via Advanced > Attributes > class
+   Requires:   `body` prefix + `!important` on every property (Divi overrides)
    ========================================================================== */
 
 /* --------------------------------------------------------------------------

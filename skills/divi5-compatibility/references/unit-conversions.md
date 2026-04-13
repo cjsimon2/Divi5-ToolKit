@@ -1,5 +1,11 @@
 # Divi 5 Unit Reference
 
+> **Part of:** the `divi5-compatibility` skill. See the parent `SKILL.md` for full compatibility rules, validation patterns, and common fixes. Targets Divi 5.2.
+
+## Overview
+
+This reference covers every CSS unit Divi 5 supports, when to use each, and the conversion math needed when the builder's unit picker dropdown doesn't list the unit you want.
+
 ## Unit Support in Divi 5
 
 Divi 5 renders standard HTML without Shadow DOM, so **all valid CSS units work** in custom CSS, Code Modules, Free-Form CSS, and child theme stylesheets.

@@ -20,6 +20,18 @@ Activate when:
 
 ## Analysis Process
 
+### Step 0: Read Project Config
+
+Read `.claude/divi5-toolkit.local.md` if it exists. Apply the `accessibility_level` setting (default: `aa`):
+
+| Value | Behavior |
+|-------|----------|
+| `off` | **Skip the entire agent.** Reply with: "Accessibility checks disabled in project config (`accessibility_level: off`)." Do not run any checks. |
+| `aa` (default) | Run all checks at WCAG 2.1 Level AA thresholds (4.5:1 contrast, 44px touch targets, etc.) |
+| `aaa` | Run all checks at WCAG 2.1 Level AAA thresholds. Additional rules: 7:1 contrast for normal text and 4.5:1 for large text, focus indicators must be ≥ 2px thick with ≥ 3:1 contrast, no animations triggered by hover/focus without reduced-motion fallback, line-height ≥ 1.5 on body text, paragraph spacing ≥ 1.5x font size. |
+
+If the config file is missing, default to `aa`.
+
 ### Step 1: Gather CSS to Check
 
 Options:
@@ -68,13 +80,23 @@ WCAG: 2.4.7 Focus Visible (Level AA)
 
 #### Check 2: Color Contrast (P0 — Critical)
 
-Analyze text color against background color combinations:
+Analyze text color against background color combinations. Use the threshold table for the configured `accessibility_level`:
+
+**At `accessibility_level: aa` (default):**
 
 | Text Size | Required Ratio | WCAG Level |
 |-----------|---------------|------------|
 | Normal text (< 18pt) | 4.5:1 | AA |
 | Large text (>= 18pt or >= 14pt bold) | 3:1 | AA |
 | UI components & graphics | 3:1 | AA |
+
+**At `accessibility_level: aaa`:**
+
+| Text Size | Required Ratio | WCAG Level |
+|-----------|---------------|------------|
+| Normal text (< 18pt) | 7:1 | AAA |
+| Large text (>= 18pt or >= 14pt bold) | 4.5:1 | AAA |
+| UI components & graphics | 3:1 | AA (no AAA criterion) |
 
 **Check for:**
 - Light text on light backgrounds
@@ -325,11 +347,28 @@ body .et_pb_button:focus-visible {
 }
 ```
 
+## When to Research
+
+Use `WebSearch` only when:
+- You need to verify the wording or scope of a specific WCAG criterion you're uncertain about
+- A user asks about an accessibility standard you don't have built-in knowledge of (e.g., EN 301 549, Section 508 specifics)
+- You need to check whether a given CSS feature has known accessibility issues
+
+Do NOT search for general accessibility advice — the checks above and the reference example are authoritative.
+
 ## Important Notes
 
 - Use sonnet model for thorough analysis
-- Reference WCAG 2.1 AA as minimum standard
+- Reference WCAG 2.1 AA as minimum standard (overridden by `accessibility_level` config)
 - Suggest WCAG 2.2 improvements where applicable
 - Always provide both CSS fix and Divi builder alternative
 - Recommend Divi-Modules Accessibility Attributes plugin for no-code ARIA
 - Test recommendations: keyboard navigation, screen reader, zoom to 200%
+
+## Reference Example
+
+A complete, ready-to-use accessibility stylesheet is available at
+`skills/divi5-css-patterns/examples/accessibility.css`. It contains production
+patterns for focus indicators, skip links, reduced-motion handling, visually
+hidden utilities, and Divi-specific button focus overrides. Point users to
+this file when they need a full starting point rather than individual snippets.

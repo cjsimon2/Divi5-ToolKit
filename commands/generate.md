@@ -7,7 +7,16 @@ allowed-tools: Read, Write, Glob, Grep, WebSearch, WebFetch
 
 # Divi 5 CSS Generator
 
-You are generating Divi 5-compatible CSS (v5.1+). Follow these steps:
+You are generating Divi 5-compatible CSS (v5.2+). Follow these steps:
+
+## When to Research
+
+Your built-in Divi 5 knowledge (selectors, breakpoints, integration methods, Composable Settings, Canvas system) covers the vast majority of generation tasks. Use `WebSearch` or `WebFetch` only when:
+- The user requests styling for a Divi module or feature you're uncertain about
+- You need to verify a specific Divi 5.2+ selector or class name
+- The user mentions a recent Divi update or feature you don't recognize
+
+Prefer `help.elegantthemes.com`, `elegantthemes.com/blog`, and `victorduse.com/divi-5-changelog`. Do not search for general CSS knowledge.
 
 ## Step 1: Understand the Request
 

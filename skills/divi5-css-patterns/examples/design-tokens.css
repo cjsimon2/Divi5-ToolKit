@@ -2,7 +2,9 @@
    DIVI 5 DESIGN TOKENS TEMPLATE
    Example: CSS Variables for consistent design system
 
-   Usage: Paste into Divi -> Theme Options -> Custom CSS
+   Paste into: Divi > Theme Options > Custom CSS
+   Use:        Reference tokens anywhere via `var(--token-name)`
+   Scope:      `:root` makes these globally available across all pages
    ========================================================================== */
 
 :root {

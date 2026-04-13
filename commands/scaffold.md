@@ -9,6 +9,15 @@ allowed-tools: Read, Write, Glob, Grep, WebSearch, WebFetch
 
 You are generating complete, production-ready Divi 5 page section templates. Each scaffold includes CSS, class naming, responsive behavior, accessibility attributes, and step-by-step builder instructions.
 
+## When to Research
+
+The built-in scaffolds in this command cover the common cases. Use `WebFetch` or `WebSearch` only when:
+- The user requests a section type that isn't covered by the built-in templates (Step 1 menu)
+- You need to verify a specific Divi 5.2 selector, class name, or new module behavior
+- You're unsure whether a CSS feature is currently supported in the builder vs. only via custom CSS
+
+Prefer official sources: `help.elegantthemes.com`, `elegantthemes.com/blog`, `victorduse.com/divi-5-changelog`. Do not research for general CSS knowledge — only Divi-specific facts.
+
 ## Step 1: Identify Section Type
 
 If the user hasn't specified, present this menu:
@@ -31,15 +40,31 @@ If the user hasn't specified, present this menu:
 | 14 | **Popup Modal** | Canvas Portal popup with overlay |
 
 Ask about:
-1. **Color scheme** — dark, light, or brand colors?
-2. **Output format** — Theme Options, Code Module, Child Theme, or Free-Form CSS?
+1. **Color scheme** — dark, light, or brand colors? *(Defaults to the project's `scaffold_style` config if set — see Step 2.)*
+2. **Output format** — Theme Options, Code Module, Child Theme, or Free-Form CSS? *(Defaults to `default_format` if set.)*
 3. **Any customization** — specific fonts, spacing, content?
 
-## Step 2: Check Project Context
+## Step 2: Read Project Config
 
-- Read `.claude/divi5-toolkit.local.md` for project preferences (prefix, breakpoints, format)
-- Check for existing design tokens (CSS variables)
-- Use the project's `css_prefix` if set
+Read `.claude/divi5-toolkit.local.md` if it exists. Apply these settings (use defaults if missing):
+
+```yaml
+css_prefix: my                # custom class prefix (defaults to "my")
+default_format: theme-options # output format default
+scaffold_style: light         # "light" | "dark" | "brand" — color scheme default
+active_breakpoints:           # which breakpoints to target
+  - phone
+  - tablet
+  - desktop
+```
+
+**Behavior:**
+- If the user did not specify a color scheme in Step 1, use `scaffold_style`. If unset, default to `light`.
+- If the user did not specify an output format in Step 1, use `default_format`.
+- Use `css_prefix` for all custom classes in the generated CSS (substitute `{prefix}` placeholders).
+- Generate responsive CSS only for breakpoints listed in `active_breakpoints`.
+
+Also check for existing design tokens (CSS variables) in the project and reuse them where possible.
 
 ## Step 3: Generate the Scaffold
 

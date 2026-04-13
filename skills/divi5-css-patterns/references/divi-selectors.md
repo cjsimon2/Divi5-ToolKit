@@ -1,5 +1,11 @@
 # Divi 5 CSS Selectors Reference
 
+> **Part of:** the `divi5-css-patterns` skill. See the parent `SKILL.md` for CSS patterns, override strategies, and best practices. Targets Divi 5.2.
+
+## Overview
+
+A complete selector reference for Divi 5's module classes, inner element selectors, override patterns, and Free-Form CSS targeting with the `selector` keyword. Use this when you need to know exactly which class to target for any Divi module.
+
 ## Structural Selectors
 
 | Selector | Module | Notes |
