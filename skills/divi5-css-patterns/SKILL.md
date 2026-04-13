@@ -8,7 +8,7 @@ user-invocable: false
 
 ## Overview
 
-**Divi 5** (released February 26, 2026, current version 5.1.0) is a complete architecture overhaul:
+**Divi 5** (released February 26, 2026, current version 5.2.0) is a complete architecture overhaul:
 - **React 18-based Visual Builder** — no Shadow DOM, standard DOM with `et_pb_*` classes
 - **Flexbox-first layout** — sections, rows, columns use Flexbox by default
 - **Native CSS Grid support** — convertible from Flexbox in builder
@@ -17,6 +17,13 @@ user-invocable: false
 - **Block-based storage** — JSON format, no shortcodes
 - **7 responsive breakpoints** — 3 active by default, 4 optional
 - **Dynamic CSS** — 94% smaller stylesheets, per-page CSS generation
+- **Composable Settings (5.2)** — toggle any design option on any sub-element, reducing CSS needs
+- **Canvas System** — local/global canvases for off-canvas menus, popups, staging areas
+- **Canvas Portal Module** — inject canvas content at specific layout locations
+- **Interaction Builder** — cross-canvas interactions with Click, Mouse, Viewport, Load triggers
+- **Loop Builder** — native repeating content loops with CSS Grid for dynamic layouts
+- **Page Manager** — create/edit/duplicate/delete pages without leaving the builder
+- **Divi AI Agent** — AI tool sets integrated into the builder (5.2)
 
 ## CSS Integration Methods
 
@@ -425,21 +432,106 @@ selector {
 4. **Color contrast** — meet WCAG 2.1 AA standards
 5. **Recommended plugin:** Divi-Modules Accessibility Attributes
 
+## Composable Settings (Divi 5.2+)
+
+Composable Settings let you enable **any** of Divi's design options for **any** module sub-element. This dramatically reduces the need for custom CSS.
+
+### What It Replaces
+Before 5.2, adding a width to a button, a border to a title, or an animation to an image required custom CSS. Now you can toggle these on in the builder.
+
+### How It Works
+1. Select any module sub-element (Title, Body, Button, Image, etc.)
+2. Click the **Compose Settings** icon
+3. Enable any design option: sizing, spacing, borders, animations, transforms, etc.
+4. Configure directly in the builder UI
+
+### When to Still Use CSS
+- Complex selectors or pseudo-elements
+- Design patterns not covered by builder options
+- Cross-element relationships (sibling/parent selectors)
+- `@media` queries beyond Divi's breakpoint system
+- `prefers-reduced-motion` and other preference queries
+- Custom animations with `@keyframes`
+
+## Canvas System (Divi 5+)
+
+### Canvas Types
+- **Main Canvas** — the page's primary visible content
+- **Local Canvases** — detached workspaces per page/template, kept separate until connected
+- **Global Canvases** — site-wide reusable canvases (e.g., shared popup, menu)
+
+### CSS Patterns for Canvas Content
+```css
+/* Off-canvas menu styling */
+.{prefix}-offcanvas {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: min(80vw, 400px);
+  height: 100vh;
+  z-index: var(--z-fixed, 1030);
+  transition: left 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  overflow-y: auto;
+}
+
+/* Popup/modal overlay */
+.{prefix}-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  z-index: var(--z-modal, 1050);
+}
+```
+
+### Interaction Builder + Canvas Workflow
+1. Build content in a local or global canvas
+2. Use Canvas Portal Module to inject at a specific layout location
+3. Create Interactions on main canvas targeting canvas elements
+4. Triggers: Click, Mouse Enter/Exit, Viewport Enter/Exit, Load
+5. Divi auto-appends targeted canvases to the main canvas on the frontend
+
+## Loop Builder
+
+Build dynamic content layouts without plugins:
+1. Design the loop item template using Divi modules
+2. Divi pulls and repeats data from the database
+3. Combine with CSS Grid for product grids, blog layouts, etc.
+
+```css
+/* Loop Builder grid layout */
+selector {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+}
+```
+
 ## Best Practices Summary
 
-1. **Use Free-Form CSS** with `selector` keyword for per-element styling
-2. **Use `body` prefix and `!important`** when overriding Divi buttons and module styles
-3. **Prefix all custom classes** to avoid conflicts (e.g., `my-btn`)
-4. **Use CSS Variables in `:root`** for maintainability
-5. **Use Design Variables + Presets** for no-code consistency
-6. **Use Custom HTML Wrappers** instead of Code Modules for structural needs
-7. **Test all active breakpoints** before production
-8. **Use `clamp()` for fluid responsive values** to minimize breakpoint overrides
-9. **Avoid numbered classes** (`.et_pb_text_0`) — use custom classes
-10. **Clear Static CSS cache** after any style changes
+1. **Check Composable Settings first** — many CSS overrides are now unnecessary in Divi 5.2
+2. **Use Free-Form CSS** with `selector` keyword for per-element styling
+3. **Use `body` prefix and `!important`** when overriding Divi buttons and module styles
+4. **Prefix all custom classes** to avoid conflicts (e.g., `my-btn`)
+5. **Use CSS Variables in `:root`** for maintainability
+6. **Use Design Variables + Presets** for no-code consistency
+7. **Use Custom HTML Wrappers** instead of Code Modules for structural needs
+8. **Use Canvases** for off-canvas menus, popups, and staging areas
+9. **Test all active breakpoints** before production
+10. **Use `clamp()` for fluid responsive values** to minimize breakpoint overrides
+11. **Avoid numbered classes** (`.et_pb_text_0`) — use custom classes
+12. **Clear Static CSS cache** after any style changes
+13. **Include `prefers-reduced-motion`** with all animations
+14. **Add `:focus-visible` styles** — Divi removes default focus indicators
 
 ## Reference Files
 
 For complete examples, see:
-- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/`
-- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/references/`
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/button-variants.css` — Button style variants
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/design-tokens.css` — Design system tokens template
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/animations.css` — Animation patterns with reduced-motion
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/dark-mode.css` — System-aware dark mode
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/woocommerce.css` — WooCommerce styling patterns
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/accessibility.css` — WCAG 2.1 AA accessibility fixes
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/references/divi-selectors.md` — Complete selector reference
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/references/unit-conversions.md` — CSS unit reference

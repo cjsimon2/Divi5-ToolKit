@@ -164,9 +164,41 @@ Provide:
 2. **Changelog** (what was modified)
 3. **Usage instructions** (where to paste, how to add classes via Attributes panel)
 
+### Conversion 8: Accessibility Additions
+If CSS has animations or interactive elements, add:
+```css
+/* Add if missing */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Add focus indicators if missing */
+:focus-visible {
+  outline: 2px solid var(--color-primary, #2ea3f2);
+  outline-offset: 2px;
+}
+```
+
+### Conversion 9: Composable Settings Audit (Divi 5.2+)
+Flag CSS that could be replaced by Composable Settings:
+```
+COMPOSABLE SETTINGS OPPORTUNITIES:
+- Line X: `.et_pb_blurb .et_pb_main_blurb_image { width: 80px; }`
+  → Enable Sizing on blurb image sub-element via Compose Settings
+- Line Y: `.et_pb_button { border-radius: 50px; }`
+  → Set border-radius on button sub-element in builder
+```
+
+Note these as optional — the CSS still works, but builder-native is preferred.
+
 ## Conversion Complete
 
 Offer:
 1. Save to file
 2. Run validation to confirm
 3. Generate additional format (e.g., also provide Free-Form CSS version)
+4. Run `/divi5-toolkit:audit` for full project health check

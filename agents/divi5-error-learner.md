@@ -147,6 +147,30 @@ Check if error is related to:
 - Cause: Firewall rules blocking Divi AJAX
 - Fix: Enable Wordfence Learning Mode during Divi updates
 
+**"Transform values corrupted after dragging"** (Divi 5.0-5.1)
+- Cause: Dragging Transform Scale handles corrupts calc() and CSS variable values
+- Fix: Re-enter values manually; fixed in Divi 5.2
+
+**"Box shadow hover state broken"** (Divi 5.0-5.1)
+- Cause: Empty string values overwrite preset hover shadows
+- Fix: Set explicit hover shadow values; fixed in Divi 5.2
+
+**"Loop page CSS missing on paginated pages"** (Divi 5.0-5.1)
+- Cause: Visiting paginated page before main loop page breaks CSS cache
+- Fix: Clear Static CSS cache; fixed in Divi 5.2
+
+**"Canvas/popup content not showing on frontend"**
+- Cause: Canvas not set to auto-append, or Interaction not targeting canvas correctly
+- Fix: Enable "Append to Post Content" on the canvas, or verify Interaction targets the correct canvas element
+
+**"Composable Settings not appearing"** (Divi 5.2+)
+- Cause: Sub-element not selected, or module needs update
+- Fix: Select the specific sub-element (title, button, image), then click Compose Settings icon
+
+**"Accessibility: no focus indicators visible"**
+- Cause: Divi's CSS removes default focus outlines
+- Fix: Add custom :focus-visible styles. See accessibility.css example in the plugin.
+
 ## Output Behavior
 
 1. **Immediate** — Provide solution to user

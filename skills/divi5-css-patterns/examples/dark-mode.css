@@ -1,0 +1,259 @@
+/* ==========================================================================
+   DIVI 5 DARK MODE PATTERN
+   Example: System-aware dark mode using CSS custom properties
+
+   Usage: Paste into Divi > Theme Options > Custom CSS
+   Supports: prefers-color-scheme media query + manual toggle
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Light Theme Tokens (default)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Surfaces */
+  --dm-bg-primary: #ffffff;
+  --dm-bg-secondary: #f5f5f5;
+  --dm-bg-tertiary: #e8e8e8;
+  --dm-bg-elevated: #ffffff;
+
+  /* Text */
+  --dm-text-primary: #1a1a1a;
+  --dm-text-secondary: #555555;
+  --dm-text-tertiary: #888888;
+  --dm-text-inverse: #ffffff;
+
+  /* Borders */
+  --dm-border: rgba(0, 0, 0, 0.1);
+  --dm-border-strong: rgba(0, 0, 0, 0.2);
+
+  /* Shadows */
+  --dm-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --dm-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --dm-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+
+  /* Accent (stays consistent) */
+  --dm-accent: #2ea3f2;
+  --dm-accent-hover: #1a8fd4;
+
+  /* Status */
+  --dm-success: #22c55e;
+  --dm-warning: #f59e0b;
+  --dm-error: #ef4444;
+}
+
+/* --------------------------------------------------------------------------
+   Dark Theme Tokens (system preference)
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Surfaces */
+    --dm-bg-primary: #121212;
+    --dm-bg-secondary: #1e1e1e;
+    --dm-bg-tertiary: #2a2a2a;
+    --dm-bg-elevated: #1e1e1e;
+
+    /* Text */
+    --dm-text-primary: #e8e8e8;
+    --dm-text-secondary: #a0a0a0;
+    --dm-text-tertiary: #6b6b6b;
+    --dm-text-inverse: #1a1a1a;
+
+    /* Borders */
+    --dm-border: rgba(255, 255, 255, 0.1);
+    --dm-border-strong: rgba(255, 255, 255, 0.2);
+
+    /* Shadows (more subtle in dark mode) */
+    --dm-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --dm-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+    --dm-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Manual Toggle Override (add class "dark-mode" to <body> via JS)
+   -------------------------------------------------------------------------- */
+body.dark-mode {
+  --dm-bg-primary: #121212;
+  --dm-bg-secondary: #1e1e1e;
+  --dm-bg-tertiary: #2a2a2a;
+  --dm-bg-elevated: #1e1e1e;
+  --dm-text-primary: #e8e8e8;
+  --dm-text-secondary: #a0a0a0;
+  --dm-text-tertiary: #6b6b6b;
+  --dm-text-inverse: #1a1a1a;
+  --dm-border: rgba(255, 255, 255, 0.1);
+  --dm-border-strong: rgba(255, 255, 255, 0.2);
+  --dm-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --dm-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --dm-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* --------------------------------------------------------------------------
+   Apply Dark Mode Tokens to Divi Elements
+   -------------------------------------------------------------------------- */
+
+/* Page Background */
+body,
+#page-container {
+  background-color: var(--dm-bg-primary);
+  color: var(--dm-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Sections */
+.et_pb_section {
+  background-color: var(--dm-bg-primary) !important;
+}
+
+.et_pb_section.dm-section-alt {
+  background-color: var(--dm-bg-secondary) !important;
+}
+
+/* Text */
+.et_pb_text .et_pb_text_inner,
+.et_pb_text .et_pb_text_inner p,
+.et_pb_text .et_pb_text_inner li {
+  color: var(--dm-text-primary);
+}
+
+.et_pb_module h1,
+.et_pb_module h2,
+.et_pb_module h3,
+.et_pb_module h4 {
+  color: var(--dm-text-primary) !important;
+}
+
+/* Blurb / Card Elements */
+.et_pb_blurb {
+  background-color: var(--dm-bg-elevated);
+  border: 1px solid var(--dm-border);
+  box-shadow: var(--dm-shadow-sm);
+}
+
+/* Buttons */
+body .et_pb_button {
+  border-color: var(--dm-accent) !important;
+  background-color: var(--dm-accent) !important;
+  color: #ffffff !important;
+}
+
+body .et_pb_button:hover {
+  background-color: var(--dm-accent-hover) !important;
+  border-color: var(--dm-accent-hover) !important;
+}
+
+body .et_pb_button.dm-btn-outline {
+  background-color: transparent !important;
+  color: var(--dm-accent) !important;
+  border-color: var(--dm-accent) !important;
+}
+
+body .et_pb_button.dm-btn-outline:hover {
+  background-color: var(--dm-accent) !important;
+  color: #ffffff !important;
+}
+
+/* Toggle / Accordion */
+.et_pb_toggle {
+  border-color: var(--dm-border) !important;
+  background-color: var(--dm-bg-elevated) !important;
+}
+
+.et_pb_toggle .et_pb_toggle_title {
+  color: var(--dm-text-primary) !important;
+}
+
+.et_pb_toggle .et_pb_toggle_content {
+  color: var(--dm-text-secondary) !important;
+}
+
+/* Forms */
+.et_pb_contact_field input,
+.et_pb_contact_field textarea,
+.et_pb_contact_field select {
+  background-color: var(--dm-bg-tertiary) !important;
+  color: var(--dm-text-primary) !important;
+  border-color: var(--dm-border) !important;
+}
+
+.et_pb_contact_field input::placeholder,
+.et_pb_contact_field textarea::placeholder {
+  color: var(--dm-text-tertiary) !important;
+}
+
+/* Dividers */
+.et_pb_divider .et_pb_divider_internal {
+  border-color: var(--dm-border) !important;
+}
+
+/* Footer */
+#main-footer {
+  background-color: var(--dm-bg-secondary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Dark Mode Toggle Button (Code Module)
+   -------------------------------------------------------------------------- */
+/*
+  Add this to a Code Module:
+
+  <button id="dm-toggle" class="dm-toggle-btn" aria-label="Toggle dark mode">
+    <span class="dm-toggle-icon">🌓</span>
+  </button>
+
+  <script>
+  (function() {
+    const btn = document.getElementById('dm-toggle');
+    const saved = localStorage.getItem('darkMode');
+    if (saved === 'true') document.body.classList.add('dark-mode');
+    btn.addEventListener('click', function() {
+      document.body.classList.toggle('dark-mode');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    });
+  })();
+  </script>
+*/
+
+.dm-toggle-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--dm-border);
+  background: var(--dm-bg-elevated);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--dm-shadow-md);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.dm-toggle-btn:hover {
+  transform: scale(1.1);
+  box-shadow: var(--dm-shadow-lg);
+}
+
+.dm-toggle-btn:focus-visible {
+  outline: 2px solid var(--dm-accent);
+  outline-offset: 2px;
+}
+
+.dm-toggle-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  body,
+  #page-container {
+    transition: none;
+  }
+  .dm-toggle-btn {
+    transition: none;
+  }
+}

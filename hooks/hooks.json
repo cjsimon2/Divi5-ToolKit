@@ -1,5 +1,5 @@
 {
-  "description": "Divi5 Toolkit hooks for CSS validation and research freshness reminders",
+  "description": "Divi5 Toolkit hooks for CSS validation, accessibility checks, and research freshness reminders",
   "hooks": {
     "PostToolUse": [
       {
@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "A CSS file was just modified. Check if the divi5-toolkit plugin's auto_validate setting is enabled in .claude/divi5-toolkit.local.md. If enabled (auto_validate: true), use the divi5-validator agent to quickly validate the CSS for Divi 5 compatibility. Keep the validation brief and non-intrusive - only report critical issues inline. If auto_validate is false or the setting file doesn't exist, skip validation."
+            "prompt": "A file was just modified. First, check if the file is a CSS file (*.css, *.scss, *.less) or contains CSS (*.html with <style> tags, *.php with inline styles). If NOT a CSS-related file, skip entirely — do nothing.\n\nIf it IS CSS-related, check if .claude/divi5-toolkit.local.md exists and has auto_validate: true. If enabled, use the divi5-validator agent to quickly validate the CSS for Divi 5 compatibility. Keep the validation brief and non-intrusive — only report P0 (critical) issues inline. For P1/P2 issues, just mention the count and suggest running /divi5-toolkit:validate for details.\n\nAdditionally, if the CSS contains animations, transitions, or interactive element styles (buttons, links, forms), briefly check for focus indicators and prefers-reduced-motion support. If missing, add a one-line note suggesting /divi5-toolkit:audit for accessibility review."
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Check if .claude/divi5-toolkit.local.md exists. If it does, read the last_research date. If more than 7 days have passed since last research, mention to the user: 'Divi 5 knowledge may be outdated. Run /divi5-toolkit:research for latest updates.' Do not auto-run research, just notify."
+            "prompt": "Check if .claude/divi5-toolkit.local.md exists. If it does:\n\n1. Read the last_research date. If more than 7 days have passed since last research, mention: 'Divi 5 knowledge may be outdated (last researched: [date]). Run /divi5-toolkit:research for latest updates.'\n\n2. Read the divi_version field. If it says '5.1' or lower, mention: 'Your project targets Divi [version]. Divi 5.2 is available with Composable Settings. Consider updating divi_version in your config.'\n\nDo not auto-run research or make changes — just notify."
           }
         ]
       }

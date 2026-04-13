@@ -20,11 +20,12 @@ auto_validate: true
 
 # Last Research Date
 # Auto-updated by divi5-researcher agent
-last_research: 2026-03-18
+last_research: 2026-04-12
 
 # Divi Version
 # Track which Divi version this project targets
-divi_version: "5.1"
+# Supported: "5.0", "5.1", "5.2"
+divi_version: "5.2"
 
 # Project Design Tokens (optional)
 # Define your project's CSS variable prefix
@@ -38,6 +39,21 @@ active_breakpoints:
   - phone
   - tablet
   - desktop
+
+# Accessibility Level
+# - aa: WCAG 2.1 Level AA (recommended minimum)
+# - aaa: WCAG 2.1 Level AAA (stricter)
+# - off: Skip accessibility checks
+accessibility_level: aa
+
+# Composable Settings Awareness (Divi 5.2+)
+# When true, validator and converter will flag CSS that could be replaced
+# by Composable Settings in the builder
+flag_composable_alternatives: true
+
+# Scaffold Defaults
+# Default section style for /scaffold command
+scaffold_style: light  # "light", "dark", or "brand"
 
 # Learned Errors (auto-populated by divi5-error-learner)
 learned_errors: []
@@ -58,6 +74,8 @@ This file stores project-specific settings for the Divi5 Toolkit plugin.
 - /divi5-toolkit:validate - Validate CSS compatibility
 - /divi5-toolkit:convert - Convert CSS to Divi 5 format
 - /divi5-toolkit:research - Research latest Divi 5 updates
+- /divi5-toolkit:scaffold - Generate complete page section templates
+- /divi5-toolkit:audit - Run full project CSS audit
 
 ### CSS Integration Methods (Divi 5)
 1. **Theme Options** — Divi > Theme Options > Custom CSS (global, no tags)
@@ -67,6 +85,7 @@ This file stores project-specific settings for the Divi5 Toolkit plugin.
 5. **Code Module** — Add Code Module, wrap in `<style>` tags
 6. **Custom HTML Wrappers** — Module > Advanced > HTML > Before/After
 7. **Child Theme** — child-theme/style.css
+8. **Composable Settings (5.2)** — toggle any design option on any sub-element in the builder
 
 ### Adding Classes in Divi 5
 Go to **Advanced > Attributes** (not the old CSS ID & Classes field).
@@ -76,6 +95,9 @@ Go to **Advanced > Attributes** (not the old CSS ID & Classes field).
 - Use custom classes, not numbered selectors (`.et_pb_text_0`)
 - CSS variables in `:root` for global scope
 - Use `clamp()` for fluid responsive values
+- Check Composable Settings before writing CSS (Divi 5.2+)
+- Include `prefers-reduced-motion` with animations
+- Add `:focus-visible` styles for keyboard navigation
 
 ## Project Notes
 

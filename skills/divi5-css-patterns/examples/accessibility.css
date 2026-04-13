@@ -1,0 +1,230 @@
+/* ==========================================================================
+   DIVI 5 ACCESSIBILITY CSS PATTERNS
+   Example: Essential accessibility CSS for WCAG 2.1 AA compliance
+
+   Usage: Paste into Divi > Theme Options > Custom CSS
+   These styles fix common Divi accessibility gaps
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Focus Indicators
+   Divi 5 removes default outlines. These restore visible focus for
+   keyboard navigation (WCAG 2.4.7 Focus Visible).
+   -------------------------------------------------------------------------- */
+
+/* Global focus indicator */
+:focus-visible {
+  outline: 2px solid var(--color-primary, #2ea3f2);
+  outline-offset: 2px;
+}
+
+/* Remove default focus ring (only when :focus-visible is supported) */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Button focus */
+body .et_pb_button:focus-visible {
+  outline: 2px solid var(--color-primary, #2ea3f2) !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 4px rgba(46, 163, 242, 0.25) !important;
+}
+
+/* Link focus */
+a:focus-visible {
+  outline: 2px solid var(--color-primary, #2ea3f2);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Form input focus */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-primary, #2ea3f2);
+  outline-offset: 0;
+  border-color: var(--color-primary, #2ea3f2);
+}
+
+/* Toggle/accordion focus */
+.et_pb_toggle_title:focus-visible {
+  outline: 2px solid var(--color-primary, #2ea3f2) !important;
+  outline-offset: 2px;
+}
+
+/* Tab focus */
+.et_pb_tabs_controls li a:focus-visible {
+  outline: 2px solid var(--color-primary, #2ea3f2);
+  outline-offset: -2px;
+}
+
+/* --------------------------------------------------------------------------
+   Skip to Content Link
+   Allows keyboard users to bypass navigation (WCAG 2.4.1).
+
+   Add to child theme header.php or Code Module at top of page:
+   <a href="#main-content" class="skip-to-content">Skip to content</a>
+
+   Add id="main-content" to your main section via Attributes panel.
+   -------------------------------------------------------------------------- */
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  padding: 1em 2em;
+  background: var(--color-primary, #2ea3f2);
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 0 0 8px 8px;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* --------------------------------------------------------------------------
+   Visually Hidden Utility
+   Hides content visually but keeps it accessible to screen readers.
+   Use for labels, descriptions, and context that sighted users don't need.
+   (WCAG 1.3.1 Info and Relationships)
+   -------------------------------------------------------------------------- */
+.visually-hidden,
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Becomes visible on focus (e.g., skip links) */
+.visually-hidden-focusable:focus,
+.sr-only-focusable:focus {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 0.5em 1em !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+}
+
+/* --------------------------------------------------------------------------
+   Reduced Motion
+   Respects user preference for less motion (WCAG 2.3.3).
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Touch Target Sizing
+   Ensures interactive elements are large enough for touch input.
+   Minimum 44x44px target (WCAG 2.5.8 Target Size).
+   -------------------------------------------------------------------------- */
+body .et_pb_button {
+  min-height: 44px !important;
+  min-width: 44px !important;
+  padding: 0.75em 1.5em !important;
+}
+
+/* Social media follow icons */
+.et_pb_social_media_follow_network_link {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Navigation links */
+#top-menu li a,
+.et_pb_menu .et_pb_menu_inner_container a {
+  padding: 0.75em 1em;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* --------------------------------------------------------------------------
+   Link Distinguishability
+   Links must be identifiable by more than color alone (WCAG 1.4.1).
+   -------------------------------------------------------------------------- */
+.et_pb_text_inner a,
+.et_pb_blurb_description a,
+.et_pb_promo_description a,
+.et_pb_toggle_content a {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+}
+
+.et_pb_text_inner a:hover,
+.et_pb_blurb_description a:hover,
+.et_pb_promo_description a:hover,
+.et_pb_toggle_content a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   High Contrast Mode Support
+   Ensures visibility in Windows High Contrast Mode.
+   -------------------------------------------------------------------------- */
+@media (forced-colors: active) {
+  body .et_pb_button {
+    border: 2px solid ButtonText !important;
+  }
+
+  :focus-visible {
+    outline: 2px solid Highlight !important;
+  }
+
+  .et_pb_toggle_title {
+    border-bottom: 1px solid ButtonText;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Print Styles
+   Accessible print output (WCAG 1.4.8 Visual Presentation reference).
+   -------------------------------------------------------------------------- */
+@media print {
+  /* Show link URLs */
+  .et_pb_text_inner a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #555;
+  }
+
+  /* Remove decorative elements */
+  .et_pb_video,
+  .et_pb_slider,
+  .dm-toggle-btn {
+    display: none !important;
+  }
+
+  /* Ensure readable text */
+  body,
+  .et_pb_text_inner,
+  .et_pb_blurb_description {
+    color: #000000 !important;
+    background: #ffffff !important;
+  }
+}

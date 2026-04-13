@@ -52,21 +52,32 @@ If stale (>7 days) or user requested, proceed.
 - New supported units/features
 - Changed requirements or selectors
 - New CSS integration methods
+- Composable Settings changes (what's newly available without CSS)
 
 **New Features:**
 - New modules (Group, Carousel, Canvas, etc.)
 - Design Variables / Presets updates
 - Loop Builder / Interactions updates
 - Responsive editing improvements
+- Canvas system updates (local/global canvases, Canvas Portal)
+- Composable Settings expansions
+- Divi AI Agent capabilities
 
 **Breaking Changes:**
 - Selector changes
 - Removed features
 - Migration requirements
+- Composable Settings that obsolete existing CSS patterns
 
 **Performance:**
 - Dynamic CSS / Critical CSS updates
 - Cache improvements
+
+**Accessibility:**
+- New ARIA support
+- Semantic element updates
+- Focus indicator changes
+- Accessibility plugin compatibility
 
 **Best Practices:**
 - Community-validated patterns

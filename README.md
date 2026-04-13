@@ -1,21 +1,25 @@
 # Divi5 Toolkit
 
-The first Claude Code plugin for Divi 5 development. Validates CSS compatibility, generates Divi-ready code, learns from your errors, and stays current with Divi 5 updates — all powered by Claude instead of GPT-3.5.
+The first Claude Code plugin for Divi 5 development. Validates CSS compatibility, generates Divi-ready code, scaffolds page sections, audits project health, checks accessibility, learns from errors, and stays current with Divi 5 updates — all powered by Claude instead of GPT-3.5.
 
-**For Divi 5.1+** (released February 26, 2026)
+**For Divi 5.2+** (Composable Settings, Canvas system, Loop Builder)
 
 ## Why This Exists
 
-Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives you Claude's superior code generation with deep Divi 5 knowledge — from your terminal, editor, or CI/CD pipeline. It knows Divi's selectors, specificity rules, breakpoints, Design Variables, Free-Form CSS, and the full module library so you don't have to provide that context manually.
+Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives you Claude's superior code generation with deep Divi 5 knowledge — from your terminal, editor, or CI/CD pipeline. It knows Divi's selectors, specificity rules, breakpoints, Design Variables, Free-Form CSS, Composable Settings, Canvas system, and the full module library so you don't have to provide that context manually.
 
 ## Features
 
 - **CSS Generation**: Divi 5-ready CSS in four formats (Theme Options, Code Module, Child Theme, Free-Form CSS)
-- **Compatibility Validation**: Checks button specificity, numbered selectors, `!important` usage, CSS variable scope, format correctness
-- **Divi 5 Knowledge Base**: Complete selector reference, 8 new D5 modules, Design Variable system, Preset hierarchy, responsive breakpoints
+- **Section Scaffolding**: Complete page section templates (hero, pricing, FAQ, etc.) with CSS, responsive design, and accessibility baked in
+- **Compatibility Validation**: Checks button specificity, numbered selectors, `!important` usage, CSS variable scope, format correctness, accessibility
+- **Project Audit**: Whole-project CSS health scoring with graded report and prioritized fix list
+- **Accessibility Checking**: WCAG 2.1 AA compliance — focus indicators, color contrast, reduced motion, touch targets
+- **Divi 5 Knowledge Base**: Complete selector reference, 8 new D5 modules, Design Variable system, Preset hierarchy, responsive breakpoints, Composable Settings, Canvas system, Loop Builder
 - **Error Learning**: Paste Divi errors — the plugin analyzes, fixes, and remembers the pattern
 - **Self-Updating**: Researches Divi 5 updates weekly and updates its own knowledge base
 - **Migration Support**: Converts Divi 4 CSS patterns for Divi 5 compatibility
+- **CSS Examples**: Animation patterns, dark mode, WooCommerce, accessibility fixes, design tokens, button variants
 
 ## Commands
 
@@ -25,6 +29,8 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 | `/divi5-toolkit:validate` | Validate CSS for Divi 5 compatibility |
 | `/divi5-toolkit:convert` | Convert existing CSS to Divi 5 format |
 | `/divi5-toolkit:research` | Research latest Divi 5 updates |
+| `/divi5-toolkit:scaffold` | Generate complete page section templates |
+| `/divi5-toolkit:audit` | Run a full project CSS audit with scoring |
 
 ## Agents
 
@@ -33,6 +39,7 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 | `divi5-validator` | After writing/editing CSS files (via PostToolUse hook, if `auto_validate: true`) |
 | `divi5-error-learner` | When you paste Divi error messages or describe CSS issues |
 | `divi5-researcher` | On-demand via `/divi5-toolkit:research` or when unknown Divi errors need research |
+| `divi5-accessibility` | When reviewing CSS for accessibility, or when writing interactive element styles |
 
 ## Skills
 
@@ -48,6 +55,7 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 - JSON block storage (no shortcodes)
 - Dynamic CSS (94% smaller stylesheets)
 - Critical CSS (eliminates render-blocking requests)
+- Composable Settings (5.2) — toggle any design option on any sub-element
 
 ### CSS Integration Methods
 1. Theme Options (global, no tags)
@@ -63,11 +71,20 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 ### Module Library
 - 40+ built-in modules with complete selector reference
 - 8 new D5 modules: Group, Carousel Group, Before/After Image, Canvas Portal, Dropdown, Icon List, Link, Lottie
-- 17 WooCommerce product modules
+- 17+ WooCommerce product modules
+
+### Canvas System (New in D5)
+- **Main Canvas** — primary page content
+- **Local Canvases** — per-page detached workspaces
+- **Global Canvases** — site-wide reusable canvases
+- **Canvas Portal Module** — inject canvas content at specific locations
+- **Interaction Builder** — cross-canvas interactions (Click, Mouse, Viewport, Load triggers)
+- Off-canvas menus, popups, mega menus, staging areas
 
 ### Design System
 - 6 Design Variable types (Colors, Fonts, Numbers, Images, Text, Links)
 - 4-tier Preset hierarchy (Option Group, Element, Stacked, Nested)
+- Composable Settings — enable any option on any sub-element
 - CSS custom properties fully supported
 
 ### Responsive Design
@@ -75,12 +92,29 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 - 4 optional: Phone Wide 860px, Tablet Wide 1024px, Widescreen 1280px, Ultra Wide 2560px
 - All breakpoint widths customizable
 
+### Accessibility Support
+- Semantic Elements (change div to nav, header, section, etc.)
+- ARIA attributes via Attributes panel
+- Focus indicator patterns (Divi removes defaults)
+- Reduced motion support
+- WCAG 2.1 AA color contrast guidance
+- Touch target sizing
+
 ### Troubleshooting Knowledge
 - Cache plugin conflicts (WP Rocket RUCSS, LiteSpeed, Autoptimize)
 - Security plugin issues (Wordfence firewall)
 - WooCommerce styling problems
 - Divi 4 to 5 migration patterns
 - Debugging with Safe Mode, DevTools, D5 Dev Tool
+- Divi 5.2 bug fixes (transform corruption, box-shadow hover, loop CSS)
+
+### CSS Example Library
+- **Button Variants** — primary, secondary, outline, sizes
+- **Design Tokens** — complete design system template
+- **Animations** — fade, slide, scale, stagger, hover effects with reduced-motion
+- **Dark Mode** — system-aware with manual toggle
+- **WooCommerce** — product grids, cards, cart, checkout
+- **Accessibility** — focus indicators, skip links, screen reader utilities, high contrast
 
 ## Optional MCP Servers
 
@@ -134,13 +168,13 @@ Key settings:
 validation_mode: advisory    # "advisory" (warnings) or "strict" (blocking errors)
 default_format: theme-options # "theme-options", "code-module", "child-theme", "free-form"
 auto_validate: true          # validate CSS files automatically after Write/Edit
-divi_version: "5.1"
+divi_version: "5.2"
 css_prefix: my               # your CSS variable prefix
 active_breakpoints:          # which of Divi 5's 7 breakpoints to use
   - phone
   - tablet
   - desktop
-last_research: 2026-03-18    # auto-updated by divi5-researcher
+last_research: 2026-04-12    # auto-updated by divi5-researcher
 ```
 
 ## Installation
@@ -163,23 +197,31 @@ divi5-toolkit/
 │   ├── generate.md
 │   ├── validate.md
 │   ├── convert.md
-│   └── research.md
+│   ├── research.md
+│   ├── scaffold.md              # NEW: Section templates
+│   └── audit.md                 # NEW: Project CSS audit
 ├── agents/                       # Autonomous agents
 │   ├── divi5-validator.md
 │   ├── divi5-error-learner.md
-│   └── divi5-researcher.md
+│   ├── divi5-researcher.md
+│   └── divi5-accessibility.md   # NEW: WCAG checker
 ├── skills/                       # Auto-activating skills
 │   ├── divi5-css-patterns/
 │   │   ├── SKILL.md
 │   │   ├── examples/
 │   │   │   ├── button-variants.css
-│   │   │   └── design-tokens.css
+│   │   │   ├── design-tokens.css
+│   │   │   ├── animations.css       # NEW
+│   │   │   ├── dark-mode.css        # NEW
+│   │   │   ├── woocommerce.css      # NEW
+│   │   │   └── accessibility.css    # NEW
 │   │   └── references/
 │   │       ├── divi-selectors.md
 │   │       └── unit-conversions.md
 │   └── divi5-compatibility/
 │       ├── SKILL.md
 │       └── references/
+│           └── unit-conversions.md
 ├── hooks/
 │   └── hooks.json               # Event handlers
 ├── templates/
@@ -188,10 +230,43 @@ divi5-toolkit/
 └── README.md
 ```
 
+## Changelog
+
+### v2.1.0 (April 12, 2026)
+- **New:** `/scaffold` command — generate complete page section templates (hero, pricing, FAQ, CTA, off-canvas menu, popup modal, WooCommerce grid, and 10 more)
+- **New:** `/audit` command — whole-project CSS audit with scoring (A-F grade), category breakdown, and prioritized fix list
+- **New:** `divi5-accessibility` agent — WCAG 2.1 AA checker for focus indicators, color contrast, touch targets, reduced motion, semantic elements
+- **New:** Animation patterns example (fade, slide, scale, stagger, hover effects with `prefers-reduced-motion`)
+- **New:** Dark mode pattern example (system-aware with manual toggle)
+- **New:** WooCommerce patterns example (product grids, cards, cart, checkout, Loop Builder)
+- **New:** Accessibility CSS example (focus indicators, skip links, screen reader utilities, high contrast mode)
+- **Updated:** Full Divi 5.2 support — Composable Settings, Canvas system, Loop Builder, Interaction Builder, Page Manager
+- **Updated:** Validate command — 4 new checks: focus indicators, reduced motion, Composable Settings opportunities, hardcoded colors
+- **Updated:** Generate command — now suggests Composable Settings alternatives and includes accessibility notes
+- **Updated:** Convert command — adds accessibility fixes and flags Composable Settings opportunities
+- **Updated:** Error learner — 6 new error patterns (transform corruption, box-shadow hover, loop CSS, Canvas issues, Composable Settings, focus indicators)
+- **Updated:** Hooks — smarter CSS-only file filtering, Divi version upgrade notification, accessibility hints
+- **Updated:** CSS patterns skill — Composable Settings docs, Canvas system patterns, Loop Builder patterns, expanded best practices
+- **Updated:** Compatibility skill — 5.2 bug fixes reference, Composable Settings compatibility table
+
+### v2.0.0 (March 18, 2026)
+- Major overhaul with verified Divi 5.1 knowledge base
+
+### v1.0.1
+- Upgrade frontmatter to latest Claude Code protocols
+
+### v1.0.0
+- Initial release
+
 ## Community Resources
 
 - [Elegant Themes Help Center](https://help.elegantthemes.com)
 - [Divi 5 Changelog](https://victorduse.com/divi-5-changelog/)
+- [Custom CSS Troubleshooting Guide](https://help.elegantthemes.com/en/articles/13479939-how-to-troubleshoot-and-fix-custom-css-issues-in-divi-5)
+- [Composable Settings](https://www.elegantthemes.com/blog/theme-releases/composable-settings)
+- [Canvas System Guide](https://help.elegantthemes.com/en/articles/13249775-divi-5-canvases-off-canvas-menus-popups-canvas-portals)
+- [WooCommerce + Divi 5](https://www.elegantthemes.com/blog/divi-resources/woocommerce-and-divi-5-the-complete-ecommerce-guide)
+- [Divi 5 Accessibility Testing](https://www.elegantthemes.com/blog/divi-resources/testing-accessibility-attributes-with-divi-5)
 - [WP Zone CSS Guide](https://wpzone.co/the-divi-css-and-child-theme-guide/)
 - [Quiroz.co Snippets](https://quiroz.co/divi-tutorials-much/divi-snippets-css-php/)
 - [D5 Dev Tool](https://github.com/elegantthemes/d5-dev-tool)

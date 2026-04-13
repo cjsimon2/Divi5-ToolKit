@@ -109,13 +109,24 @@ Before presenting, verify:
 - [ ] Uses custom classes, not numbered selectors
 - [ ] Responsive behavior addressed (fluid values or media queries)
 
-## Step 5: Provide Usage Instructions
+## Step 5: Check Composable Settings Alternative
+
+Before presenting CSS, check if the styling could be achieved with **Divi 5.2 Composable Settings** (no CSS needed):
+- Simple sizing, spacing, borders on sub-elements → Composable Settings
+- Complex patterns, cross-element styles, animations → CSS
+
+If Composable Settings can handle it, present both options:
+1. **No-code approach** — Composable Settings instructions
+2. **CSS approach** — for child themes or more control
+
+## Step 6: Provide Usage Instructions
 
 Tell the user:
 1. Where to paste the CSS
 2. How to add classes via **Advanced > Attributes** (not the old CSS ID & Classes field)
 3. Any additional configuration needed
 4. For Free-Form CSS: which module's Advanced tab to target
+5. **Accessibility notes**: semantic elements to set, ARIA attributes to add via Attributes panel
 
 ## Example Output
 
@@ -157,3 +168,5 @@ Offer:
 2. Run `/divi5-toolkit:validate` to confirm compatibility
 3. Generate additional format (e.g., also provide Free-Form CSS version)
 4. Run `/divi5-toolkit:convert` if the user has existing CSS to migrate
+5. Run `/divi5-toolkit:scaffold` for a complete section template
+6. Run `/divi5-toolkit:audit` to check project-wide CSS health

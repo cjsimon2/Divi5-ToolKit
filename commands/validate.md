@@ -124,6 +124,50 @@ Line X: `font-size: 3rem;`
 Consider: `font-size: clamp(1.5rem, 3vw, 3rem);`
 ```
 
+### Check 11: Accessibility — Focus Indicators (P1 - High)
+Check for `outline: none` or `outline: 0` without replacement focus styles:
+
+**Report:**
+```
+WARNING: Focus indicator removed without replacement
+Line X: `*:focus { outline: none; }`
+Fix: Add :focus-visible styles with visible outline
+WCAG: 2.4.7 Focus Visible (Level AA)
+```
+
+### Check 12: Accessibility — Reduced Motion (P2 - Medium)
+If CSS contains animations or transitions, check for `prefers-reduced-motion`:
+
+**Report:**
+```
+SUGGESTION: Animations without reduced-motion fallback
+Found: X animation/transition declarations
+Missing: @media (prefers-reduced-motion: reduce) query
+Fix: Add reduced-motion media query to disable or simplify animations
+```
+
+### Check 13: Composable Settings Opportunity (P3 - Info)
+Flag CSS that could be replaced by Divi 5.2 Composable Settings:
+- Width/height/sizing on sub-elements (titles, buttons, images)
+- Simple borders, animations, or transforms on sub-elements
+
+**Report:**
+```
+INFO: This CSS may be unnecessary with Divi 5.2 Composable Settings
+Line X: `.et_pb_blurb .et_pb_main_blurb_image { width: 80px; }`
+Alternative: Enable Sizing options on blurb image via Compose Settings
+```
+
+### Check 14: Hardcoded Colors (P2 - Medium)
+Flag hex/rgb colors that should use CSS variables for maintainability:
+
+**Report:**
+```
+SUGGESTION: Hardcoded color — consider using a CSS variable
+Line X: `color: #2ea3f2;`
+Consider: `color: var(--color-primary);` with `:root { --color-primary: #2ea3f2; }`
+```
+
 ## Step 4: Generate Report
 
 ### Advisory Mode:

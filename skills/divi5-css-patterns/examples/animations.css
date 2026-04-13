@@ -1,0 +1,239 @@
+/* ==========================================================================
+   DIVI 5 ANIMATION PATTERNS
+   Example: CSS animations and transitions for Divi 5
+
+   Usage: Add class via Advanced > Attributes > class
+   Note: Always include prefers-reduced-motion fallback
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Fade In on Scroll (pair with Divi Interactions or IntersectionObserver)
+   Class: animate-fade-in
+   -------------------------------------------------------------------------- */
+.animate-fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-fade-in.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --------------------------------------------------------------------------
+   Slide In from Left
+   Class: animate-slide-left
+   -------------------------------------------------------------------------- */
+.animate-slide-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-slide-left.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --------------------------------------------------------------------------
+   Slide In from Right
+   Class: animate-slide-right
+   -------------------------------------------------------------------------- */
+.animate-slide-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-slide-right.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --------------------------------------------------------------------------
+   Scale Up
+   Class: animate-scale-up
+   -------------------------------------------------------------------------- */
+.animate-scale-up {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate-scale-up.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* --------------------------------------------------------------------------
+   Staggered Children (apply to parent row/section)
+   Class: animate-stagger
+   -------------------------------------------------------------------------- */
+.animate-stagger > .et_pb_column,
+.animate-stagger > .et_pb_module {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate-stagger.is-visible > .et_pb_column:nth-child(1),
+.animate-stagger.is-visible > .et_pb_module:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.animate-stagger.is-visible > .et_pb_column:nth-child(2),
+.animate-stagger.is-visible > .et_pb_module:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s;
+}
+
+.animate-stagger.is-visible > .et_pb_column:nth-child(3),
+.animate-stagger.is-visible > .et_pb_module:nth-child(3) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.animate-stagger.is-visible > .et_pb_column:nth-child(4),
+.animate-stagger.is-visible > .et_pb_module:nth-child(4) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.45s;
+}
+
+/* --------------------------------------------------------------------------
+   Hover Lift (cards, blurbs)
+   Class: hover-lift
+   -------------------------------------------------------------------------- */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* --------------------------------------------------------------------------
+   Hover Glow (buttons, CTAs)
+   Class: hover-glow
+   -------------------------------------------------------------------------- */
+body .et_pb_button.hover-glow {
+  transition: all 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+body .et_pb_button.hover-glow:hover {
+  box-shadow: 0 0 20px rgba(46, 163, 242, 0.4) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Pulse Attention (notification dots, badges)
+   Class: animate-pulse
+   -------------------------------------------------------------------------- */
+@keyframes pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Underline Reveal (links, nav items)
+   Class: underline-reveal
+   -------------------------------------------------------------------------- */
+.underline-reveal {
+  position: relative;
+  text-decoration: none;
+}
+
+.underline-reveal::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+
+.underline-reveal:hover::after {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   Gradient Shift Background (sections)
+   Class: gradient-shift
+   -------------------------------------------------------------------------- */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-shift {
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* --------------------------------------------------------------------------
+   Image Zoom on Hover (galleries, images)
+   Class: img-zoom
+   -------------------------------------------------------------------------- */
+.et_pb_image.img-zoom .et_pb_image_wrap {
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.et_pb_image.img-zoom .et_pb_image_wrap img {
+  transition: transform 0.5s ease;
+}
+
+.et_pb_image.img-zoom:hover .et_pb_image_wrap img {
+  transform: scale(1.08);
+}
+
+/* ==========================================================================
+   REDUCED MOTION — MANDATORY
+   Always include this at the end of your animation CSS.
+   Respects user preference for reduced motion.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-slide-left,
+  .animate-slide-right,
+  .animate-scale-up,
+  .animate-stagger > .et_pb_column,
+  .animate-stagger > .et_pb_module {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .animate-pulse {
+    animation: none;
+  }
+
+  .gradient-shift {
+    animation: none;
+  }
+
+  .hover-lift:hover {
+    transform: none;
+  }
+
+  .et_pb_image.img-zoom:hover .et_pb_image_wrap img {
+    transform: none;
+  }
+
+  .underline-reveal::after {
+    transition: none;
+  }
+}

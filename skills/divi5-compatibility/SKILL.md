@@ -6,8 +6,9 @@ user-invocable: false
 
 # Divi 5 Compatibility Reference
 
-**Divi 5 Version:** 5.1.0 (released March 13, 2026 — Divi 5.0 released February 26, 2026)
+**Divi 5 Version:** 5.2.0 (April 2026 — Divi 5.0 released February 26, 2026)
 **Architecture:** React 18, no Shadow DOM, standard DOM with `et_pb_*` classes
+**Key 5.2 Addition:** Composable Settings — toggle any design option on any sub-element
 
 ## CSS Feature Support
 
@@ -296,6 +297,33 @@ body .et_pb_button:hover {
 ### D5 Dev Tool
 - [github.com/elegantthemes/d5-dev-tool](https://github.com/elegantthemes/d5-dev-tool) — debugging modal for the Visual Builder
 
+## Composable Settings Compatibility (Divi 5.2+)
+
+Composable Settings let you enable any design option for any module sub-element directly in the builder. Before reaching for custom CSS, check if the styling can be achieved natively:
+
+| CSS Pattern | Composable Alternative |
+|-------------|----------------------|
+| Width/height on buttons | Enable Sizing options on button sub-element |
+| Border on titles | Enable Border options on title sub-element |
+| Animation on images | Enable Animation options on image sub-element |
+| Transform on any sub-element | Enable Transform options via Compose Settings |
+| Spacing on any sub-element | Enable Spacing options via Compose Settings |
+
+**When CSS is still needed:**
+- Complex selectors (`:has()`, sibling combinators, attribute selectors)
+- Pseudo-elements (`::before`, `::after`) beyond what Free-Form CSS offers
+- `@media` queries for preference queries (`prefers-reduced-motion`, `prefers-color-scheme`)
+- Custom `@keyframes` animations
+- Cross-element relationships
+- Canvas/popup styling
+
+## Known Divi 5.2 CSS Bug Fixes
+
+These issues were fixed in 5.2 — if you see them, the user may be on an older version:
+- Box shadow inherited hover states breaking due to empty string values overwriting presets
+- Transform Scale handle drag corrupting `calc()` function values and CSS variable values
+- Broken CSS on pages with loops if a paginated page was visited before the main loop page
+
 ## Error Messages Reference
 
 | Error | Cause | Fix |
@@ -305,6 +333,9 @@ body .et_pb_button:hover {
 | "Expected RBRACE" | Missing `}` or selectors in Module Element field | Use Free-Form CSS for full rulesets |
 | "Unexpected token" | Syntax error | Check semicolons, braces, quotes |
 | Styles not applying | Wrong CSS location or cache | Check format (Code Module needs `<style>`, Theme Options does not). Clear cache. |
+| Transform values corrupted | Dragging Scale handles corrupts calc()/var() values | Re-enter values manually (fixed in 5.2) |
+| Box shadow hover broken | Empty string values overwrite presets | Update to 5.2, or set explicit hover shadow |
+| Loop page CSS missing | Pagination cache conflict | Clear Static CSS; fixed in 5.2 |
 
 ## Compatibility Modes
 
