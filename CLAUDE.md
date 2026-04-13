@@ -9,10 +9,12 @@ Claude Code **plugin** for Divi 5 (WordPress page builder, currently 5.2) develo
 ## Architecture
 
 ```
-marketplace.json               # Marketplace manifest — registers the plugin
-                               #   for directory-source loading via
-                               #   extraKnownMarketplaces in user settings
-.claude-plugin/plugin.json     # Plugin manifest (name, version, keywords)
+.claude-plugin/
+  plugin.json                  # Plugin manifest (name, version, keywords)
+  marketplace.json             # Marketplace manifest — Claude Code reads this
+                               #   when this directory is registered via
+                               #   extraKnownMarketplaces in user settings.
+                               #   Lists the plugin and its source path.
 commands/                      # Slash commands — invoked as /divi5-toolkit:<name>
 agents/                        # Autonomous subagents with focused responsibilities
 skills/<skill-name>/SKILL.md   # Auto-activating knowledge skills
@@ -23,6 +25,12 @@ templates/                     # Files users copy into their own project
 docs/                          # End-user documentation (usage, config,
                                #   workflows, troubleshooting)
 ```
+
+**Two manifest files, both inside `.claude-plugin/`:**
+- `plugin.json` — describes THIS plugin: name, version, keywords. Read by Claude Code once the plugin is loaded.
+- `marketplace.json` — describes the local marketplace this directory acts as. Top-level `name` is the marketplace name (`divi5-local`). The `plugins[]` array lists which plugins this marketplace contains. Read by Claude Code when the directory is referenced via `extraKnownMarketplaces` in user settings, BEFORE the plugin itself is loaded.
+
+The marketplace is necessary even though there's only one plugin in it — Claude Code's directory-source loader requires going through the marketplace abstraction.
 
 ## File Conventions
 
@@ -77,15 +85,14 @@ Then manually exercise `/divi5-toolkit:<command>` and agents against a sample Di
 
 ## Versioning
 
-1. Bump `version` in `.claude-plugin/plugin.json`.
-2. Bump `version` for the `divi5-toolkit` entry in `marketplace.json` (must match plugin.json — Claude Code's marketplace loader reads this version).
-3. Add a new entry at the top of the **Changelog** section in `README.md`, dated `YYYY-MM-DD`.
-4. Update `STATE.md` with the new version and release date.
-5. Commit with a message that names the version, then tag: `git tag vX.Y.Z && git push --tags`.
+1. Bump `version` in `.claude-plugin/plugin.json`. (`.claude-plugin/marketplace.json` does NOT carry a version field — version lives only in `plugin.json`.)
+2. Add a new entry at the top of the **Changelog** section in `README.md`, dated `YYYY-MM-DD`.
+3. Update `STATE.md` with the new version and release date.
+4. Commit with a message that names the version, then tag: `git tag vX.Y.Z && git push --tags`.
 
 Follow semantic versioning: patch for typo/doc fixes, minor for new commands/agents/skills, major for breaking changes to command names, agent interfaces, or config schema.
 
-**Critical:** `marketplace.json` and `.claude-plugin/plugin.json` must always carry the same version number. If they drift, users on the marketplace loading path will see stale version metadata while the plugin's actual files are newer (or vice versa). The marketplace.json version is what Claude Code reports and uses for upgrade detection.
+**When to update `marketplace.json`:** Only when adding/removing plugins from the marketplace, or when the plugin's `description`, `category`, or `homepage` changes. The marketplace manifest does not need to be touched on every version bump.
 
 ## Naming Conventions
 

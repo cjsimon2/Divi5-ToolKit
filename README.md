@@ -286,17 +286,21 @@ Same JSON as Option 2, but write it to `~/.claude/settings.json` instead of the 
 
 ### How it works
 
-The Divi5-ToolKit ships with a `marketplace.json` at its root that registers `divi5-toolkit` as a directory-source plugin. The `extraKnownMarketplaces` entry in your settings tells Claude Code to treat the local directory as a marketplace; the `enabledPlugins` entry activates the plugin from that marketplace.
+The Divi5-ToolKit ships with `.claude-plugin/marketplace.json` (the marketplace manifest) alongside `.claude-plugin/plugin.json` (the plugin manifest). Claude Code looks for `marketplace.json` at exactly that path inside any directory you register via `extraKnownMarketplaces`.
 
-No publication, validation, or CLI registration step is needed — Claude Code reads `marketplace.json` directly from the directory you point at.
+The `extraKnownMarketplaces` entry in your settings tells Claude Code to treat the local directory as a marketplace; Claude reads `.claude-plugin/marketplace.json` from that directory to discover what plugins are available; `enabledPlugins` activates the plugin from that marketplace.
+
+The marketplace name is `divi5-local` (declared inside `.claude-plugin/marketplace.json`). It must match the key you use in `extraKnownMarketplaces` and the part after the `@` in `enabledPlugins`. The reference patterns in the JSON above use that name verbatim — change them in lockstep if you want a different name.
+
+No publication, validation, or CLI registration step is needed.
 
 ## Directory Structure
 
 ```
 divi5-toolkit/
-├── marketplace.json              # Marketplace manifest (directory source)
 ├── .claude-plugin/
-│   └── plugin.json              # Plugin manifest
+│   ├── plugin.json              # Plugin manifest (name, version, keywords)
+│   └── marketplace.json         # Marketplace manifest (registers the plugin)
 ├── commands/                     # Slash commands
 │   ├── generate.md
 │   ├── validate.md
@@ -342,8 +346,16 @@ divi5-toolkit/
 
 ## Changelog
 
+### v2.1.4 (April 13, 2026)
+- **Fixed (critical):** v2.1.3 placed `marketplace.json` at the wrong path (repo root) and used the wrong schema. Claude Code looks for `.claude-plugin/marketplace.json` (alongside `plugin.json`), and the `source` field for a directory plugin is a string (`"./"`), not an object. Both fixed.
+- **New:** `.claude-plugin/marketplace.json` with the correct schema verified against the official `claude-plugins-official` marketplace example: top-level `name`, `description`, `owner`, `plugins[]`; plugin entry uses string `"source": "./"` to point at the marketplace root (which is the parent of `.claude-plugin/`).
+- **Removed:** Stray `marketplace.json` from the repo root.
+- **Removed:** The "marketplace.json version sync" rule from CLAUDE.md — `marketplace.json` does not carry a `version` field. Version lives only in `.claude-plugin/plugin.json`.
+- **Updated:** README "How it works" section now explains the correct path, what fields must match between marketplace.json and user settings, and that the marketplace name `divi5-local` is declared inside marketplace.json (not chosen by the user).
+- **Updated:** README directory tree shows `.claude-plugin/marketplace.json` instead of root-level marketplace.json.
+
 ### v2.1.3 (April 13, 2026)
-- **Fixed (critical):** Added `marketplace.json` at the plugin root. Without this file, the local-marketplace loading mechanism (`extraKnownMarketplaces` in user settings) couldn't discover the plugin — only the per-session `--plugin-dir` flag worked. Persistent / per-project / global loading now works as documented.
+- **Attempted (broken):** Tried to add `marketplace.json` for persistent loading. File was placed at the wrong path and used the wrong schema. v2.1.4 supersedes this — do not use 2.1.3.
 - **New:** README **Installation** section now documents three loading approaches: per-session (`--plugin-dir`), per-project (`extraKnownMarketplaces` in `.claude/settings.local.json`), and global (same JSON in `~/.claude/settings.json`). Includes the exact JSON schema and gitignore rule for keeping absolute paths out of git.
 - **Updated:** `docs/workflows.md` First-Time Setup workflow now shows the marketplace approach as the recommended persistent setup.
 - **Updated:** `docs/troubleshooting.md` "Slash commands don't autocomplete" entry now lists missing `marketplace.json` and missing `extraKnownMarketplaces` registration as causes.
