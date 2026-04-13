@@ -2,7 +2,7 @@
 
 ## Version
 
-- **Current:** 2.1.6 (released 2026-04-12)
+- **Current:** 2.1.7 (released 2026-04-13)
 - **Target Divi version:** 5.2 (Composable Settings, Canvas system, Loop Builder, Interaction Builder)
 
 ## Plugin Components
@@ -31,8 +31,8 @@
 ### CSS Examples (6)
 button-variants.css, design-tokens.css, animations.css, dark-mode.css, woocommerce.css, accessibility.css
 
-### Hooks (1 file, 1 event handler)
-`hooks/hooks.json` — PostToolUse (auto-validate CSS on Write/Edit). The SessionStart hook was removed in v2.1.6 because Claude Code's `prompt`-type hooks require a `ToolUseContext`, which doesn't exist at session start.
+### Hooks (2 files, 1 event handler)
+`hooks/hooks.json` — PostToolUse on Write/Edit, dispatches to `hooks/css-validate.sh`. The shell script (added in v2.1.7) deterministically filters by file extension and exits silently for anything that isn't a `.css`/`.scss`/`.sass`/`.less` file in a project that has `auto_validate: true`. The earlier `prompt`-type implementation was replaced because LLM-backed hooks narrated their decisions instead of staying silent, blocking non-CSS edits. The SessionStart hook was removed in v2.1.6 because Claude Code's `prompt`-type hooks require a `ToolUseContext`, which doesn't exist at session start.
 
 ### Templates (1)
 `templates/divi5-toolkit.local.md` — user configuration template
@@ -50,7 +50,7 @@ button-variants.css, design-tokens.css, animations.css, dark-mode.css, woocommer
 
 ## Recent Changes
 
-See the **Changelog** in `README.md`. v2.1.6 removed the `SessionStart` hook entry from `hooks/hooks.json` because Claude Code's `prompt`-type hooks require a `ToolUseContext`, which doesn't exist before any tool has run. The hook was firing a "ToolUseContext is required for prompt hooks" error every time a session started in a project that had the plugin enabled. The freshness reminder it provided is now documented in `docs/workflows.md` instead. v2.1.5 restructured the repo so the plugin lives in `plugins/divi5-toolkit/` (a subdirectory of the marketplace root). v2.1.4 attempted to put the plugin at the marketplace root with `source: "./"` but Claude Code rejected it because the two `.claude-plugin/` manifests cannot coexist in the same directory. v2.1.5 also fixed schema errors caught by `claude plugin validate` (removed top-level `$schema`, moved `description` into `metadata`). The marketplace now passes validation. Per-session `--plugin-dir` users must point at `<repo>/plugins/divi5-toolkit` instead of the repo root; marketplace-based loading via `extraKnownMarketplaces` is unchanged. v2.1.2 added end-user documentation in `docs/`. v2.1.1 wired three orphan config keys into the consuming commands and agent, added `CLAUDE.md` and `STATE.md`. v2.1.0 added `/scaffold` and `/audit` commands, the `divi5-accessibility` agent, four new CSS example files, and full Divi 5.2 support.
+See the **Changelog** in `README.md`. v2.1.7 replaced the `PostToolUse` Write/Edit hook implementation: it was a `prompt`-type hook that asked an LLM to stay silent for non-CSS edits, but the LLM kept narrating its decision and surfacing it as a blocking message on every Edit across every project. The new implementation is a deterministic shell script (`hooks/css-validate.sh`) that filters by file extension and only fires when the file is genuinely a stylesheet AND the project's `auto_validate` flag is on. v2.1.6 removed the `SessionStart` hook entry from `hooks/hooks.json` because Claude Code's `prompt`-type hooks require a `ToolUseContext`, which doesn't exist before any tool has run. The hook was firing a "ToolUseContext is required for prompt hooks" error every time a session started in a project that had the plugin enabled. The freshness reminder it provided is now documented in `docs/workflows.md` instead. v2.1.5 restructured the repo so the plugin lives in `plugins/divi5-toolkit/` (a subdirectory of the marketplace root). v2.1.4 attempted to put the plugin at the marketplace root with `source: "./"` but Claude Code rejected it because the two `.claude-plugin/` manifests cannot coexist in the same directory. v2.1.5 also fixed schema errors caught by `claude plugin validate` (removed top-level `$schema`, moved `description` into `metadata`). The marketplace now passes validation. Per-session `--plugin-dir` users must point at `<repo>/plugins/divi5-toolkit` instead of the repo root; marketplace-based loading via `extraKnownMarketplaces` is unchanged. v2.1.2 added end-user documentation in `docs/`. v2.1.1 wired three orphan config keys into the consuming commands and agent, added `CLAUDE.md` and `STATE.md`. v2.1.0 added `/scaffold` and `/audit` commands, the `divi5-accessibility` agent, four new CSS example files, and full Divi 5.2 support.
 
 ## Research
 

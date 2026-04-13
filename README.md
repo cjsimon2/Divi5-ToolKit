@@ -349,6 +349,11 @@ divi5-toolkit/                            # ← repo root + marketplace root
 
 ## Changelog
 
+### v2.1.7 (April 13, 2026)
+- **Fixed (critical):** The `PostToolUse` Write/Edit hook was a `prompt`-type hook that asked an LLM to "stay silent for non-CSS edits." LLMs are unreliable at returning empty output — they kept narrating their decision (e.g. *"This change is not CSS-related and does not trigger the validation condition"*), which Claude Code surfaced as a blocking message and stopped continuation on every non-CSS Edit/Write across every project that had the plugin enabled. Replaced with a deterministic `command`-type hook (`hooks/css-validate.sh`) that filters by file extension in shell and only emits output when the edited file actually ends in `.css`/`.scss`/`.sass`/`.less` AND the project's `.claude/divi5-toolkit.local.md` sets `auto_validate: true`. No more false positives on HTML, PHP, Markdown, JSON, etc.
+- **Behavior change:** Inline `<style>` blocks and `style=""` attributes inside HTML/PHP files no longer trigger auto-validation. The previous prompt-based hook claimed to support this but couldn't do so reliably. Run `/divi5-toolkit:validate` manually if you want inline styles checked.
+- **Action required:** If you already had v2.1.5 or v2.1.6 enabled, run `claude plugin marketplace update divi5-local` (or restart Claude Code) to pick up the fix.
+
 ### v2.1.6 (April 12, 2026)
 - **Fixed (critical):** Removed the `SessionStart` entry from `hooks/hooks.json`. Claude Code's `prompt`-type hooks require a `ToolUseContext`, which doesn't exist before any tool has been called, so the hook was firing a `ToolUseContext is required for prompt hooks. This is a bug.` error every time a session started in a project with the plugin enabled. The hook only ever provided two nice-to-have notifications (stale `last_research`, outdated `divi_version`); both are still documented in `docs/workflows.md` and `docs/configuration.md`. The `PostToolUse` hook is unaffected — it has a tool context by design.
 - **Updated:** README config "Read by" table no longer claims that `divi_version` and `last_research` are read by a SessionStart hook. They're now read only by `divi5-researcher` and the consuming commands.

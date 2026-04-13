@@ -1,13 +1,13 @@
 {
-  "description": "Divi5 Toolkit hooks for CSS validation and accessibility checks",
+  "description": "Divi5 Toolkit hooks. PostToolUse on Write|Edit runs a deterministic shell script that exits silently unless the edited file has a stylesheet extension (.css/.scss/.sass/.less) AND the project's .claude/divi5-toolkit.local.md sets auto_validate: true. The earlier prompt-type implementation was replaced because LLM-backed hooks narrated their decisions instead of staying silent, blocking non-CSS edits.",
   "hooks": {
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "A file was just modified. First, check if the file is a CSS file (*.css, *.scss, *.less) or contains CSS (*.html with <style> tags, *.php with inline styles). If NOT a CSS-related file, skip entirely — do nothing.\n\nIf it IS CSS-related, check if .claude/divi5-toolkit.local.md exists and has auto_validate: true. If enabled, use the divi5-validator agent to quickly validate the CSS for Divi 5 compatibility. Keep the validation brief and non-intrusive — only report P0 (critical) issues inline. For P1/P2 issues, just mention the count and suggest running /divi5-toolkit:validate for details.\n\nAdditionally, if the CSS contains animations, transitions, or interactive element styles (buttons, links, forms), briefly check for focus indicators and prefers-reduced-motion support. If missing, add a one-line note suggesting /divi5-toolkit:audit for accessibility review."
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/css-validate.sh"
           }
         ]
       }
