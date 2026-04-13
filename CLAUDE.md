@@ -17,6 +17,8 @@ skills/<skill-name>/examples/  # Concrete CSS examples loaded on demand
 skills/<skill-name>/references/# Reference docs loaded on demand
 hooks/hooks.json               # PostToolUse + SessionStart event handlers
 templates/                     # Files users copy into their own project
+docs/                          # End-user documentation (usage, config,
+                               #   workflows, troubleshooting)
 ```
 
 ## File Conventions
@@ -47,6 +49,18 @@ templates/                     # Files users copy into their own project
 ### New CSS example
 1. Add `skills/divi5-css-patterns/examples/<topic>.css` with a header comment.
 2. Mention it in the **CSS Example Library** section and the directory tree in `README.md`.
+3. Add a section to `docs/usage.md` under "CSS Example Library" describing what it contains, when to use it, and where to paste it.
+
+### Updating end-user documentation
+- High-level overview, install, quickstart, changelog → `README.md`
+- Detailed component reference → `docs/usage.md`
+- Config setting reference → `docs/configuration.md`
+- Step-by-step scenarios → `docs/workflows.md`
+- FAQ + diagnostic steps → `docs/troubleshooting.md`
+- Developer-only docs (this file, conventions, contributing) → `CLAUDE.md`
+- Component inventory snapshot → `STATE.md`
+
+When you add a new command, agent, or skill: update the README tables AND the corresponding section in `docs/usage.md`. When you add a new config key: update the template, `README.md` config block, AND `docs/configuration.md`. When you change a workflow or add a new common scenario: add it to `docs/workflows.md`. When you fix a bug that users might hit: add a troubleshooting entry to `docs/troubleshooting.md`.
 
 ## Testing Changes
 

@@ -21,6 +21,31 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 - **Migration Support**: Converts Divi 4 CSS patterns for Divi 5 compatibility
 - **CSS Examples**: Animation patterns, dark mode, WooCommerce, accessibility fixes, design tokens, button variants
 
+## Quickstart
+
+Already have the plugin loaded? (See [Installation](#installation) if not.)
+
+```bash
+# 1. From your project root, copy the config template
+mkdir -p .claude
+cp /path/to/Divi5-ToolKit/templates/divi5-toolkit.local.md .claude/divi5-toolkit.local.md
+```
+
+Edit `.claude/divi5-toolkit.local.md` and set `css_prefix` to your project's class prefix (e.g., `acme`). Leave the other defaults alone.
+
+In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 6 commands. Try one:
+
+```
+/divi5-toolkit:generate primary button with gold hover state
+```
+
+You should get back Divi 5-ready CSS with `body` prefix, `!important`, your custom prefix, and paste instructions. That's it — you're up and running.
+
+**Next steps:**
+- [`docs/workflows.md`](docs/workflows.md) — Build a full landing page, migrate from Divi 4, audit a project, add dark mode, etc.
+- [`docs/usage.md`](docs/usage.md) — What every command, agent, and skill does in detail
+- [`docs/configuration.md`](docs/configuration.md) — Tune the plugin for your project type
+
 ## Commands
 
 | Command | Description |
@@ -47,6 +72,21 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 |-------|----------------|
 | `divi5-css-patterns` | Writing CSS for Divi, styling Divi modules |
 | `divi5-compatibility` | Validating CSS, troubleshooting Divi issues |
+
+## Documentation
+
+The tables above are quick references. For depth, see the `docs/` directory:
+
+| Doc | What's Inside |
+|---|---|
+| [**`docs/usage.md`**](docs/usage.md) | Detailed reference: every command (purpose, args, example, output), every agent (triggers, behavior, output), every skill (when it activates, what it provides), every CSS example, every hook |
+| [**`docs/configuration.md`**](docs/configuration.md) | Every config setting explained, with rationale and recommended values for solo dev, agency, government, WooCommerce, prototype, and legacy project types |
+| [**`docs/workflows.md`**](docs/workflows.md) | Step-by-step guides: first-time setup, build a landing page, migrate from Divi 4, audit an inherited project, add dark mode, build a WooCommerce grid, off-canvas menu, accessibility compliance, debug "styles not applying", refresh knowledge base |
+| [**`docs/troubleshooting.md`**](docs/troubleshooting.md) | FAQ + diagnostic steps for plugin issues, Divi CSS issues, builder issues, plugin conflicts, migration issues, performance, and accessibility |
+
+Internal docs:
+- [`CLAUDE.md`](CLAUDE.md) — Developer guidance for working ON the plugin (architecture, conventions, contributing)
+- [`STATE.md`](STATE.md) — Project state snapshot (current version, component inventory, knowledge topics)
 
 ## What the Plugin Knows
 
@@ -216,23 +256,23 @@ divi5-toolkit/
 │   ├── validate.md
 │   ├── convert.md
 │   ├── research.md
-│   ├── scaffold.md              # NEW: Section templates
-│   └── audit.md                 # NEW: Project CSS audit
+│   ├── scaffold.md
+│   └── audit.md
 ├── agents/                       # Autonomous agents
 │   ├── divi5-validator.md
 │   ├── divi5-error-learner.md
 │   ├── divi5-researcher.md
-│   └── divi5-accessibility.md   # NEW: WCAG checker
+│   └── divi5-accessibility.md
 ├── skills/                       # Auto-activating skills
 │   ├── divi5-css-patterns/
 │   │   ├── SKILL.md
 │   │   ├── examples/
 │   │   │   ├── button-variants.css
 │   │   │   ├── design-tokens.css
-│   │   │   ├── animations.css       # NEW
-│   │   │   ├── dark-mode.css        # NEW
-│   │   │   ├── woocommerce.css      # NEW
-│   │   │   └── accessibility.css    # NEW
+│   │   │   ├── animations.css
+│   │   │   ├── dark-mode.css
+│   │   │   ├── woocommerce.css
+│   │   │   └── accessibility.css
 │   │   └── references/
 │   │       └── divi-selectors.md
 │   └── divi5-compatibility/
@@ -243,11 +283,27 @@ divi5-toolkit/
 │   └── hooks.json               # Event handlers
 ├── templates/
 │   └── divi5-toolkit.local.md   # Configuration template
+├── docs/                         # End-user documentation
+│   ├── usage.md                 # Detailed component reference
+│   ├── configuration.md         # Config setting reference
+│   ├── workflows.md             # Step-by-step scenarios
+│   └── troubleshooting.md       # FAQ + diagnostic steps
+├── CLAUDE.md                     # Developer guidance (working ON the plugin)
+├── STATE.md                      # Project state snapshot
 ├── .mcp.json
 └── README.md
 ```
 
 ## Changelog
+
+### v2.1.2 (April 12, 2026)
+- **New:** `docs/usage.md` — comprehensive reference for every command (purpose, args, example, output, tools used), every agent (triggers, behavior, model, output), every skill (activation triggers, content), every hook, every CSS example, and every template.
+- **New:** `docs/configuration.md` — every setting explained with rationale, plus 6 recommended config presets (solo developer, agency, government/healthcare, WooCommerce store, prototype, legacy 5.0/5.1 project).
+- **New:** `docs/workflows.md` — 10 step-by-step scenarios: first-time setup, landing page from scratch, Divi 4 → 5 migration, inherited project audit, dark mode toggle, WooCommerce product grid, off-canvas menu, WCAG AA compliance, debugging "styles not applying", knowledge base refresh.
+- **New:** `docs/troubleshooting.md` — FAQ + diagnostic steps covering plugin issues, Divi CSS issues, builder issues, plugin conflicts (WP Rocket, LiteSpeed, Autoptimize, Wordfence), migration issues, performance, and accessibility. Plus a 12-question general FAQ.
+- **New:** README **Quickstart** section — get up and running in 4 commands.
+- **New:** README **Documentation** section — links into the new `docs/` directory.
+- **Updated:** README directory tree now shows `docs/`, `CLAUDE.md`, and `STATE.md`.
 
 ### v2.1.1 (April 12, 2026)
 - **Fixed:** Three v2.1.0 config keys (`accessibility_level`, `flag_composable_alternatives`, `scaffold_style`) were defined in the template but not actually consumed by any command or agent. Now wired into `/validate`, `/audit`, `/convert`, `/scaffold`, and the `divi5-accessibility` agent. Each consuming file reads `.claude/divi5-toolkit.local.md` in a "Read Project Config" step.
