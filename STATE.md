@@ -2,7 +2,7 @@
 
 ## Version
 
-- **Current:** 2.1.4 (released 2026-04-13)
+- **Current:** 2.1.5 (released 2026-04-13)
 - **Target Divi version:** 5.2 (Composable Settings, Canvas system, Loop Builder, Interaction Builder)
 
 ## Plugin Components
@@ -50,7 +50,7 @@ button-variants.css, design-tokens.css, animations.css, dark-mode.css, woocommer
 
 ## Recent Changes
 
-See the **Changelog** in `README.md`. v2.1.4 fixed v2.1.3's broken `marketplace.json` (wrong path and wrong schema). Correct location is `.claude-plugin/marketplace.json` alongside `plugin.json`; correct schema uses `source: "./"` as a string (not an object) and requires top-level `name`, `description`, `owner`, `plugins[]`. v2.1.3 (broken) attempted to add marketplace loading. v2.1.2 added end-user documentation in `docs/`. v2.1.1 wired three orphan config keys into the consuming commands and agent, added `CLAUDE.md` and `STATE.md`. v2.1.0 added `/scaffold` and `/audit` commands, the `divi5-accessibility` agent, four new CSS example files, and full Divi 5.2 support.
+See the **Changelog** in `README.md`. v2.1.5 restructured the repo so the plugin lives in `plugins/divi5-toolkit/` (a subdirectory of the marketplace root). v2.1.4 attempted to put the plugin at the marketplace root with `source: "./"` but Claude Code rejected it because the two `.claude-plugin/` manifests cannot coexist in the same directory. v2.1.5 also fixed schema errors caught by `claude plugin validate` (removed top-level `$schema`, moved `description` into `metadata`). The marketplace now passes validation. Per-session `--plugin-dir` users must update their command to point at `<repo>/plugins/divi5-toolkit` instead of the repo root; marketplace-based loading via `extraKnownMarketplaces` is unchanged. v2.1.2 added end-user documentation in `docs/`. v2.1.1 wired three orphan config keys into the consuming commands and agent, added `CLAUDE.md` and `STATE.md`. v2.1.0 added `/scaffold` and `/audit` commands, the `divi5-accessibility` agent, four new CSS example files, and full Divi 5.2 support.
 
 ## Research
 

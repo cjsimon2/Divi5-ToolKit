@@ -9,28 +9,52 @@ Claude Code **plugin** for Divi 5 (WordPress page builder, currently 5.2) develo
 ## Architecture
 
 ```
-.claude-plugin/
-  plugin.json                  # Plugin manifest (name, version, keywords)
-  marketplace.json             # Marketplace manifest — Claude Code reads this
-                               #   when this directory is registered via
-                               #   extraKnownMarketplaces in user settings.
-                               #   Lists the plugin and its source path.
-commands/                      # Slash commands — invoked as /divi5-toolkit:<name>
-agents/                        # Autonomous subagents with focused responsibilities
-skills/<skill-name>/SKILL.md   # Auto-activating knowledge skills
-skills/<skill-name>/examples/  # Concrete CSS examples loaded on demand
-skills/<skill-name>/references/# Reference docs loaded on demand
-hooks/hooks.json               # PostToolUse + SessionStart event handlers
-templates/                     # Files users copy into their own project
-docs/                          # End-user documentation (usage, config,
-                               #   workflows, troubleshooting)
+<repo root>/                          # = marketplace root
+├── .claude-plugin/
+│   └── marketplace.json              # Marketplace manifest. Top-level
+│                                     #   "name" is "divi5-local". Lists
+│                                     #   plugins with their source paths.
+│                                     #   Read by Claude Code when the repo
+│                                     #   directory is registered via
+│                                     #   extraKnownMarketplaces.
+├── plugins/
+│   └── divi5-toolkit/                # ← The plugin lives here, NOT at the
+│       │                             #   marketplace root. This subdirectory
+│       │                             #   structure is required — Claude Code
+│       │                             #   does not allow plugin == marketplace
+│       │                             #   root (the two .claude-plugin/
+│       │                             #   manifests would collide).
+│       ├── .claude-plugin/
+│       │   └── plugin.json           # Plugin manifest (name, version,
+│       │                             #   keywords, license).
+│       ├── commands/                  # /divi5-toolkit:<name> slash commands
+│       ├── agents/                    # Autonomous subagents
+│       ├── skills/<name>/SKILL.md     # Auto-activating knowledge skills
+│       ├── skills/<name>/examples/    # CSS examples loaded on demand
+│       ├── skills/<name>/references/  # Reference docs loaded on demand
+│       ├── hooks/hooks.json           # PostToolUse + SessionStart handlers
+│       ├── templates/                 # Files users copy into their projects
+│       └── .mcp.json                  # Plugin-local MCP server stub (empty)
+├── docs/                              # End-user documentation, repo-level
+│   ├── usage.md                       # Detailed component reference
+│   ├── configuration.md               # Config setting reference
+│   ├── workflows.md                   # Step-by-step scenarios
+│   └── troubleshooting.md             # FAQ + diagnostic steps
+├── CLAUDE.md                          # This file (developer guidance)
+├── STATE.md                           # Project state snapshot
+└── README.md                          # Repo overview, install, changelog
 ```
 
-**Two manifest files, both inside `.claude-plugin/`:**
-- `plugin.json` — describes THIS plugin: name, version, keywords. Read by Claude Code once the plugin is loaded.
-- `marketplace.json` — describes the local marketplace this directory acts as. Top-level `name` is the marketplace name (`divi5-local`). The `plugins[]` array lists which plugins this marketplace contains. Read by Claude Code when the directory is referenced via `extraKnownMarketplaces` in user settings, BEFORE the plugin itself is loaded.
+**Two manifest files, in two different `.claude-plugin/` directories:**
 
-The marketplace is necessary even though there's only one plugin in it — Claude Code's directory-source loader requires going through the marketplace abstraction.
+| File | Purpose | Read by Claude Code when |
+|---|---|---|
+| `<root>/.claude-plugin/marketplace.json` | Marketplace catalog. Top-level `name` is `divi5-local`. The `plugins[]` array points at `./plugins/divi5-toolkit`. | The repo directory is registered via `extraKnownMarketplaces` in user settings (or via `claude plugin marketplace add`). |
+| `<root>/plugins/divi5-toolkit/.claude-plugin/plugin.json` | Plugin manifest. `name: "divi5-toolkit"`, current `version`, keywords. | The plugin is enabled via `enabledPlugins` in user settings. |
+
+**Why the subdirectory:** Claude Code's directory-source loader requires the plugin to live in a subdirectory of the marketplace, not at the marketplace root. The two manifests cannot coexist in the same `.claude-plugin/` directory. The official Anthropic walkthrough at https://code.claude.com/docs/en/plugin-marketplaces uses the same `plugins/<plugin-name>/` convention.
+
+**Validating the marketplace:** After any change to `marketplace.json` or the plugin structure, run `claude plugin validate .` from the repo root. It checks the marketplace schema and surfaces errors before users hit them. CI should run this on every PR.
 
 ## File Conventions
 
@@ -85,14 +109,20 @@ Then manually exercise `/divi5-toolkit:<command>` and agents against a sample Di
 
 ## Versioning
 
-1. Bump `version` in `.claude-plugin/plugin.json`. (`.claude-plugin/marketplace.json` does NOT carry a version field — version lives only in `plugin.json`.)
-2. Add a new entry at the top of the **Changelog** section in `README.md`, dated `YYYY-MM-DD`.
-3. Update `STATE.md` with the new version and release date.
-4. Commit with a message that names the version, then tag: `git tag vX.Y.Z && git push --tags`.
+1. Bump `version` in `plugins/divi5-toolkit/.claude-plugin/plugin.json`. (`.claude-plugin/marketplace.json` does NOT carry a version field — version lives only in `plugin.json`.)
+2. Run `claude plugin validate .` from the repo root. Must report `✔ Validation passed`.
+3. Add a new entry at the top of the **Changelog** section in `README.md`, dated `YYYY-MM-DD`.
+4. Update `STATE.md` with the new version and release date.
+5. Commit with a message that names the version, then tag: `git tag vX.Y.Z && git push --tags`.
 
 Follow semantic versioning: patch for typo/doc fixes, minor for new commands/agents/skills, major for breaking changes to command names, agent interfaces, or config schema.
 
 **When to update `marketplace.json`:** Only when adding/removing plugins from the marketplace, or when the plugin's `description`, `category`, or `homepage` changes. The marketplace manifest does not need to be touched on every version bump.
+
+**Validating before you push:** Always run `claude plugin validate .` after any structural change. The validator catches schema errors that would otherwise show up as cryptic loader errors in the user's Plugins UI. Common failures:
+- `Unrecognized keys: "$schema"` — don't include `$schema` at the top level of marketplace.json
+- `Unrecognized keys: "description"` at root — `description` belongs under `metadata.description`, not at the root
+- `Plugin "X" not found in marketplace` — the plugin's `source` path doesn't resolve to a directory containing `.claude-plugin/plugin.json`
 
 ## Naming Conventions
 

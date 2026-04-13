@@ -26,7 +26,7 @@ The plugin has to be loaded by Claude Code before its slash commands appear. Pic
 **A) Per-session (simplest, one-off):**
 ```bash
 cd /path/to/your-project
-claude --plugin-dir "/path/to/Divi5-ToolKit"
+claude --plugin-dir "/path/to/Divi5-ToolKit/plugins/divi5-toolkit"
 ```
 The plugin loads for that session only.
 

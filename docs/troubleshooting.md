@@ -33,7 +33,7 @@ These are issues with the Divi5 Toolkit Claude Code plugin itself.
 **If you're using `--plugin-dir` (per-session loading):**
 1. Verify you actually passed the flag when starting Claude Code:
    ```bash
-   claude --plugin-dir "/path/to/Divi5-ToolKit"
+   claude --plugin-dir "/path/to/Divi5-ToolKit/plugins/divi5-toolkit"
    ```
 2. Confirm the path contains a `.claude-plugin/plugin.json` file at its root.
 3. Validate `plugin.json` is well-formed JSON (no trailing commas, all strings quoted).

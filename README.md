@@ -244,7 +244,7 @@ There are two ways to load the plugin: per-session (one-off) or persistent (auto
 From your project directory, start Claude Code with the `--plugin-dir` flag:
 
 ```bash
-claude --plugin-dir "/path/to/Divi5-ToolKit"
+claude --plugin-dir "/path/to/Divi5-ToolKit/plugins/divi5-toolkit"
 ```
 
 The plugin loads for that session only. Use this for testing or occasional use.
@@ -297,62 +297,77 @@ No publication, validation, or CLI registration step is needed.
 ## Directory Structure
 
 ```
-divi5-toolkit/
+divi5-toolkit/                            # ← repo root + marketplace root
 ├── .claude-plugin/
-│   ├── plugin.json              # Plugin manifest (name, version, keywords)
-│   └── marketplace.json         # Marketplace manifest (registers the plugin)
-├── commands/                     # Slash commands
-│   ├── generate.md
-│   ├── validate.md
-│   ├── convert.md
-│   ├── research.md
-│   ├── scaffold.md
-│   └── audit.md
-├── agents/                       # Autonomous agents
-│   ├── divi5-validator.md
-│   ├── divi5-error-learner.md
-│   ├── divi5-researcher.md
-│   └── divi5-accessibility.md
-├── skills/                       # Auto-activating skills
-│   ├── divi5-css-patterns/
-│   │   ├── SKILL.md
-│   │   ├── examples/
-│   │   │   ├── button-variants.css
-│   │   │   ├── design-tokens.css
-│   │   │   ├── animations.css
-│   │   │   ├── dark-mode.css
-│   │   │   ├── woocommerce.css
-│   │   │   └── accessibility.css
-│   │   └── references/
-│   │       └── divi-selectors.md
-│   └── divi5-compatibility/
-│       ├── SKILL.md
-│       └── references/
-│           └── unit-conversions.md
-├── hooks/
-│   └── hooks.json               # Event handlers
-├── templates/
-│   └── divi5-toolkit.local.md   # Configuration template
-├── docs/                         # End-user documentation
-│   ├── usage.md                 # Detailed component reference
-│   ├── configuration.md         # Config setting reference
-│   ├── workflows.md             # Step-by-step scenarios
-│   └── troubleshooting.md       # FAQ + diagnostic steps
-├── CLAUDE.md                     # Developer guidance (working ON the plugin)
-├── STATE.md                      # Project state snapshot
-├── .mcp.json
+│   └── marketplace.json                 # Marketplace manifest (lists plugins)
+├── plugins/
+│   └── divi5-toolkit/                   # ← plugin lives in a subdirectory
+│       ├── .claude-plugin/
+│       │   └── plugin.json              # Plugin manifest (name, version)
+│       ├── commands/                     # Slash commands
+│       │   ├── generate.md
+│       │   ├── validate.md
+│       │   ├── convert.md
+│       │   ├── research.md
+│       │   ├── scaffold.md
+│       │   └── audit.md
+│       ├── agents/                       # Autonomous agents
+│       │   ├── divi5-validator.md
+│       │   ├── divi5-error-learner.md
+│       │   ├── divi5-researcher.md
+│       │   └── divi5-accessibility.md
+│       ├── skills/                       # Auto-activating skills
+│       │   ├── divi5-css-patterns/
+│       │   │   ├── SKILL.md
+│       │   │   ├── examples/
+│       │   │   │   ├── button-variants.css
+│       │   │   │   ├── design-tokens.css
+│       │   │   │   ├── animations.css
+│       │   │   │   ├── dark-mode.css
+│       │   │   │   ├── woocommerce.css
+│       │   │   │   └── accessibility.css
+│       │   │   └── references/
+│       │   │       └── divi-selectors.md
+│       │   └── divi5-compatibility/
+│       │       ├── SKILL.md
+│       │       └── references/
+│       │           └── unit-conversions.md
+│       ├── hooks/
+│       │   └── hooks.json               # Event handlers
+│       ├── templates/
+│       │   └── divi5-toolkit.local.md   # Configuration template
+│       └── .mcp.json
+├── docs/                                 # End-user documentation
+│   ├── usage.md                         # Detailed component reference
+│   ├── configuration.md                 # Config setting reference
+│   ├── workflows.md                     # Step-by-step scenarios
+│   └── troubleshooting.md               # FAQ + diagnostic steps
+├── CLAUDE.md                             # Developer guidance (working ON the plugin)
+├── STATE.md                              # Project state snapshot
 └── README.md
 ```
 
 ## Changelog
 
-### v2.1.4 (April 13, 2026)
-- **Fixed (critical):** v2.1.3 placed `marketplace.json` at the wrong path (repo root) and used the wrong schema. Claude Code looks for `.claude-plugin/marketplace.json` (alongside `plugin.json`), and the `source` field for a directory plugin is a string (`"./"`), not an object. Both fixed.
-- **New:** `.claude-plugin/marketplace.json` with the correct schema verified against the official `claude-plugins-official` marketplace example: top-level `name`, `description`, `owner`, `plugins[]`; plugin entry uses string `"source": "./"` to point at the marketplace root (which is the parent of `.claude-plugin/`).
-- **Removed:** Stray `marketplace.json` from the repo root.
-- **Removed:** The "marketplace.json version sync" rule from CLAUDE.md — `marketplace.json` does not carry a `version` field. Version lives only in `.claude-plugin/plugin.json`.
-- **Updated:** README "How it works" section now explains the correct path, what fields must match between marketplace.json and user settings, and that the marketplace name `divi5-local` is declared inside marketplace.json (not chosen by the user).
-- **Updated:** README directory tree shows `.claude-plugin/marketplace.json` instead of root-level marketplace.json.
+### v2.1.5 (April 13, 2026)
+- **Fixed (critical, breaking for `--plugin-dir` users):** Restructured the repo so the plugin lives in `plugins/divi5-toolkit/` instead of the repo root. Verified against the official Anthropic plugin marketplace docs: a directory-source plugin must live in a subdirectory of the marketplace root, not at the marketplace root itself. The `source: "./"` form attempted in v2.1.4 was rejected by Claude Code's loader even though the schema technically allowed it, because the plugin's `.claude-plugin/plugin.json` and the marketplace's `.claude-plugin/marketplace.json` cannot coexist in the same `.claude-plugin/` directory.
+- **Fixed:** `marketplace.json` schema errors caught by `claude plugin validate`:
+  - Removed top-level `$schema` field (not in the schema).
+  - Moved top-level `description` into `metadata.description` (description at root is not allowed).
+- **New:** `claude plugin validate .` now passes for the marketplace.
+- **Breaking:** Per-session loading via `--plugin-dir` now requires the subdirectory path:
+  ```bash
+  # v2.1.4 and earlier (broken)
+  claude --plugin-dir "/path/to/Divi5-ToolKit"
+  # v2.1.5 and later
+  claude --plugin-dir "/path/to/Divi5-ToolKit/plugins/divi5-toolkit"
+  ```
+- **NOT breaking:** Per-project and global marketplace loading via `extraKnownMarketplaces` is unchanged. Users still point at `/path/to/Divi5-ToolKit` (the marketplace root). Claude Code reads `.claude-plugin/marketplace.json` from there and follows the `source: "./plugins/divi5-toolkit"` reference automatically.
+- **Updated:** README directory tree shows the new layout. Installation section, workflows.md, and troubleshooting.md all updated with the new `--plugin-dir` path.
+- **Updated:** CLAUDE.md architecture diagram reflects the subdirectory structure. Versioning checklist updated.
+
+### v2.1.4 (April 13, 2026, broken)
+- **Attempted:** First attempt at adding `marketplace.json` for persistent loading. Used `source: "./"` (plugin = marketplace root) and an incorrect top-level schema. Rejected by `claude plugin validate` and by Claude Code's loader. Superseded by 2.1.5.
 
 ### v2.1.3 (April 13, 2026)
 - **Attempted (broken):** Tried to add `marketplace.json` for persistent loading. File was placed at the wrong path and used the wrong schema. v2.1.4 supersedes this — do not use 2.1.3.
