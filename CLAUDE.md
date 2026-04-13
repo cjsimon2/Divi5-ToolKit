@@ -32,7 +32,7 @@ Claude Code **plugin** for Divi 5 (WordPress page builder, currently 5.2) develo
 │       ├── skills/<name>/SKILL.md     # Auto-activating knowledge skills
 │       ├── skills/<name>/examples/    # CSS examples loaded on demand
 │       ├── skills/<name>/references/  # Reference docs loaded on demand
-│       ├── hooks/hooks.json           # PostToolUse + SessionStart handlers
+│       ├── hooks/hooks.json           # PostToolUse handler (CSS auto-validate)
 │       ├── templates/                 # Files users copy into their projects
 │       └── .mcp.json                  # Plugin-local MCP server stub (empty)
 ├── docs/                              # End-user documentation, repo-level
@@ -161,4 +161,4 @@ Divi ships updates frequently. Keeping the plugin accurate matters more than shi
 - The `divi5-researcher` agent runs on-demand via `/divi5-toolkit:research` and refreshes knowledge in the skill files.
 - Manual research (new modules, spec changes, bug fixes you learn about) goes into `skills/divi5-css-patterns/SKILL.md` or `skills/divi5-compatibility/SKILL.md` — whichever is more appropriate.
 - Bump `last_research` in the config template (`templates/divi5-toolkit.local.md`) when you do a knowledge refresh.
-- The SessionStart hook warns users if their `last_research` is more than 7 days stale; keep this behavior honest by actually updating on research runs.
+- v2.1.0–v2.1.5 had a `SessionStart` hook that warned users when `last_research` was more than 7 days stale. v2.1.6 removed it because Claude Code's `prompt`-type hooks require a `ToolUseContext` that doesn't exist at session start; the hook was throwing a startup error in every session. Keep the freshness honest by actually updating `last_research` on every research run, since users no longer get an automatic nudge.

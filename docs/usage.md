@@ -273,7 +273,7 @@ Status: PASSED
 **Purpose:** Refresh the plugin's Divi 5 knowledge base from official and community sources. Updates skill files with new findings.
 
 **When to use it:**
-- It's been more than 7 days since the last research run (the SessionStart hook will remind you)
+- It's been more than 7 days since the last research run (check `last_research` in `.claude/divi5-toolkit.local.md`)
 - A new Divi 5.x release just dropped
 - You hit a Divi error the plugin doesn't recognize
 - You want to verify whether a feature you remember was added or removed
@@ -365,7 +365,7 @@ Agents are subagents Claude spawns automatically when the context matches their 
 
 **Triggers when:**
 - You ask about Divi 5 updates, new features, or what's new
-- The `last_research` date is more than 7 days old (the SessionStart hook reminds you, but doesn't auto-run)
+- The `last_research` date is more than 7 days old (check it in `.claude/divi5-toolkit.local.md`)
 - You run `/divi5-toolkit:research`
 - An unknown Divi error needs background research
 
@@ -481,16 +481,7 @@ Fires after every file write or edit.
 
 **To disable:** Set `auto_validate: false` in your project config.
 
-### `SessionStart`
-
-Fires when a Claude Code session begins.
-
-**What it does:**
-1. Checks if `.claude/divi5-toolkit.local.md` exists.
-2. Reads `last_research` — if more than 7 days old, suggests running `/divi5-toolkit:research`.
-3. Reads `divi_version` — if `5.1` or lower, suggests upgrading to take advantage of Composable Settings.
-
-**Notifications only — never auto-runs anything.**
+> **Removed in v2.1.6:** A `SessionStart` hook used to surface freshness reminders for `last_research` and `divi_version` at the start of every Claude Code session. It was removed because Claude Code's `prompt`-type hooks require a `ToolUseContext` that doesn't exist before any tool has run, so the hook was throwing a startup error in every session that loaded the plugin. The same checks are now done on demand by `/divi5-toolkit:research` and `/divi5-toolkit:audit`.
 
 ---
 

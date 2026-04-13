@@ -111,7 +111,7 @@ These are issues with the Divi5 Toolkit Claude Code plugin itself.
 
 ### `/research` says my knowledge is current but I know it's not
 
-**Symptom:** You ran `/divi5-toolkit:research` 8 days ago and the SessionStart hook keeps complaining, but you can't get the research command to update.
+**Symptom:** You ran `/divi5-toolkit:research` 8 days ago, the `divi5-researcher` agent still claims your knowledge is current, and you suspect `last_research` is stale.
 
 **Likely cause:** The `last_research` key in your config wasn't updated automatically (maybe an interrupted previous run).
 
@@ -506,7 +506,7 @@ A **skill** is an auto-activating knowledge bundle. Claude loads it silently whe
 
 ### How does the plugin stay current with Divi updates?
 
-Run `/divi5-toolkit:research` periodically (or wait for the SessionStart hook to remind you). It fetches updates from official and community sources and rewrites the skill files in place.
+Run `/divi5-toolkit:research` periodically (about once a week, or whenever Divi cuts a new release). It fetches updates from official and community sources and rewrites the skill files in place. Check the `last_research` field in `.claude/divi5-toolkit.local.md` if you want to see when you last refreshed.
 
 ### Will this plugin overwrite my existing CSS?
 

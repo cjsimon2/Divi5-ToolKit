@@ -208,7 +208,7 @@ Key settings:
 validation_mode: advisory             # "advisory" (warnings) or "strict" (blocking errors)
 default_format: theme-options         # "theme-options" | "code-module" | "child-theme" | "free-form"
 auto_validate: true                   # validate CSS files automatically after Write/Edit
-divi_version: "5.2"                   # target Divi version — used by SessionStart hook
+divi_version: "5.2"                   # target Divi version — read by /research and the validators
 css_prefix: my                        # your custom CSS class prefix
 active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
   - phone
@@ -227,13 +227,13 @@ last_research: 2026-04-12             # auto-updated by divi5-researcher
 | `validation_mode` | `/validate`, `divi5-validator` |
 | `default_format` | `/generate`, `/scaffold`, `/convert` |
 | `auto_validate` | PostToolUse hook |
-| `divi_version` | SessionStart hook |
+| `divi_version` | `/audit` (and the project config template default) |
 | `css_prefix` | `/generate`, `/scaffold`, `/convert` |
 | `active_breakpoints` | `/generate`, `/scaffold` |
 | `accessibility_level` | `/validate`, `/audit`, `divi5-accessibility` |
 | `flag_composable_alternatives` | `/validate`, `/convert`, `/audit` |
 | `scaffold_style` | `/scaffold` |
-| `last_research` | SessionStart hook, `divi5-researcher` |
+| `last_research` | `/research`, `divi5-researcher` |
 
 ## Installation
 
@@ -348,6 +348,12 @@ divi5-toolkit/                            # ← repo root + marketplace root
 ```
 
 ## Changelog
+
+### v2.1.6 (April 12, 2026)
+- **Fixed (critical):** Removed the `SessionStart` entry from `hooks/hooks.json`. Claude Code's `prompt`-type hooks require a `ToolUseContext`, which doesn't exist before any tool has been called, so the hook was firing a `ToolUseContext is required for prompt hooks. This is a bug.` error every time a session started in a project with the plugin enabled. The hook only ever provided two nice-to-have notifications (stale `last_research`, outdated `divi_version`); both are still documented in `docs/workflows.md` and `docs/configuration.md`. The `PostToolUse` hook is unaffected — it has a tool context by design.
+- **Updated:** README config "Read by" table no longer claims that `divi_version` and `last_research` are read by a SessionStart hook. They're now read only by `divi5-researcher` and the consuming commands.
+- **Updated:** STATE.md hook count (was "1 file, 2 event handlers", now "1 file, 1 event handler").
+- **Action required:** If you already had v2.1.5 enabled in a project, run `claude plugin marketplace update divi5-local` (or restart Claude Code) to pick up the fix.
 
 ### v2.1.5 (April 13, 2026)
 - **Fixed (critical, breaking for `--plugin-dir` users):** Restructured the repo so the plugin lives in `plugins/divi5-toolkit/` instead of the repo root. Verified against the official Anthropic plugin marketplace docs: a directory-source plugin must live in a subdirectory of the marketplace root, not at the marketplace root itself. The `source: "./"` form attempted in v2.1.4 was rejected by Claude Code's loader even though the schema technically allowed it, because the plugin's `.claude-plugin/plugin.json` and the marketplace's `.claude-plugin/marketplace.json` cannot coexist in the same `.claude-plugin/` directory.

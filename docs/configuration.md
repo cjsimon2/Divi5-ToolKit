@@ -143,9 +143,9 @@ The Divi version your project targets.
 | `"5.1"` | Same as 5.0 — Composable Settings still unavailable. |
 | `"5.2"` (recommended) | Full feature set. Composable Settings, all bug fixes, Canvas system, Loop Builder. |
 
-**Recommendation:** Use `"5.2"`. The SessionStart hook will warn you if your project targets `5.1` or lower.
+**Recommendation:** Use `"5.2"`. `/divi5-toolkit:audit` will gate Composable Settings suggestions on this value, so set it accurately.
 
-**Read by:** SessionStart hook (warning message), `/audit` (feature gating)
+**Read by:** `/audit` (feature gating)
 
 ---
 
@@ -231,11 +231,11 @@ The default color scheme `/scaffold` uses when you don't specify one.
 
 The date the knowledge base was last refreshed by `/divi5-toolkit:research`. Format: `YYYY-MM-DD`.
 
-**Behavior:** The SessionStart hook checks this on every Claude Code session start. If it's more than 7 days old, you get a notification suggesting `/divi5-toolkit:research`.
+**Behavior:** Read by the `divi5-researcher` agent to decide whether to short-circuit a research run when the knowledge base is still fresh. There is no automatic notification — you have to glance at the field yourself, or run `/divi5-toolkit:research` and let the agent decide whether to refresh. (v2.1.0–v2.1.5 surfaced a 7-day staleness reminder via a SessionStart hook; v2.1.6 removed it because Claude Code's `prompt`-type hooks can't run at session start.)
 
 **Recommendation:** Don't edit by hand. Let the `/research` command update it.
 
-**Read by:** SessionStart hook, `divi5-researcher` agent
+**Read by:** `/divi5-toolkit:research`, `divi5-researcher` agent
 
 ---
 
@@ -365,12 +365,12 @@ If the file doesn't exist, all defaults apply. There is no error — the plugin 
 | `auto_validate` | PostToolUse hook |
 | `default_format` | `/generate`, `/scaffold`, `/convert` |
 | `css_prefix` | `/generate`, `/scaffold`, `/convert` |
-| `divi_version` | SessionStart hook, `/audit` |
+| `divi_version` | `/audit` |
 | `active_breakpoints` | `/generate`, `/scaffold` |
 | `accessibility_level` | `/validate`, `/audit`, `divi5-accessibility` |
 | `flag_composable_alternatives` | `/validate`, `/convert`, `/audit` |
 | `scaffold_style` | `/scaffold` |
-| `last_research` | SessionStart hook, `divi5-researcher` |
+| `last_research` | `/research`, `divi5-researcher` |
 | `learned_errors` | `divi5-error-learner` |
 | `research_notes` | `divi5-researcher` |
 
