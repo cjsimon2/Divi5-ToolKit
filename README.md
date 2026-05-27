@@ -1,8 +1,8 @@
 # Divi5 Toolkit
 
-The first Claude Code plugin for Divi 5 development. Validates CSS compatibility, generates Divi-ready code, scaffolds page sections, audits project health, checks accessibility, learns from errors, and stays current with Divi 5 updates — all powered by Claude instead of GPT-3.5.
+The first Claude Code plugin for Divi 5 development. Validates CSS compatibility, generates Divi-ready code, scaffolds page sections, audits project health, checks accessibility, audits Core Web Vitals performance, diagnoses symptoms, learns from errors, and stays current with Divi 5 updates — all powered by Claude instead of GPT-3.5.
 
-**For Divi 5.2+** (Composable Settings, Canvas system, Loop Builder)
+**For Divi 5.6+** (5 new modules — Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed — plus Aspect Ratio/Framing, Variable Generators, pseudo-class editing, Composable Settings, Canvas system, Loop Builder)
 
 ## Why This Exists
 
@@ -53,6 +53,7 @@ You should get back Divi 5-ready CSS with `body` prefix, `!important`, your cust
 | `/divi5-toolkit:generate` | Generate Divi 5-ready CSS for any component |
 | `/divi5-toolkit:validate` | Validate CSS for Divi 5 compatibility |
 | `/divi5-toolkit:convert` | Convert existing CSS to Divi 5 format |
+| `/divi5-toolkit:diagnose` | Diagnose a Divi 5 symptom/error and return root cause + fix |
 | `/divi5-toolkit:research` | Research latest Divi 5 updates |
 | `/divi5-toolkit:scaffold` | Generate complete page section templates |
 | `/divi5-toolkit:audit` | Run a full project CSS audit with scoring |
@@ -65,6 +66,7 @@ You should get back Divi 5-ready CSS with `body` prefix, `!important`, your cust
 | `divi5-error-learner` | When you paste Divi error messages or describe CSS issues |
 | `divi5-researcher` | On-demand via `/divi5-toolkit:research` or when unknown Divi errors need research |
 | `divi5-accessibility` | When reviewing CSS for accessibility, or when writing interactive element styles |
+| `divi5-performance` | When the user mentions performance, Core Web Vitals (LCP, INP, CLS), slow Divi pages, render-blocking CSS, font loading, or cache-plugin conflicts |
 
 ## Skills
 
@@ -72,6 +74,7 @@ You should get back Divi 5-ready CSS with `body` prefix, `!important`, your cust
 |-------|----------------|
 | `divi5-css-patterns` | Writing CSS for Divi, styling Divi modules |
 | `divi5-compatibility` | Validating CSS, troubleshooting Divi issues |
+| `divi5-performance` | Optimizing Divi performance, working with Critical CSS / Dynamic CSS / Inline Stylesheets, debugging LCP/INP/CLS, configuring local fonts and image preloading |
 
 ## Documentation
 
@@ -155,6 +158,12 @@ Internal docs:
 - **Dark Mode** — system-aware with manual toggle
 - **WooCommerce** — product grids, cards, cart, checkout
 - **Accessibility** — focus indicators, skip links, screen reader utilities, high contrast
+- **Responsive 7-Breakpoints** — full 2025-aligned breakpoint template
+- **Loop Builder** — CSS Grid card layouts, masonry, product cards, horizontal lists, pagination
+- **Forms** — Divi 5.3 pseudo-class editing (:checked/:focus/:active), custom checkboxes/radios, Contact Form 7 Styler
+- **New Modules (5.6)** — Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed styling
+- **Critical CSS** — hand-crafted above-the-fold template (in divi5-performance skill)
+- **Font Loading** — local @font-face with CLS-prevention metric overrides (in divi5-performance skill)
 
 ## Optional MCP Servers
 
@@ -308,6 +317,7 @@ divi5-toolkit/                            # ← repo root + marketplace root
 │       │   ├── generate.md
 │       │   ├── validate.md
 │       │   ├── convert.md
+│       │   ├── diagnose.md              # NEW v2.2.0
 │       │   ├── research.md
 │       │   ├── scaffold.md
 │       │   └── audit.md
@@ -315,7 +325,8 @@ divi5-toolkit/                            # ← repo root + marketplace root
 │       │   ├── divi5-validator.md
 │       │   ├── divi5-error-learner.md
 │       │   ├── divi5-researcher.md
-│       │   └── divi5-accessibility.md
+│       │   ├── divi5-accessibility.md
+│       │   └── divi5-performance.md     # NEW v2.2.0
 │       ├── skills/                       # Auto-activating skills
 │       │   ├── divi5-css-patterns/
 │       │   │   ├── SKILL.md
@@ -325,15 +336,28 @@ divi5-toolkit/                            # ← repo root + marketplace root
 │       │   │   │   ├── animations.css
 │       │   │   │   ├── dark-mode.css
 │       │   │   │   ├── woocommerce.css
-│       │   │   │   └── accessibility.css
+│       │   │   │   ├── accessibility.css
+│       │   │   │   ├── responsive-7-breakpoints.css
+│       │   │   │   ├── loop-builder.css          # NEW v2.2.0
+│       │   │   │   ├── forms.css                 # NEW v2.2.0
+│       │   │   │   └── new-modules.css           # NEW v2.2.0
 │       │   │   └── references/
-│       │   │       └── divi-selectors.md
-│       │   └── divi5-compatibility/
+│       │   │       ├── divi-selectors.md
+│       │   │       └── responsive-breakpoints-2025.md
+│       │   ├── divi5-compatibility/
+│       │   │   ├── SKILL.md
+│       │   │   └── references/
+│       │   │       └── unit-conversions.md
+│       │   └── divi5-performance/                # NEW v2.2.0
 │       │       ├── SKILL.md
+│       │       ├── examples/
+│       │       │   ├── critical-css.css
+│       │       │   └── font-loading.css
 │       │       └── references/
-│       │           └── unit-conversions.md
+│       │           └── core-web-vitals.md
 │       ├── hooks/
-│       │   └── hooks.json               # Event handlers
+│       │   ├── hooks.json               # Event handlers
+│       │   └── css-validate.sh
 │       ├── templates/
 │       │   └── divi5-toolkit.local.md   # Configuration template
 │       └── .mcp.json
@@ -348,6 +372,22 @@ divi5-toolkit/                            # ← repo root + marketplace root
 ```
 
 ## Changelog
+
+### v2.2.0 (May 27, 2026)
+- **New:** `divi5-performance` skill — Core Web Vitals (LCP, INP, CLS), Critical CSS strategy, Dynamic CSS pipeline, Inline Stylesheets, local font loading with `size-adjust`/`ascent-override` for CLS prevention, lazy-loading background images, cache plugin compatibility matrix. Includes `examples/critical-css.css` (hand-crafted critical CSS template), `examples/font-loading.css` (local @font-face pattern), and `references/core-web-vitals.md` (full LCP/INP/CLS reference with Divi-specific causes and fixes).
+- **New:** `divi5-performance` agent — Performance auditor that triggers on Core Web Vitals mentions, slow page reports, render-blocking flags, or cache plugin conflicts. Reads Lighthouse / PSI output, project CSS, or Divi settings and returns prioritized fixes.
+- **New:** `/divi5-toolkit:diagnose` command — Diagnostic dispatcher. Paste a symptom, error, or "this isn't working" description; routes to the right specialist (error-learner, validator, performance, accessibility, compatibility) and returns root cause + fix with paste location.
+- **New:** 3 CSS examples in `divi5-css-patterns/examples/`:
+  - `loop-builder.css` — Loop Builder CSS Grid layouts (cards, masonry, product overlay, horizontal list, pagination)
+  - `forms.css` — Divi 5.3 form module styling with `:checked`/`:focus`/`:active` pseudo-class equivalents, custom checkboxes/radios, Contact Form 7 Styler integration
+  - `new-modules.css` — Styling for the 5 new Divi 5.6 modules: Timeline (vertical + horizontal), Breadcrumbs, SVG (currentColor + stroke patterns), Table of Contents (sticky sidebar + smooth scroll), Instagram Feed (responsive grid + hover overlay)
+- **Updated knowledge base:** Target version bumped from Divi 5.2 → **Divi 5.6** (current as of May 25, 2026). Both skill files (`divi5-css-patterns`, `divi5-compatibility`) now document:
+  - **5.3 (April 24, 2026):** Pseudo-class editing modes (`:checked`/`:focus`/`:active`), Contact Form 7 Styler module, Nested Option Presets, harmonized form field options. 69 bug fixes.
+  - **5.4:** Sizing Variable Generator (clamp() automation), Relative Colorscheme Generator (HSL-based color systems).
+  - **5.5 (May 12, 2026):** Aspect Ratio + Framing on all images (CLS prevention), Image Presets, SVG sanitization, composable settings for image option groups, AI Agent canvas tools. 58 bug fixes.
+  - **5.6 (May 25, 2026):** Five new modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), Color Scale + Color Harmony Generators, decimal Section Divider, full CSS track values in Grid Auto Columns/Rows. 109 changes total.
+- **Updated:** Composable Settings Compatibility table now lists 5.3–5.5 builder-native equivalents. Use builder pseudo-class tabs (5.3), Aspect Ratio (5.5), Framing (5.5), and Nested Presets (5.3) before reaching for custom CSS.
+- **Updated:** `templates/divi5-toolkit.local.md` default `divi_version` bumped to `"5.6"`. `last_research` bumped to `2026-05-27`.
 
 ### v2.1.7 (April 13, 2026)
 - **Fixed (critical):** The `PostToolUse` Write/Edit hook was a `prompt`-type hook that asked an LLM to "stay silent for non-CSS edits." LLMs are unreliable at returning empty output — they kept narrating their decision (e.g. *"This change is not CSS-related and does not trigger the validation condition"*), which Claude Code surfaced as a blocking message and stopped continuation on every non-CSS Edit/Write across every project that had the plugin enabled. Replaced with a deterministic `command`-type hook (`hooks/css-validate.sh`) that filters by file extension in shell and only emits output when the edited file actually ends in `.css`/`.scss`/`.sass`/`.less` AND the project's `.claude/divi5-toolkit.local.md` sets `auto_validate: true`. No more false positives on HTML, PHP, Markdown, JSON, etc.

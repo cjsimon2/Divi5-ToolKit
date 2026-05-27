@@ -20,12 +20,18 @@ auto_validate: true
 
 # Last Research Date
 # Auto-updated by divi5-researcher agent
-last_research: 2026-04-12
+last_research: 2026-05-27
 
 # Divi Version
 # Track which Divi version this project targets
-# Supported: "5.0", "5.1", "5.2"
-divi_version: "5.2"
+# Supported: "5.0", "5.1", "5.2", "5.3", "5.4", "5.5", "5.6"
+# 5.3 added: Contact Form 7 module, pseudo-class editing (:checked/:focus/:active),
+#           Nested Option Presets, harmonized form fields
+# 5.4 added: Sizing Variable Generator, Relative Colorscheme Generator
+# 5.5 added: Aspect Ratio + Framing on all images, Image Presets, SVG sanitization
+# 5.6 added: Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed modules,
+#           Color Scale + Color Harmony Generators
+divi_version: "5.6"
 
 # Project Design Tokens (optional)
 # Define your project's CSS variable prefix
@@ -76,6 +82,7 @@ This file stores project-specific settings for the Divi5 Toolkit plugin.
 - /divi5-toolkit:generate - Generate Divi 5-ready CSS
 - /divi5-toolkit:validate - Validate CSS compatibility
 - /divi5-toolkit:convert - Convert CSS to Divi 5 format
+- /divi5-toolkit:diagnose - Diagnose a Divi 5 symptom/error and return a root cause + fix
 - /divi5-toolkit:research - Research latest Divi 5 updates
 - /divi5-toolkit:scaffold - Generate complete page section templates
 - /divi5-toolkit:audit - Run full project CSS audit
@@ -97,8 +104,10 @@ Go to **Advanced > Attributes** (not the old CSS ID & Classes field).
 - Button overrides: `body .et_pb_button { ... !important; }`
 - Use custom classes, not numbered selectors (`.et_pb_text_0`)
 - CSS variables in `:root` for global scope
-- Use `clamp()` for fluid responsive values
+- Use `clamp()` for fluid responsive values (or the 5.4 Sizing Variable Generator)
 - Check Composable Settings before writing CSS (Divi 5.2+)
+- Set Aspect Ratio on images for CLS prevention (Divi 5.5+)
+- Use pseudo-class editing in the builder for :checked/:focus/:active (Divi 5.3+)
 - Include `prefers-reduced-motion` with animations
 - Add `:focus-visible` styles for keyboard navigation
 

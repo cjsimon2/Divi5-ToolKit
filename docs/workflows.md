@@ -464,6 +464,110 @@ The `divi5-error-learner` agent has the full plugin conflict reference.
 
 ---
 
+## Audit Site Performance (Core Web Vitals)
+
+Goal: get a Divi site to "Good" Core Web Vitals — LCP < 2.5s, INP < 200ms, CLS < 0.1.
+
+### Step 1 — Run Lighthouse on the target page
+
+Open the page in Chrome → DevTools → Lighthouse → Mobile → Performance → Analyze. Save or screenshot the report. The synthetic metrics + opportunity list become the agent's input.
+
+If you want real-user data (which is what Google uses for ranking), check Google Search Console → Core Web Vitals report after 28 days of traffic.
+
+### Step 2 — Hand the report to the performance agent
+
+In Claude Code:
+
+```
+The Lighthouse report on my homepage shows:
+- LCP 4.2s (image at /wp-content/uploads/hero.jpg)
+- INP 320ms (slowest interaction: menu open)
+- CLS 0.18
+Render-blocking CSS: style.css (12KB)
+What should I fix first?
+```
+
+The `divi5-performance` agent activates automatically. It returns a P0/P1/P2 list, identifies the LCP element, checks for the Divi performance pipeline (Dynamic CSS / Critical CSS / Inline Stylesheets), and recommends a fix order with estimated impact.
+
+### Step 3 — Apply the high-impact fixes first
+
+Typical P0 fixes on Divi sites:
+
+1. **Self-host fonts** — copy `font-loading.css` from `skills/divi5-performance/examples/` to Theme Options Custom CSS. Download WOFF2 files, upload to `/wp-content/fonts/`. Disable Google Fonts in Divi.
+2. **Preload the LCP image** — add `<link rel="preload" as="image" href="..." fetchpriority="high">` to Theme Builder header HTML.
+3. **Set `fetchpriority="high"` + `loading="eager"`** on the hero Image Module via Advanced > Attributes.
+4. **Enable Divi's full performance pipeline** — Theme Options → Builder → Advanced → Performance → enable Dynamic CSS, Critical CSS, Inline Stylesheets, Defer Generated CSS, Defer jQuery.
+
+### Step 4 — Eliminate CLS with Aspect Ratio (Divi 5.5+)
+
+In every Image Module: Design tab → Sizing → Aspect Ratio. Pick the ratio that matches the source image. Browser reserves space before the image loads — no shift on paint.
+
+For web fonts: confirm the `@font-face` declarations include `size-adjust`, `ascent-override`, `descent-override` (see `font-loading.css`).
+
+For dynamically inserted content (cookie banners, ads): reserve space with `min-height` or `aspect-ratio`.
+
+### Step 5 — Audit cache plugin compatibility
+
+If you have WP Rocket, LiteSpeed Cache, Autoptimize, or Perfmatters installed, ask the performance agent to cross-check its settings against the compatibility matrix in `skills/divi5-performance/SKILL.md`. The most common silent breakage: WP Rocket's Remove Unused CSS strips Divi's Dynamic CSS unless `.et_pb_*` and `/et-cache/` are safelisted.
+
+### Step 6 — Re-run Lighthouse
+
+Clear all caches (Divi Static CSS, page cache plugin, browser hard refresh). Re-run Lighthouse. The fixes should be visible in the same metrics. If LCP is still > 2.5s, the agent will identify what's left.
+
+### Step 7 — Monitor field data
+
+Lighthouse is lab data. Real users may have a different experience. After fixes ship, watch Search Console's Core Web Vitals report for 28 days. Field data is what Google uses for ranking.
+
+---
+
+## Diagnose a Symptom
+
+Goal: you have a Divi problem but aren't sure which command to use. Hand it to `/divi5-toolkit:diagnose` and let the router decide.
+
+### Step 1 — Describe the symptom
+
+In Claude Code, run:
+
+```
+/divi5-toolkit:diagnose my button color won't change even though I added !important
+```
+
+Or paste an error message:
+
+```
+/divi5-toolkit:diagnose
+Uncaught TypeError: Cannot read property 'classList' of null
+  at et_pb_section_video.js:142
+```
+
+Or point at a file:
+
+```
+/divi5-toolkit:diagnose style.css
+```
+
+### Step 2 — Read the routed response
+
+The diagnose command classifies the input (CSS not applying, error message, performance, accessibility, builder behavior, migration, plugin conflict) and routes to the matching specialist. You get back a structured response:
+
+- **SYMPTOM** — restated
+- **ROOT CAUSE** — the underlying reason
+- **WHY IT HAPPENS** — technical mechanism
+- **FIX** — concrete code with paste location
+- **VERIFY** — how to confirm the fix worked
+- **RELATED** — links to deeper documentation
+- **PREVENT** — how to avoid this class of problem
+
+### Step 3 — Apply the fix and verify
+
+Paste the fix into the indicated location. Clear caches (Divi Static CSS + browser hard refresh). Confirm via DevTools or the VERIFY steps.
+
+### Step 4 — Optional follow-up
+
+The diagnose command offers next actions: auto-fix the full file with `/convert`, run a full file `/validate`, run a project-wide `/audit`, or add a novel error pattern to the error-learner library.
+
+---
+
 ## Refresh the Plugin's Knowledge Base
 
 Divi releases new versions frequently. Keep the plugin's knowledge current.

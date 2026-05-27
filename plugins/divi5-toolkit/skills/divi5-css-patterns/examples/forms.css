@@ -1,0 +1,385 @@
+/* ==========================================================================
+   DIVI 5 FORM STYLING PATTERNS
+   Built around Divi 5.3's form module overhaul: harmonized fields,
+   :checked / :focus / :active editing, and the new Contact Form 7 Styler.
+
+   Paste into:  Divi > Theme Options > Custom CSS (or Free-Form CSS on the
+                specific form module)
+   Modules:     Contact Form, Email Optin, Login, Signup, Contact Form 7 Styler (5.3+)
+   Pairs with:  Divi 5.3 Composable Settings on input/checkbox/radio groups —
+                most of these patterns can be set in the builder first.
+
+   Divi 5.3 form features (April 24, 2026):
+   - Harmonized field options across all form-based modules
+   - New checkbox and radio field groups with preset support
+   - Pseudo-class editing modes: :checked, :focus, :active
+   - Contact Form 7 Styler module (renders + styles CF7 forms in Divi)
+   - Nested Option Presets (e.g., CTA > Button > Border)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Design tokens for forms — derive from your design system
+   -------------------------------------------------------------------------- */
+:root {
+  --form-border: #d1d5db;
+  --form-border-focus: #2ea3f2;
+  --form-border-error: #ef4444;
+  --form-border-success: #10b981;
+  --form-bg: #ffffff;
+  --form-bg-disabled: #f3f4f6;
+  --form-text: #111827;
+  --form-text-placeholder: #9ca3af;
+  --form-text-label: #374151;
+  --form-radius: 6px;
+  --form-padding-y: 0.625rem;
+  --form-padding-x: 0.875rem;
+  --form-touch-min: 44px;  /* WCAG 2.5.8 */
+}
+
+/* --------------------------------------------------------------------------
+   2. Text inputs, textareas, selects
+   Applies to native form fields AND Divi's wrapper variants.
+   -------------------------------------------------------------------------- */
+.et_pb_contact_field input[type="text"],
+.et_pb_contact_field input[type="email"],
+.et_pb_contact_field input[type="tel"],
+.et_pb_contact_field input[type="url"],
+.et_pb_contact_field input[type="number"],
+.et_pb_contact_field input[type="password"],
+.et_pb_contact_field textarea,
+.et_pb_contact_field select,
+.et_pb_newsletter_field input,
+.et_pb_login_form input {
+  width: 100% !important;
+  min-height: var(--form-touch-min);
+  padding: var(--form-padding-y) var(--form-padding-x) !important;
+  background: var(--form-bg) !important;
+  border: 1px solid var(--form-border) !important;
+  border-radius: var(--form-radius) !important;
+  color: var(--form-text) !important;
+  font-size: 1rem !important;
+  line-height: 1.5;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* --------------------------------------------------------------------------
+   3. :focus state — Divi 5.3 pseudo-class editing equivalent
+   Provides keyboard focus indicator (WCAG 2.4.7).
+   -------------------------------------------------------------------------- */
+.et_pb_contact_field input:focus,
+.et_pb_contact_field textarea:focus,
+.et_pb_contact_field select:focus,
+.et_pb_newsletter_field input:focus,
+.et_pb_login_form input:focus {
+  outline: none !important;  /* outline replaced with box-shadow */
+  border-color: var(--form-border-focus) !important;
+  box-shadow: 0 0 0 3px rgba(46, 163, 242, 0.2) !important;
+}
+
+/* --------------------------------------------------------------------------
+   4. :active state — Divi 5.3 pseudo-class editing equivalent
+   Brief active state during click/tap.
+   -------------------------------------------------------------------------- */
+.et_pb_contact_field input:active,
+.et_pb_contact_field textarea:active,
+.et_pb_newsletter_field input:active {
+  border-color: var(--form-border-focus) !important;
+}
+
+/* --------------------------------------------------------------------------
+   5. Placeholder styling
+   -------------------------------------------------------------------------- */
+.et_pb_contact_field ::placeholder,
+.et_pb_newsletter_field ::placeholder {
+  color: var(--form-text-placeholder);
+  opacity: 1;  /* override Firefox's default 0.7 */
+}
+
+/* --------------------------------------------------------------------------
+   6. Field labels
+   Position above the field with consistent spacing.
+   -------------------------------------------------------------------------- */
+.et_pb_contact_field .et_pb_contact_field_options_title {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--form-text-label);
+  margin-bottom: 0.375rem;
+}
+
+.et_pb_contact_field .et_pb_contact_field_options_title::after {
+  content: '';
+}
+
+.et_pb_contact_field.required .et_pb_contact_field_options_title::after {
+  content: ' *';
+  color: var(--form-border-error);
+}
+
+/* --------------------------------------------------------------------------
+   7. Checkboxes — Divi 5.3 introduces :checked editing
+   Custom-styled checkbox preserves accessibility (native input hidden but
+   focusable). Visible label acts as the checkbox UI.
+   -------------------------------------------------------------------------- */
+.et_pb_contact_field_checkbox label,
+.et_pb_newsletter_field label.et_pb_newsletter_field_checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--form-touch-min);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-left: calc(1.25rem + 0.5rem);  /* room for the visual checkbox */
+}
+
+/* Hide native checkbox but keep it focusable */
+.et_pb_contact_field_checkbox input[type="checkbox"],
+.et_pb_newsletter_field input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Visual checkbox */
+.et_pb_contact_field_checkbox label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--form-bg);
+  border: 2px solid var(--form-border);
+  border-radius: 4px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+/* :checked state */
+.et_pb_contact_field_checkbox input:checked + label::before {
+  background: var(--form-border-focus);
+  border-color: var(--form-border-focus);
+}
+
+/* Checkmark on :checked */
+.et_pb_contact_field_checkbox input:checked + label::after {
+  content: '';
+  position: absolute;
+  left: 0.375rem;
+  top: 50%;
+  width: 0.4rem;
+  height: 0.7rem;
+  border: solid #ffffff;
+  border-width: 0 2px 2px 0;
+  transform: translateY(-65%) rotate(45deg);
+}
+
+/* :focus on hidden checkbox shows ring on visual checkbox */
+.et_pb_contact_field_checkbox input:focus + label::before {
+  box-shadow: 0 0 0 3px rgba(46, 163, 242, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   8. Radio buttons — same pattern as checkbox, round instead of square
+   -------------------------------------------------------------------------- */
+.et_pb_contact_field_radio label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: var(--form-touch-min);
+  cursor: pointer;
+  position: relative;
+  padding-left: calc(1.25rem + 0.5rem);
+}
+
+.et_pb_contact_field_radio input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.et_pb_contact_field_radio label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  background: var(--form-bg);
+  border: 2px solid var(--form-border);
+  border-radius: 50%;
+  transition: border-color 0.15s ease;
+}
+
+.et_pb_contact_field_radio input:checked + label::before {
+  border-color: var(--form-border-focus);
+}
+
+.et_pb_contact_field_radio input:checked + label::after {
+  content: '';
+  position: absolute;
+  left: 0.3125rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 50%;
+  background: var(--form-border-focus);
+}
+
+.et_pb_contact_field_radio input:focus + label::before {
+  box-shadow: 0 0 0 3px rgba(46, 163, 242, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   9. Error states (Divi adds .et_contact_error to invalid fields)
+   -------------------------------------------------------------------------- */
+.et_pb_contact_field.et_contact_error input,
+.et_pb_contact_field.et_contact_error textarea,
+.et_pb_contact_field.et_contact_error select {
+  border-color: var(--form-border-error) !important;
+  background: rgba(239, 68, 68, 0.04) !important;
+}
+
+.et-pb-contact-message {
+  padding: 0.75rem 1rem;
+  border-radius: var(--form-radius);
+  margin-bottom: 1rem;
+}
+
+.et-pb-contact-message ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--form-border-error);
+}
+
+/* --------------------------------------------------------------------------
+   10. Submit button — extends button-variants.css patterns
+   -------------------------------------------------------------------------- */
+body .et_pb_contact_form_container .et_pb_button,
+body .et_pb_newsletter_form .et_pb_button {
+  min-height: var(--form-touch-min);
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  border-radius: var(--form-radius) !important;
+}
+
+body .et_pb_contact_form_container .et_pb_button:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+/* --------------------------------------------------------------------------
+   11. Contact Form 7 Styler module (Divi 5.3+)
+   The new module renders CF7 inside Divi with full design controls.
+   Most styling should be done via the module's own design tab; this is
+   for fine-tuning that goes beyond the exposed options.
+   -------------------------------------------------------------------------- */
+.et_pb_cf7_styler input[type="text"],
+.et_pb_cf7_styler input[type="email"],
+.et_pb_cf7_styler textarea,
+.et_pb_cf7_styler select {
+  /* Same base treatment as native Divi forms */
+  min-height: var(--form-touch-min);
+  border: 1px solid var(--form-border);
+  border-radius: var(--form-radius);
+  padding: var(--form-padding-y) var(--form-padding-x);
+}
+
+.et_pb_cf7_styler input[type="submit"] {
+  min-height: var(--form-touch-min);
+  background: var(--form-border-focus);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--form-radius);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.et_pb_cf7_styler input[type="submit"]:hover {
+  opacity: 0.9;
+}
+
+.et_pb_cf7_styler .wpcf7-response-output {
+  margin: 1rem 0 0;
+  padding: 0.75rem 1rem;
+  border-radius: var(--form-radius);
+  border: 1px solid;
+}
+
+.et_pb_cf7_styler form.invalid .wpcf7-response-output {
+  border-color: var(--form-border-error);
+  background: rgba(239, 68, 68, 0.05);
+  color: var(--form-border-error);
+}
+
+.et_pb_cf7_styler form.sent .wpcf7-response-output {
+  border-color: var(--form-border-success);
+  background: rgba(16, 185, 129, 0.05);
+  color: var(--form-border-success);
+}
+
+/* --------------------------------------------------------------------------
+   12. Inline newsletter (single-line email + button)
+   -------------------------------------------------------------------------- */
+.et_pb_newsletter.newsletter-inline .et_pb_newsletter_fields {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.et_pb_newsletter.newsletter-inline .et_pb_newsletter_field {
+  flex: 1 1 240px;
+}
+
+.et_pb_newsletter.newsletter-inline .et_pb_newsletter_button_wrap {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 480px) {
+  .et_pb_newsletter.newsletter-inline .et_pb_newsletter_button_wrap {
+    flex: 1 1 100%;
+  }
+  .et_pb_newsletter.newsletter-inline .et_pb_button {
+    width: 100% !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   13. Composable Settings hints (Divi 5.3 + 5.2)
+   Before reaching for custom CSS, try these builder-native paths:
+
+   - Focus state styling   → Click :focus pseudo-class tab in field design
+   - Checked state styling → Click :checked pseudo-class tab in field design
+   - Active state styling  → Click :active pseudo-class tab in field design
+   - Radio/checkbox sizing → Set in the harmonized field group settings
+   - Preset for all forms  → Save as Input Preset, apply across modules
+   - Nested presets        → CTA > Button > Border can be a nested preset
+
+   Custom CSS is still needed for:
+   - The custom-styled checkbox/radio pattern (sections 7, 8 above) — Divi
+     can't replace the native input rendering, so the ::before / ::after
+     approach is the right tool.
+   - Cross-element relationships (label color based on input state, etc.)
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   14. Reduced motion fallback
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .et_pb_contact_field input,
+  .et_pb_contact_field textarea,
+  .et_pb_contact_field select,
+  .et_pb_contact_field_checkbox label::before,
+  .et_pb_contact_field_radio label::before {
+    transition: none !important;
+  }
+}

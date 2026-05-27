@@ -1,0 +1,150 @@
+/* ==========================================================================
+   DIVI 5 CRITICAL CSS TEMPLATE
+   Above-the-fold styles loaded synchronously to eliminate render-blocking
+
+   Paste into:  Divi > Theme Options > Custom CSS
+   Loads:       Synchronously in <head> (early in cascade)
+   Target size: ≤14KB compressed (one TCP roundtrip)
+   Pairs with:  Divi 5 auto-Critical CSS (Theme Options > Builder >
+                Advanced > Performance > Critical CSS = ON). This file
+                ADDS to what the auto-extractor picks up — use it when
+                the extractor misses something (Theme Builder headers,
+                dynamic hero content, @font-face declarations).
+
+   What belongs here:
+   - Anything visible above the fold on the heaviest landing page
+   - Header / nav structure (rendered before main content)
+   - Hero section background, heading, primary button
+   - @font-face for the heading font (so text paints without FOUT)
+   - CSS variables used by above-the-fold elements
+
+   What does NOT belong here:
+   - Below-the-fold sections (let Dynamic CSS load them)
+   - Animations / hover states (defer to non-critical CSS)
+   - Anything that depends on JS having executed
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Heading font — preloaded + declared upfront
+   Preload separately in Theme Builder header HTML:
+   <link rel="preload" href="/wp-content/fonts/inter-700.woff2"
+         as="font" type="font/woff2" crossorigin>
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/wp-content/fonts/inter-700.woff2') format('woff2');
+  size-adjust: 107%;          /* match fallback x-height to reduce CLS */
+  ascent-override: 90%;
+  descent-override: 22%;
+}
+
+/* --------------------------------------------------------------------------
+   2. CSS variables used above the fold
+   Only the tokens referenced by hero/header — keep the rest in
+   design-tokens.css (non-critical).
+   -------------------------------------------------------------------------- */
+:root {
+  --critical-bg-hero: linear-gradient(180deg, #0a1929 0%, #1a3a5c 100%);
+  --critical-color-heading: #ffffff;
+  --critical-color-button-bg: #ff6b35;
+  --critical-color-button-text: #ffffff;
+  --critical-font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* --------------------------------------------------------------------------
+   3. Theme Builder header skeleton
+   The header renders before main content. If your Theme Builder header
+   is dynamic, the auto-Critical CSS often misses it — declare its
+   essentials here.
+   -------------------------------------------------------------------------- */
+body .et_pb_section.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0.75rem 0 !important;
+}
+
+body .site-header .et_pb_menu__menu > nav > ul > li > a {
+  font-family: var(--critical-font-heading);
+  font-weight: 500;
+  color: #111827;
+}
+
+/* --------------------------------------------------------------------------
+   4. Hero section
+   Replace .hero-section with the custom class assigned to your hero
+   section module (Advanced tab > CSS ID & Classes).
+   -------------------------------------------------------------------------- */
+body .et_pb_section.hero-section {
+  background: var(--critical-bg-hero);
+  padding: 6rem 0 4rem !important;
+  min-height: 70vh;
+}
+
+body .hero-section h1,
+body .hero-section .et_pb_module h1 {
+  font-family: var(--critical-font-heading);
+  font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  line-height: 1.1;
+  color: var(--critical-color-heading);
+  margin: 0 0 1.5rem;
+}
+
+body .hero-section p,
+body .hero-section .et_pb_text_inner p {
+  font-size: clamp(1rem, 1.5vw + 0.5rem, 1.25rem);
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 36rem;
+  margin: 0 0 2rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. Primary CTA — visible above the fold, deserves critical styling
+   -------------------------------------------------------------------------- */
+body .hero-section .et_pb_button {
+  background: var(--critical-color-button-bg) !important;
+  border: 2px solid var(--critical-color-button-bg) !important;
+  color: var(--critical-color-button-text) !important;
+  padding: 1rem 2rem !important;
+  font-family: var(--critical-font-heading);
+  font-weight: 600;
+  border-radius: 6px !important;
+  /* Hover state intentionally omitted — non-critical */
+}
+
+/* --------------------------------------------------------------------------
+   6. CLS prevention — reserve space for hero image
+   If your hero uses an <img>, set width/height attributes on the
+   module. If it uses a background-image, set min-height on the
+   container so the layout doesn't shift when the image loads.
+   -------------------------------------------------------------------------- */
+body .hero-section .et_pb_image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;  /* must match the source image aspect */
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------------------
+   7. Skip-link visibility (a11y) — must be paintable on first focus
+   -------------------------------------------------------------------------- */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.75rem 1.25rem;
+  background: #111827;
+  color: #ffffff;
+  border-radius: 4px;
+}

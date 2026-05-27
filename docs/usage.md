@@ -268,6 +268,31 @@ Status: PASSED
 
 ---
 
+### `/divi5-toolkit:diagnose`
+
+**Purpose:** Diagnose a Divi 5 problem from a symptom, error message, file, or "this isn't working" description. Classifies the problem, routes it to the right specialist (error-learner, validator, performance, accessibility, compatibility), and returns root cause + concrete fix with paste location.
+
+**When to use it:**
+- You're seeing unexpected behavior and don't know whether it's a CSS issue, a builder issue, a plugin conflict, or a performance issue
+- You have a Divi error message and want a fix without picking the right command yourself
+- "Styles aren't applying", "PageSpeed dropped", "Composable Settings menu isn't showing", "this looks fine in builder but broken on frontend"
+- You'd rather describe the symptom in plain English than choose between `/validate`, `/audit`, `/research`
+
+**Arguments:** Free-form. Paste an error, describe a symptom, or point at a file.
+
+**What it does:**
+1. Reads `.claude/divi5-toolkit.local.md` for `divi_version`, `css_prefix`, `accessibility_level`
+2. Classifies the input into one of 7 buckets: error message, CSS not applying, performance, accessibility, builder behavior, Divi 4→5 migration, plugin conflict
+3. Routes to the matching skill/agent's diagnostic flow
+4. Returns a structured response: SYMPTOM → ROOT CAUSE → WHY IT HAPPENS → FIX (with paste location) → VERIFY → RELATED → PREVENT
+5. Offers next actions (auto-fix, full validate, full audit, add to error library)
+
+**Tools used:** `Read`, `Glob`, `Grep`, `Write`, `WebSearch`
+
+**Reads config:** `divi_version`, `css_prefix`, `accessibility_level`
+
+---
+
 ### `/divi5-toolkit:research`
 
 **Purpose:** Refresh the plugin's Divi 5 knowledge base from official and community sources. Updates skill files with new findings.
@@ -375,6 +400,36 @@ Agents are subagents Claude spawns automatically when the context matches their 
 
 ---
 
+### `divi5-performance` (NEW in v2.2.0)
+
+**Triggers when you:**
+- Mention performance, speed, PageSpeed Insights, Lighthouse, GTmetrix
+- Mention Core Web Vitals, LCP, INP, CLS, FCP, TTI
+- Ask why a Divi page is slow
+- Paste Lighthouse output or PSI report
+- Ask about Critical CSS, Dynamic CSS, render-blocking resources
+- Mention cache plugin conflicts (WP Rocket RUCSS, LiteSpeed, Autoptimize, Perfmatters)
+- Ask about font loading, image preloading, lazy loading
+
+**What it does:**
+1. Reads `.claude/divi5-toolkit.local.md` for `divi_version`. If older than 5.5, notes that Aspect Ratio + Framing (the cleanest CLS fix) aren't available natively.
+2. Accepts Lighthouse / PSI output, a URL, project CSS files, or a specific symptom
+3. Audits across 7 checks: Divi performance settings, render-blocking resources, image loading, CSS anti-patterns, CLS audit, plugin compatibility, hosting / TTFB
+4. Returns a prioritized P0 / P1 / P2 report with file paths, estimated impact, and a fix list
+
+**Output:** A structured performance audit with:
+- Current metrics (if provided)
+- P0 / P1 / P2 issue list with paths, impact estimates, fixes, and references
+- Divi settings checklist
+- Estimated impact if fixes applied
+- Next steps
+
+**Model:** `sonnet` (deep analysis)
+
+**Tools:** `Read`, `Glob`, `Grep`, `WebSearch`, `WebFetch`
+
+---
+
 ### `divi5-accessibility`
 
 **Triggers when:**
@@ -415,7 +470,7 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 
 ### `divi5-css-patterns`
 
-**Activates when:** Writing CSS for Divi 5, styling Divi modules (buttons, sections, rows, blurbs, toggles, forms), working with Free-Form CSS and the `selector` keyword, overriding `.et_pb_*` classes, setting up design tokens or dark mode, adding animations, styling WooCommerce, building accessible layouts, or developing a Divi child theme.
+**Activates when:** Writing CSS for Divi 5 / Divi 5.6, styling Divi modules (buttons, sections, rows, blurbs, toggles, forms including the 5.3 Contact Form 7 Styler), the five 5.6 modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), working with Free-Form CSS and the `selector` keyword, overriding `.et_pb_*` classes, setting up design tokens or dark mode, using the 5.4 Sizing Variable Generator or Relative Colorscheme Generator, applying the 5.5 Aspect Ratio / Framing settings, the 5.3 pseudo-class editing modes (`:checked`, `:focus`, `:active`), Nested Option Presets, adding animations, styling WooCommerce, building accessible layouts, or developing a Divi child theme.
 
 **What it provides:**
 - Divi 5 architecture overview (React 18, Flexbox-first, Dynamic CSS, Composable Settings)
@@ -438,13 +493,18 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 - `examples/dark-mode.css`
 - `examples/woocommerce.css`
 - `examples/accessibility.css`
+- `examples/responsive-7-breakpoints.css`
+- `examples/loop-builder.css` (NEW in v2.2.0)
+- `examples/forms.css` (NEW in v2.2.0)
+- `examples/new-modules.css` (NEW in v2.2.0)
 - `references/divi-selectors.md`
+- `references/responsive-breakpoints-2025.md`
 
 ---
 
 ### `divi5-compatibility`
 
-**Activates when:** Validating CSS for Divi 5 / Divi 5.2 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce), migrating from Divi 4 to Divi 5, understanding breakpoints, or fixing "styles not working" issues.
+**Activates when:** Validating CSS for Divi 5 / Divi 5.6 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce, Perfmatters), migrating from Divi 4 to Divi 5, understanding breakpoints, applying the 5.5 Aspect Ratio + Framing for CLS prevention, using the 5.3 pseudo-class editing modes, the 5.4 Variable Generators, Nested Option Presets, Critical CSS / Dynamic CSS / Inline Stylesheets, or fixing "styles not working" issues.
 
 **What it provides:**
 - CSS unit support (dropdown vs. advanced/custom CSS)
@@ -462,6 +522,27 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 
 **Supporting files (loaded on demand):**
 - `references/unit-conversions.md`
+
+---
+
+### `divi5-performance` (NEW in v2.2.0)
+
+**Activates when:** Optimizing Divi 5 site performance, improving Core Web Vitals (LCP, INP, CLS), reducing render-blocking CSS, working with Divi's Critical CSS / Dynamic CSS / Inline Stylesheet system, configuring font loading (WOFF2, preload, `font-display`), lazy-loading background images, preloading above-the-fold images, debugging slow Divi pages, or auditing cache-plugin interactions.
+
+**What it provides:**
+- The Divi 5 performance pipeline (Dynamic CSS, Critical CSS, Inline Stylesheets — what each does, when to disable)
+- Core Web Vitals 2026 reference (LCP, INP, CLS targets and Divi-specific causes for each)
+- Critical CSS strategy and a ≤14KB hand-crafted template
+- Local font loading with `size-adjust` / `ascent-override` for CLS prevention
+- Image optimization: lazy-load background-image pattern, preload + `fetchpriority="high"` for LCP image, Aspect Ratio (5.5+)
+- Cache plugin compatibility matrix (Perfmatters, WP Rocket, LiteSpeed, Autoptimize, WP-Optimize, Hummingbird, W3 Total Cache)
+- Auditing checklist (Lighthouse ≥ 90, LCP < 2.5s, INP < 200ms, CLS < 0.1, no render-blocking CSS, no external font requests)
+- Common misconfigurations and "Divi is slow because of X" myths
+
+**Supporting files (loaded on demand):**
+- `examples/critical-css.css`
+- `examples/font-loading.css`
+- `references/core-web-vitals.md`
 
 ---
 
@@ -487,7 +568,7 @@ Fires after every file write or edit.
 
 ## CSS Example Library
 
-Six ready-to-use CSS files in `skills/divi5-css-patterns/examples/`. Copy any of them into your Divi project.
+Ten ready-to-use CSS files in `skills/divi5-css-patterns/examples/` and two more in `skills/divi5-performance/examples/`. Copy any of them into your Divi project.
 
 ### `button-variants.css`
 
@@ -538,6 +619,63 @@ Six ready-to-use CSS files in `skills/divi5-css-patterns/examples/`. Copy any of
 **Contains:** Focus indicators (`:focus-visible`), skip-to-content link, visually-hidden utility, reduced-motion media query, touch target sizing, link distinguishability, high contrast mode (`forced-colors`), and print styles.
 
 **Use when:** Every Divi project. This is the baseline accessibility CSS that Divi doesn't ship by default.
+
+**Where to paste:** Divi > Theme Options > Custom CSS
+
+### `responsive-7-breakpoints.css`
+
+**Contains:** Full 7-breakpoint responsive template (Phone Portrait through Ultra Wide) with fluid typography tokens via `clamp()`, content max-width tokens, utility classes for showing/hiding by breakpoint, and print styles. Built around 2025 device traffic data.
+
+**Use when:** You want a responsive baseline that maps 1:1 to Divi 5's customizable breakpoints, or you're starting a project that needs more nuance than the default 3 active breakpoints.
+
+**Where to paste:** Divi > Theme Options > Custom CSS
+
+### `loop-builder.css` (NEW in v2.2.0)
+
+**Contains:** Eight Loop Builder patterns — CSS Grid card layout with equal-height items, masonry layout (with column fallback), product cards with hover overlay + sale badge, horizontal list layout for sidebars, empty/loading states, accessible pagination with 44px touch targets, Composable Settings hints, and a `prefers-reduced-motion` fallback.
+
+**Use when:** You enabled Loop Builder on a column/section and want production-ready styling for the repeating items. Most common: blog grids, WooCommerce product grids, custom post type listings.
+
+**Where to paste:** Divi > Theme Options > Custom CSS (or Free-Form CSS on the Loop module if scoping to one instance)
+
+**How to apply:** Add classes like `loop-cards`, `loop-masonry`, `loop-products`, `loop-horizontal` to the Loop module via Advanced > Attributes > class.
+
+### `forms.css` (NEW in v2.2.0)
+
+**Contains:** Form styling built around Divi 5.3's form overhaul. Includes design tokens for forms, harmonized text input/textarea/select styling, `:focus` and `:active` states, placeholder styling, label patterns, custom-styled checkboxes and radios (preserving native input focusability), error states, submit button extensions, Contact Form 7 Styler module patterns, inline newsletter layout, and Composable Settings hints showing the 5.3 builder-native paths for pseudo-class editing.
+
+**Use when:** You're building forms in Divi (Contact Form, Email Optin, Login, Signup, or the 5.3 Contact Form 7 Styler) and want consistent, accessible field styling.
+
+**Where to paste:** Divi > Theme Options > Custom CSS (or Free-Form CSS on a specific form module)
+
+### `new-modules.css` (NEW in v2.2.0)
+
+**Contains:** Styling for the five modules released in Divi 5.6 (May 25, 2026):
+- **Timeline** — vertical timeline with marker + line + date + title + body, horizontal timeline with scroll-snap on mobile
+- **Breadcrumbs** — hierarchy display with separator + hover + current page styling (note: Home Link uses dedicated builder settings)
+- **SVG** — `currentColor` pattern for inheriting color, stroke-only icons, hover animation with `prefers-reduced-motion` fallback
+- **Table of Contents** — sidebar styling with nested entries, sticky on desktop, smooth scroll with `scroll-padding-top` for sticky headers
+- **Instagram Feed** — responsive grid (3/4/6 columns), square aspect ratio, hover zoom + overlay with engagement stats
+
+Each section is independent — paste only the modules you use.
+
+**Where to paste:** Divi > Theme Options > Custom CSS
+
+### `critical-css.css` (in `divi5-performance/examples/`, NEW in v2.2.0)
+
+**Contains:** Hand-crafted Critical CSS template covering @font-face for the heading font, CSS variables used above the fold, Theme Builder header skeleton, hero section background + heading + paragraph + CTA, CLS prevention via aspect-ratio, and skip-link visibility for accessibility.
+
+**Use when:** Divi's auto-Critical CSS extractor misses something above the fold (common with Theme Builder dynamic headers, hero modules with custom @font-face, or pages where the LCP element renders below the auto-extracted region). This file *adds* to the auto-extraction — it doesn't replace it.
+
+**Where to paste:** Divi > Theme Options > Custom CSS (loads early enough in the cascade to be effectively critical). Keep total ≤14KB compressed.
+
+### `font-loading.css` (in `divi5-performance/examples/`, NEW in v2.2.0)
+
+**Contains:** Complete local font loading pattern. @font-face declarations for Inter Regular / Italic / Medium / Bold with `font-display: swap` and `size-adjust` / `ascent-override` / `descent-override` calibrated to match the `system-ui` fallback (eliminates CLS on font swap). Includes variable-font alternative, icon font handling, and a Latin-only `unicode-range` template.
+
+**Use when:** Every production Divi site. Self-hosted fonts remove 2 external round-trips per page (~200-400ms LCP improvement) and eliminate the GDPR concern around the Google Fonts CDN.
+
+**Prerequisite:** Disable Google Fonts in Divi (Theme Options > General > Use Google Fonts > No). Download WOFF2 files (google-webfonts-helper.herokuapp.com), upload to `/wp-content/fonts/`. Add a `<link rel="preload">` for the heading font in Theme Builder header HTML.
 
 **Where to paste:** Divi > Theme Options > Custom CSS
 

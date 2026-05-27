@@ -47,7 +47,7 @@ default_format: theme-options         # "theme-options" | "code-module"
 css_prefix: my                        # custom CSS class prefix
 
 # ─── Project Targeting ────────────────────────────────────────────────────
-divi_version: "5.2"                   # "5.0" | "5.1" | "5.2"
+divi_version: "5.6"                   # "5.0" | "5.1" | "5.2" | "5.3" | "5.4" | "5.5" | "5.6"
 active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
   - phone
   - tablet
@@ -141,11 +141,15 @@ The Divi version your project targets.
 |---|---|
 | `"5.0"` | Composable Settings unavailable. Some bug fixes (transform corruption, box-shadow hover, loop CSS) not yet applied. |
 | `"5.1"` | Same as 5.0 — Composable Settings still unavailable. |
-| `"5.2"` (recommended) | Full feature set. Composable Settings, all bug fixes, Canvas system, Loop Builder. |
+| `"5.2"` | Composable Settings, Canvas system, Loop Builder, Interaction Builder. Missing: 5.3 form overhaul, 5.4 Variable Generators, 5.5 Aspect Ratio/Framing, 5.6 new modules. |
+| `"5.3"` | Adds pseudo-class editing (`:checked`/`:focus`/`:active`), Contact Form 7 Styler module, Nested Option Presets, harmonized form fields. |
+| `"5.4"` | Adds Sizing Variable Generator (fluid `clamp()` automation) and Relative Colorscheme Generator (HSL-based color systems). |
+| `"5.5"` | Adds Aspect Ratio + Framing settings on all images (cleanest CLS fix), Image Presets, SVG sanitization, composable settings for image option groups. |
+| `"5.6"` (recommended) | Adds 5 new modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), Color Scale + Color Harmony Generators, decimal Section Divider, full CSS track values in Grid Auto Columns/Rows. |
 
-**Recommendation:** Use `"5.2"`. `/divi5-toolkit:audit` will gate Composable Settings suggestions on this value, so set it accurately.
+**Recommendation:** Use `"5.6"`. The plugin tailors its advice to the version you set — `/audit` gates Composable Settings suggestions on 5.2+, the performance agent recommends Aspect Ratio for CLS only on 5.5+, the form CSS examples assume 5.3+ pseudo-class editing, and so on.
 
-**Read by:** `/audit` (feature gating)
+**Read by:** `/audit`, `/diagnose`, `divi5-performance` agent (feature gating and version-aware advice)
 
 ---
 

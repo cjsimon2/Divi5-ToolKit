@@ -1,0 +1,289 @@
+/* ==========================================================================
+   DIVI 5 LOOP BUILDER PATTERNS
+   CSS Grid layouts + dynamic content + responsive cards for the Loop Builder
+
+   Paste into: Divi > Theme Options > Custom CSS (or Free-Form CSS on the
+              Loop module if scoped to one instance)
+   Use:       Style the repeating items rendered by Divi 5's Loop Builder
+              (posts, products, custom post types, ACF fields)
+   Pairs with: Loop Query (defines what gets looped), Dynamic Content
+              (Loop Featured Image, Loop Post Title, Loop Excerpt, etc.)
+
+   Loop Builder background:
+   - Available in Divi 5.2+
+   - Enable on any column or section via Loop tab
+   - Replaces the old Blog/Shop modules with a fully customizable loop
+   - Items use the SAME custom class — style once, applies to all
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Grid: responsive card grid (the foundational pattern)
+   The Loop module's container becomes a Grid; each loop item is a track.
+   -------------------------------------------------------------------------- */
+.et_pb_loop.loop-cards .et_pb_loop_items {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  align-items: stretch;  /* equal-height cards regardless of content length */
+}
+
+/* Each loop item is its own card */
+.et_pb_loop.loop-cards .et_pb_loop_item {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.et_pb_loop.loop-cards .et_pb_loop_item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+}
+
+/* Featured image fills the card top with a fixed aspect ratio (5.5+ Aspect Ratio
+   setting is the preferred way; this is the CSS fallback) */
+.et_pb_loop.loop-cards .et_pb_loop_item .et_pb_image {
+  margin: 0 !important;
+}
+
+.et_pb_loop.loop-cards .et_pb_loop_item .et_pb_image img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+/* Text content area takes remaining vertical space */
+.et_pb_loop.loop-cards .et_pb_loop_item .card-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* CTA button pinned to the bottom of the card */
+.et_pb_loop.loop-cards .et_pb_loop_item .et_pb_button_module_wrapper {
+  margin-top: auto !important;
+  padding-top: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   2. Masonry-style layout (mixed-height cards)
+   Uses CSS Grid's `grid-auto-rows: masonry` if supported, falls back to
+   a column-count layout. Browsers without masonry get the column fallback.
+   -------------------------------------------------------------------------- */
+@supports (grid-template-rows: masonry) {
+  .et_pb_loop.loop-masonry .et_pb_loop_items {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-rows: masonry;
+    gap: 1.5rem;
+  }
+}
+
+@supports not (grid-template-rows: masonry) {
+  .et_pb_loop.loop-masonry .et_pb_loop_items {
+    column-count: 3;
+    column-gap: 1.5rem;
+  }
+  .et_pb_loop.loop-masonry .et_pb_loop_item {
+    break-inside: avoid;
+    margin-bottom: 1.5rem;
+  }
+  @media (max-width: 980px) {
+    .et_pb_loop.loop-masonry .et_pb_loop_items { column-count: 2; }
+  }
+  @media (max-width: 600px) {
+    .et_pb_loop.loop-masonry .et_pb_loop_items { column-count: 1; }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Product cards with hover overlay (WooCommerce)
+   Default state: clean image + title + price.
+   Hover state: dark overlay fades in with quick-action buttons.
+
+   Builder pattern (recommended): set the loop item Default Opacity to 100%
+   and Hover Opacity to 100% on the image, and toggle the overlay element's
+   opacity in Default (0) → Hover (1).
+   -------------------------------------------------------------------------- */
+.et_pb_loop.loop-products .et_pb_loop_item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.et_pb_loop.loop-products .product-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.et_pb_loop.loop-products .et_pb_loop_item:hover .product-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.et_pb_loop.loop-products .product-overlay .et_pb_button {
+  background: #ffffff !important;
+  color: #111111 !important;
+  border: none !important;
+  padding: 0.625rem 1.25rem !important;
+}
+
+/* Sale badge — positioned over the image */
+.et_pb_loop.loop-products .sale-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 2;
+  background: #ef4444;
+  color: #ffffff;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* --------------------------------------------------------------------------
+   4. Horizontal list layout (timeline / latest-posts style)
+   Single column, image on the left, text on the right. Great for sidebars,
+   activity feeds, and "recent X" sections.
+   -------------------------------------------------------------------------- */
+.et_pb_loop.loop-horizontal .et_pb_loop_items {
+  display: flex !important;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.et_pb_loop.loop-horizontal .et_pb_loop_item {
+  display: grid !important;
+  grid-template-columns: 120px 1fr;
+  gap: 1rem;
+  align-items: start;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.et_pb_loop.loop-horizontal .et_pb_loop_item:last-child {
+  border-bottom: none;
+}
+
+.et_pb_loop.loop-horizontal .et_pb_loop_item .et_pb_image img {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+@media (max-width: 480px) {
+  .et_pb_loop.loop-horizontal .et_pb_loop_item {
+    grid-template-columns: 80px 1fr;
+  }
+  .et_pb_loop.loop-horizontal .et_pb_loop_item .et_pb_image img {
+    width: 80px;
+    height: 60px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   5. Empty / loading states
+   When the Loop Query returns no results, Divi renders an empty container.
+   Add a placeholder via the Loop module's "No Results" slot, then style.
+   -------------------------------------------------------------------------- */
+.et_pb_loop .loop-empty {
+  grid-column: 1 / -1;  /* span the full grid in card layouts */
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: #f9fafb;
+  border-radius: 12px;
+  color: #6b7280;
+}
+
+.et_pb_loop .loop-empty h3 {
+  font-size: 1.25rem;
+  margin: 0 0 0.5rem;
+  color: #374151;
+}
+
+/* --------------------------------------------------------------------------
+   6. Pagination styling
+   Divi renders pagination as <ul class="page-numbers"> by default.
+   -------------------------------------------------------------------------- */
+.et_pb_loop .page-numbers {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0 0;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.et_pb_loop .page-numbers li a,
+.et_pb_loop .page-numbers li span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;  /* WCAG 2.5.8 touch target */
+  height: 44px;
+  padding: 0 0.75rem;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.et_pb_loop .page-numbers li a:hover {
+  background: #f3f4f6;
+}
+
+.et_pb_loop .page-numbers li .current {
+  background: #2ea3f2;
+  color: #ffffff;
+  border-color: #2ea3f2;
+}
+
+/* --------------------------------------------------------------------------
+   7. Composable Settings hints (Divi 5.2+)
+   Many of these patterns are now achievable WITHOUT custom CSS via
+   Composable Settings. Reach for the builder first; use CSS only when
+   the option isn't exposed natively.
+
+   Common builder-native equivalents:
+   - Card hover lift          → Transform > Translate Y (-4px) on hover state
+   - Card hover shadow        → Box Shadow on hover state
+   - Equal-height cards       → Set parent column display: Flex, items: Stretch
+   - Aspect-ratio image       → Sizing > Aspect Ratio (5.5+)
+   - Overlay on hover         → Add overlay element, set Opacity 0 (default)
+                                → 1 (hover) in Composable Settings
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   8. Reduced motion fallback
+   Card hover transforms shouldn't animate for users who prefer reduced motion.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .et_pb_loop .et_pb_loop_item,
+  .et_pb_loop .product-overlay {
+    transition: none !important;
+  }
+  .et_pb_loop .et_pb_loop_item:hover {
+    transform: none !important;
+  }
+}

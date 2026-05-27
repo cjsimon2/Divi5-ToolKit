@@ -1,14 +1,19 @@
 ---
 name: Divi 5 Compatibility
-description: Use this skill when validating CSS for Divi 5 / Divi 5.2 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce), migrating from Divi 4 to Divi 5, understanding breakpoints, or fixing "styles not working" / "button override not working" / "static CSS cache" issues. Provides compatibility rules, validation patterns, specificity fixes, composable settings alternatives, and a full error-message reference.
+description: Use this skill when validating CSS for Divi 5 / Divi 5.6 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce, Perfmatters), migrating from Divi 4 to Divi 5, understanding breakpoints, applying the 5.5 Aspect Ratio + Framing settings to prevent CLS, using the 5.3 pseudo-class editing modes (:checked / :focus / :active) instead of custom CSS, the 5.4 Sizing Variable Generator and Relative Colorscheme Generator, the 5.6 new modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), Nested Option Presets, Critical CSS / Dynamic CSS / Inline Stylesheets, or fixing "styles not working" / "button override not working" / "static CSS cache" issues. Provides compatibility rules, validation patterns, specificity fixes, composable settings alternatives, version-specific bug fix history, and a full error-message reference.
 user-invocable: false
 ---
 
 # Divi 5 Compatibility Reference
 
-**Divi 5 Version:** 5.2.0 (April 2026 — Divi 5.0 released February 26, 2026)
+**Divi 5 Version:** 5.6.0 (May 25, 2026 — Divi 5.0 released February 26, 2026)
 **Architecture:** React 18, no Shadow DOM, standard DOM with `et_pb_*` classes
-**Key 5.2 Addition:** Composable Settings — toggle any design option on any sub-element
+**Key recent additions:**
+- 5.2 — Composable Settings (toggle any design option on any sub-element)
+- 5.3 — Pseudo-class editing (`:checked`, `:focus`, `:active`), Contact Form 7 Styler, Nested Option Presets
+- 5.4 — Sizing Variable Generator, Relative Colorscheme Generator
+- 5.5 — Aspect Ratio + Framing on all images, Image Presets, SVG sanitization
+- 5.6 — Five new modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), Color Scale + Color Harmony Generators
 
 ## CSS Feature Support
 
@@ -297,17 +302,22 @@ body .et_pb_button:hover {
 ### D5 Dev Tool
 - [github.com/elegantthemes/d5-dev-tool](https://github.com/elegantthemes/d5-dev-tool) — debugging modal for the Visual Builder
 
-## Composable Settings Compatibility (Divi 5.2+)
+## Composable Settings Compatibility (Divi 5.2+ through 5.5)
 
 Composable Settings let you enable any design option for any module sub-element directly in the builder. Before reaching for custom CSS, check if the styling can be achieved natively:
 
-| CSS Pattern | Composable Alternative |
-|-------------|----------------------|
-| Width/height on buttons | Enable Sizing options on button sub-element |
-| Border on titles | Enable Border options on title sub-element |
-| Animation on images | Enable Animation options on image sub-element |
-| Transform on any sub-element | Enable Transform options via Compose Settings |
-| Spacing on any sub-element | Enable Spacing options via Compose Settings |
+| CSS Pattern | Composable Alternative | Since |
+|-------------|----------------------|-------|
+| Width/height on buttons | Enable Sizing options on button sub-element | 5.2 |
+| Border on titles | Enable Border options on title sub-element | 5.2 |
+| Animation on images | Enable Animation options on image sub-element | 5.2 |
+| Transform on any sub-element | Enable Transform options via Compose Settings | 5.2 |
+| Spacing on any sub-element | Enable Spacing options via Compose Settings | 5.2 |
+| `input:focus` / `input:checked` / `input:active` styling | Use the pseudo-class tabs in field design | 5.3 |
+| `aspect-ratio: 16/9` on images | Sizing > Aspect Ratio | 5.5 |
+| `object-fit` / `object-position` on cropped images | Framing settings | 5.5 |
+| Image-specific options on non-image modules | Composable settings for image option groups | 5.5 |
+| Nested presets (e.g., button border inside CTA preset) | Nested Option Presets | 5.3 |
 
 **When CSS is still needed:**
 - Complex selectors (`:has()`, sibling combinators, attribute selectors)
@@ -316,13 +326,37 @@ Composable Settings let you enable any design option for any module sub-element 
 - Custom `@keyframes` animations
 - Cross-element relationships
 - Canvas/popup styling
+- Custom-styled checkboxes/radios with visual UI distinct from the native input
 
-## Known Divi 5.2 CSS Bug Fixes
+## Known Divi 5.x CSS Bug Fixes (Version History)
 
-These issues were fixed in 5.2 — if you see them, the user may be on an older version:
+If a user reports one of these symptoms, check whether their Divi version predates the fix.
+
+### Fixed in 5.2
 - Box shadow inherited hover states breaking due to empty string values overwriting presets
 - Transform Scale handle drag corrupting `calc()` function values and CSS variable values
 - Broken CSS on pages with loops if a paginated page was visited before the main loop page
+
+### Fixed in 5.3 (April 24, 2026 — 69 fixes total)
+- Sticky/locked module rendering performance regressions
+- Visual Builder loading speed (deferred assets + lazy-loading of editor chunks)
+- Form field option inconsistencies across modules
+
+### Fixed in 5.5 (May 12, 2026 — 58 fixes total)
+- Grid class parity for `first_in_row`, `last_in_row`, `on_last_row` selectors
+- Flex/Grid layout row height application
+- Border inheritance corrections
+- CSS variable application for background images
+
+### Fixed in 5.6 (May 25, 2026 — 109 changes total)
+- Decimal values in Section Divider Horizontal Repeat field (0.6x now accepted)
+- Grid Auto Columns/Rows accept full CSS track values beyond single numeric sizes
+- Global number and font variables render correctly on frontend
+- Responsive padding calculations corrected for columns with child modules
+- Background videos no longer load on devices where the module is removed
+
+### Pattern
+If a user is on a Divi version older than the fix for their issue, the answer is "update Divi." For users who can't update (compatibility constraints, third-party module dependencies), provide a workaround appropriate to their version.
 
 ## Error Messages Reference
 
@@ -358,6 +392,8 @@ validation_mode: advisory  # or "strict"
 
 For complete details, see:
 - `${CLAUDE_PLUGIN_ROOT}/skills/divi5-compatibility/references/unit-conversions.md` — CSS unit support, conversion tables, fluid responsive patterns
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-performance/SKILL.md` — Critical CSS, Dynamic CSS, Inline Stylesheets, cache plugin compatibility
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-performance/references/core-web-vitals.md` — LCP/INP/CLS diagnostics with Divi-specific causes and fixes
 
 ## Resources
 
