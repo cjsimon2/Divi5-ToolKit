@@ -292,27 +292,40 @@ body .et_pb_module h2 {
 
 ## Responsive Breakpoints
 
-Divi 5 has 7 breakpoints (3 active by default). Key ones for custom CSS:
+Divi 5 supports 7 customizable breakpoints (3 active by default). Recommended ranges aligned with 2025 device traffic distribution:
+
+| # | Breakpoint | Width | Target Devices |
+|---|------------|-------|----------------|
+| 1 | Phone Portrait | ≤479px | Small phones (360–430px most common) |
+| 2 | Phone Landscape | 480–767px | Phones rotated, phablets |
+| 3 | Tablet Portrait | 768–1023px | iPad portrait, tablets |
+| 4 | Tablet Landscape | 1024–1279px | iPad landscape, small laptops |
+| 5 | Desktop | 1280–1535px | Standard laptops (BASE — no media query) |
+| 6 | Widescreen | 1536–1919px | Large monitors |
+| 7 | Ultra Wide | ≥1920px | Full HD, 4K, ultrawides |
 
 ```css
-/* Tablet (default active) */
-@media (max-width: 980px) { }
+/* BASE: Desktop (1280–1535px) — no media query */
 
-/* Phone (default active) */
-@media (max-width: 767px) { }
-
-/* Widescreen (must enable in builder) */
-@media (min-width: 1280px) { }
-
-/* Ultra Wide (must enable in builder) */
-@media (min-width: 2560px) { }
+@media (min-width: 1920px) { /* Ultra Wide */ }
+@media (min-width: 1536px) and (max-width: 1919px) { /* Widescreen */ }
+@media (max-width: 1279px) { /* Tablet Landscape */ }
+@media (max-width: 1023px) { /* Tablet Portrait */ }
+@media (max-width: 767px)  { /* Phone Landscape */ }
+@media (max-width: 479px)  { /* Phone Portrait */ }
 ```
+
+**Enable additional breakpoints in Divi:** Visual Builder → three-dot icon next to device icons → **Sitewide Responsive Breakpoints** → enable Phone Wide, Tablet Wide, Widescreen, Ultra Wide.
 
 **Best practice:** Use `clamp()`, `vw`, `calc()` for fluid responsive values to reduce breakpoint overrides:
 ```css
 font-size: clamp(1rem, 2vw + 0.5rem, 2rem);
 padding: clamp(1rem, 3vw, 4rem);
 ```
+
+For complete 7-breakpoint templates, device statistics, and typography scales, see:
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/responsive-7-breakpoints.css` — full responsive template
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/references/responsive-breakpoints-2025.md` — 2025 device data, configuration guide, framework comparison
 
 ## Layout Patterns
 
@@ -533,5 +546,7 @@ For complete examples, see:
 - `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/dark-mode.css` — System-aware dark mode
 - `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/woocommerce.css` — WooCommerce styling patterns
 - `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/accessibility.css` — WCAG 2.1 AA accessibility fixes
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/responsive-7-breakpoints.css` — Full 7-breakpoint responsive template (2025)
 - `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/references/divi-selectors.md` — Complete selector reference
+- `${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/references/responsive-breakpoints-2025.md` — 2025 breakpoint research and device statistics
 - `${CLAUDE_PLUGIN_ROOT}/skills/divi5-compatibility/references/unit-conversions.md` — CSS unit reference (in the compatibility skill)

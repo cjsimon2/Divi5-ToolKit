@@ -1,0 +1,403 @@
+/**
+ * ============================================
+ * DIVI 5 RESPONSIVE CSS TEMPLATE
+ * 7 Breakpoints (2025 Best Practices)
+ * ============================================
+ *
+ * Breakpoint System:
+ * ------------------
+ * 1. Phone Portrait:    ≤479px   (small phones)
+ * 2. Phone Landscape:   480-767px (phones rotated, phablets)
+ * 3. Tablet Portrait:   768-1023px (iPad portrait, tablets)
+ * 4. Tablet Landscape:  1024-1279px (iPad landscape, small laptops)
+ * 5. Desktop:           1280-1535px (BASE - no media query)
+ * 6. Widescreen:        1536-1919px (large monitors)
+ * 7. Ultra Wide:        ≥1920px (Full HD, 4K, ultrawides)
+ *
+ * Usage:
+ * ------
+ * - Copy relevant sections to your Divi Theme Options or Page CSS
+ * - Customize values for your specific design needs
+ * - Test on real devices at each breakpoint
+ */
+
+/* ============================================
+   CSS CUSTOM PROPERTIES (Design Tokens)
+   ============================================ */
+:root {
+  /* Breakpoint values (for reference in JS if needed) */
+  --bp-phone: 479px;
+  --bp-phone-wide: 767px;
+  --bp-tablet: 1023px;
+  --bp-tablet-wide: 1279px;
+  --bp-widescreen: 1536px;
+  --bp-ultrawide: 1920px;
+
+  /* Fluid Typography */
+  --font-h1: clamp(1.75rem, 4vw + 1rem, 4rem);
+  --font-h2: clamp(1.5rem, 3vw + 0.75rem, 3rem);
+  --font-h3: clamp(1.25rem, 2vw + 0.5rem, 2.25rem);
+  --font-body: clamp(0.938rem, 0.5vw + 0.875rem, 1.188rem);
+  --font-small: clamp(0.75rem, 0.3vw + 0.7rem, 1rem);
+
+  /* Spacing Scale */
+  --space-xs: clamp(0.5rem, 1vw, 0.75rem);
+  --space-sm: clamp(0.75rem, 1.5vw, 1rem);
+  --space-md: clamp(1rem, 2vw, 1.5rem);
+  --space-lg: clamp(1.5rem, 3vw, 2.5rem);
+  --space-xl: clamp(2rem, 4vw, 4rem);
+  --space-2xl: clamp(3rem, 6vw, 6rem);
+
+  /* Content Width */
+  --content-max: 1140px;
+  --content-narrow: 720px;
+  --content-wide: 1320px;
+}
+
+
+/* ============================================
+   BASE STYLES (Desktop: 1280-1535px)
+   No media query needed - this is the default
+   ============================================ */
+
+/* Typography */
+body {
+  font-size: var(--font-body);
+  line-height: 1.6;
+}
+
+h1, .et_pb_module h1 {
+  font-size: var(--font-h1);
+  line-height: 1.2;
+}
+
+h2, .et_pb_module h2 {
+  font-size: var(--font-h2);
+  line-height: 1.25;
+}
+
+h3, .et_pb_module h3 {
+  font-size: var(--font-h3);
+  line-height: 1.3;
+}
+
+/* Layout */
+.et_pb_row {
+  max-width: var(--content-max) !important;
+}
+
+/* Sections */
+.et_pb_section {
+  padding: var(--space-xl) 0 !important;
+}
+
+
+/* ============================================
+   ULTRA WIDE (≥1920px)
+   Full HD monitors, 4K, ultrawide displays
+   ============================================ */
+@media (min-width: 1920px) {
+  :root {
+    --content-max: 1500px;
+    font-size: 18px;
+  }
+
+  .et_pb_row {
+    max-width: 1500px !important;
+  }
+
+  .et_pb_section {
+    padding: 6rem 0 !important;
+  }
+
+  /* Hero sections can be larger */
+  .hero-title {
+    font-size: 4.5rem !important;
+  }
+}
+
+
+/* ============================================
+   WIDESCREEN (1536-1919px)
+   Large monitors, high-resolution laptops
+   ============================================ */
+@media (min-width: 1536px) and (max-width: 1919px) {
+  :root {
+    --content-max: 1320px;
+    font-size: 17px;
+  }
+
+  .et_pb_row {
+    max-width: 1320px !important;
+  }
+}
+
+
+/* ============================================
+   TABLET LANDSCAPE (1024-1279px)
+   iPad landscape, small laptops, large tablets
+   ============================================ */
+@media (max-width: 1279px) {
+  :root {
+    --content-max: 960px;
+  }
+
+  .et_pb_row {
+    max-width: 960px !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+
+  /* Adjust multi-column layouts */
+  .et_pb_column_1_4 {
+    width: 50% !important;
+  }
+
+  /* Navigation adjustments */
+  .et_pb_menu__menu > nav > ul > li > a {
+    padding: 0.75rem 1rem !important;
+  }
+}
+
+
+/* ============================================
+   TABLET PORTRAIT (768-1023px)
+   iPad portrait, Android tablets
+   ============================================ */
+@media (max-width: 1023px) {
+  :root {
+    --content-max: 720px;
+    font-size: 15px;
+  }
+
+  .et_pb_row {
+    max-width: 100% !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+
+  .et_pb_section {
+    padding: var(--space-lg) 0 !important;
+  }
+
+  /* Stack 3-column layouts to 2 columns */
+  .et_pb_column_1_3 {
+    width: 50% !important;
+  }
+
+  /* Stack 4-column layouts to 2 columns */
+  .et_pb_column_1_4 {
+    width: 50% !important;
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Reduce heading sizes */
+  h1, .et_pb_module h1 {
+    font-size: 2.25rem !important;
+  }
+
+  h2, .et_pb_module h2 {
+    font-size: 1.75rem !important;
+  }
+}
+
+
+/* ============================================
+   PHONE LANDSCAPE (480-767px)
+   Phones rotated, phablets, large phones
+   ============================================ */
+@media (max-width: 767px) {
+  :root {
+    font-size: 15px;
+  }
+
+  .et_pb_row {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+
+  .et_pb_section {
+    padding: var(--space-md) 0 !important;
+  }
+
+  /* Stack all columns to single column */
+  .et_pb_column,
+  .et_pb_column_1_2,
+  .et_pb_column_1_3,
+  .et_pb_column_1_4,
+  .et_pb_column_2_3,
+  .et_pb_column_3_4 {
+    width: 100% !important;
+    margin-bottom: 1rem !important;
+  }
+
+  /* Heading adjustments */
+  h1, .et_pb_module h1 {
+    font-size: 1.875rem !important;
+    line-height: 1.2 !important;
+  }
+
+  h2, .et_pb_module h2 {
+    font-size: 1.5rem !important;
+  }
+
+  h3, .et_pb_module h3 {
+    font-size: 1.25rem !important;
+  }
+
+  /* Button touch targets */
+  .et_pb_button {
+    padding: 0.875rem 1.5rem !important;
+    min-height: 44px !important;
+  }
+
+  /* Mobile navigation */
+  .et_mobile_menu li a {
+    padding: 1rem !important;
+    min-height: 48px !important;
+  }
+}
+
+
+/* ============================================
+   PHONE PORTRAIT (≤479px)
+   Small phones - iPhone SE, older Androids
+   Most phones are 360-430px in this range
+   ============================================ */
+@media (max-width: 479px) {
+  :root {
+    font-size: 14px;
+  }
+
+  .et_pb_row {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .et_pb_section {
+    padding: 1.5rem 0 !important;
+  }
+
+  /* Compact headings */
+  h1, .et_pb_module h1 {
+    font-size: 1.5rem !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  h2, .et_pb_module h2 {
+    font-size: 1.25rem !important;
+  }
+
+  h3, .et_pb_module h3 {
+    font-size: 1.125rem !important;
+  }
+
+  /* Body text */
+  p, .et_pb_text_inner {
+    font-size: 0.938rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Buttons - full width on small phones */
+  .et_pb_button {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 1rem 1.5rem !important;
+  }
+
+  /* Images */
+  .et_pb_image img {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Hide decorative elements */
+  .hide-on-phone {
+    display: none !important;
+  }
+}
+
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Show/hide by breakpoint */
+.show-phone-only {
+  display: none !important;
+}
+.show-tablet-only {
+  display: none !important;
+}
+.show-desktop-only {
+  display: block !important;
+}
+
+@media (max-width: 767px) {
+  .show-phone-only {
+    display: block !important;
+  }
+  .hide-on-phone {
+    display: none !important;
+  }
+  .show-desktop-only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .show-tablet-only {
+    display: block !important;
+  }
+  .hide-on-tablet {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hide-on-desktop {
+    display: none !important;
+  }
+}
+
+/* Mobile line breaks */
+.mobile-br {
+  display: none;
+}
+
+@media (max-width: 479px) {
+  .mobile-br {
+    display: block;
+  }
+}
+
+/* No wrap helper */
+.nowrap {
+  white-space: nowrap;
+}
+
+@media (max-width: 479px) {
+  .nowrap {
+    white-space: normal;
+  }
+}
+
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .et_pb_section {
+    padding: 1rem 0 !important;
+  }
+
+  .no-print,
+  .et_pb_menu,
+  .et_pb_footer {
+    display: none !important;
+  }
+
+  body {
+    font-size: 12pt !important;
+  }
+}
