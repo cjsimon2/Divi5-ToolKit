@@ -166,17 +166,19 @@ Missing: @media (prefers-reduced-motion: reduce) query
 Fix: Add reduced-motion media query to disable or simplify animations
 ```
 
-### Check 13: Composable Settings Opportunity (P3 - Info)
+### Check 13: Builder-Native Alternatives (P3 - Info)
 **Skip entirely if `flag_composable_alternatives: false`.**
-Flag CSS that could be replaced by Divi 5.2 Composable Settings:
-- Width/height/sizing on sub-elements (titles, buttons, images)
-- Simple borders, animations, or transforms on sub-elements
+Flag CSS that could be replaced by builder-native features:
+- Width/height/sizing on sub-elements (titles, buttons, images) → Composable Settings (5.2+)
+- Simple borders, animations, or transforms on sub-elements → Composable Settings (5.2+)
+- Focus/active/checked states on form fields → pseudo-class editing (5.3+)
+- Image aspect ratio or object-fit → Aspect Ratio / Framing settings (5.5+)
 
 **Report:**
 ```
-INFO: This CSS may be unnecessary with Divi 5.2 Composable Settings
+INFO: This CSS may be unnecessary with Divi's builder-native settings
 Line X: `.et_pb_blurb .et_pb_main_blurb_image { width: 80px; }`
-Alternative: Enable Sizing options on blurb image via Compose Settings
+Alternative: Enable Sizing options on blurb image via Compose Settings (5.2+)
 ```
 
 ### Check 14: Hardcoded Colors (P2 - Medium)
@@ -244,3 +246,4 @@ End with:
 1. Summary of findings
 2. Next steps recommendation
 3. Offer to run `/divi5-toolkit:convert` if major changes needed
+4. For ambiguous symptoms (styles apply in builder but not frontend, unexpected specificity conflicts), suggest `/divi5-toolkit:diagnose` for guided triage

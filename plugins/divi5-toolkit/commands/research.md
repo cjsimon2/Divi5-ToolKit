@@ -53,12 +53,14 @@ If more than 7 days old or user explicitly requested, proceed with research.
 - Builder field changes?
 
 ### Topic 2: New Features
-- New modules added?
-- New design options?
+- New modules added? (5.6 added Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed — total now 13+ D5-native modules)
+- New design options (e.g., 5.5 Aspect Ratio/Framing, 5.4 Sizing/Colorscheme Variable Generators, 5.6 Color Scale/Harmony Generators)?
 - New breakpoints or responsive tools?
 - Performance improvements?
 - Interactions and animation updates?
 - Loop Builder / Canvas updates?
+- Composable Settings expansions or new pseudo-class editing modes (5.3+)?
+- New form field options or modules (5.3 Contact Form 7 Styler, harmonized field options)?
 
 ### Topic 3: Breaking Changes
 - Deprecated selectors or patterns?

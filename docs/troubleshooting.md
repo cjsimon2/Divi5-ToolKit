@@ -298,6 +298,56 @@ body .et_pb_button:hover {
 
 **Fix:** Hover over the WordPress admin bar at the top — that area allows right-click. Click "Inspect" from there to open DevTools.
 
+### Loop Builder posts not showing or showing wrong posts
+
+**Symptom:** The Loop Builder module renders no posts, or shows posts from the wrong category/status.
+
+**Common causes:**
+1. The query's post type doesn't match the post type you published (e.g., `post` vs. a custom post type slug)
+2. `posts_per_page` is set to `-1` — this disables pagination and can time out on large post sets
+3. Custom fields used in the query template aren't registered for the queried post type
+
+**Fix:**
+1. Open the Loop Builder settings → Query tab. Verify Post Type, Status (`publish`), and any taxonomy filters match your posts
+2. Set `posts_per_page` to a finite value (12 is a safe default); enable Divi's built-in pagination
+3. Confirm custom field keys match the `meta_key` registered via `register_post_meta()` or ACF
+
+### Loop Builder CSS doesn't apply inside the loop template
+
+**Symptom:** CSS you wrote for Loop Builder card layout applies in the main page context but not inside the loop output.
+
+**Cause:** The Loop Builder renders each post in a separate sub-context; the module wrapper class (`.et_pb_loop_item`) may differ from what you're targeting.
+
+**Fix:** Target the loop item wrapper explicitly:
+```css
+.et_pb_loop_item .my-card { ... }
+```
+Use `/divi5-toolkit:generate` with "loop builder card" as the prompt to get a correctly-scoped template, or copy from `skills/divi5-css-patterns/examples/loop-builder.css`.
+
+### New Divi 5.6 module styles not applying (Timeline, Breadcrumbs, SVG, TOC, Instagram Feed)
+
+**Symptom:** Custom CSS targeting a Timeline, Breadcrumbs, SVG, Table of Contents, or Instagram Feed module has no effect.
+
+**Cause:** The five new modules added in Divi 5.6 use different wrapper classes than older D5 modules; generic selectors like `.et_pb_module` may not reach their inner elements.
+
+**Fix:**
+- Use the module-specific class as the outermost selector (e.g., `.et_pb_timeline`, `.et_pb_breadcrumbs`, `.et_pb_svg`, `.et_pb_toc`, `.et_pb_instagram_feed`)
+- For SVG color control, use `currentColor` so the SVG inherits your text color: the plugin's `new-modules.css` example demonstrates the pattern
+- Run `/divi5-toolkit:generate` and specify the module name — the plugin knows the 5.6 selectors
+- Reference: `skills/divi5-css-patterns/examples/new-modules.css`
+
+### Contact Form 7 Styler fields look unstyled
+
+**Symptom:** Contact Form 7 fields inside a Divi page ignore your custom CSS after upgrading to Divi 5.3+.
+
+**Cause:** Divi 5.3 added a native Contact Form 7 Styler module. If you're targeting CF7 field classes directly (`.wpcf7-form input`), those styles may lose to the Styler's inline output.
+
+**Fix:**
+1. Open the CF7 Styler module in the Visual Builder and set field styles through the builder — no custom CSS needed for standard field properties
+2. For properties not exposed by the Styler, use the body prefix to win specificity: `body .wpcf7-form input { ... }`
+3. For pseudo-class states (`:focus`, `:checked`), use Divi 5.3's built-in pseudo-class editing tabs in the builder instead of custom CSS
+4. Reference: `skills/divi5-css-patterns/examples/forms.css`
+
 ---
 
 ## Plugin Conflicts
@@ -392,6 +442,16 @@ body .et_pb_button:hover {
 ---
 
 ## Performance Issues
+
+### Core Web Vitals are poor (LCP, INP, or CLS failing)
+
+**Symptom:** Lighthouse or PageSpeed Insights reports LCP > 2.5s, INP > 200ms, or CLS > 0.1.
+
+**Fix:** Run the `divi5-performance` agent — it accepts Lighthouse output, a URL, project CSS files, or a plain symptom description and returns a prioritized fix list:
+```
+Run the divi5-performance agent on my Lighthouse report: [paste report]
+```
+The agent checks Divi performance settings (Dynamic CSS, Critical CSS, Inline Stylesheets), render-blocking resources, image loading, CSS anti-patterns, and cache plugin configuration. See also: `skills/divi5-performance/examples/critical-css.css` and `font-loading.css` for copy-paste starting points.
 
 ### Page is slow with many Divi 5 features enabled
 

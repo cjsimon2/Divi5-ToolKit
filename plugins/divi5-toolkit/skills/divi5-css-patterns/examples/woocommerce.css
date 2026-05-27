@@ -6,6 +6,7 @@
    Apply:      Add classes (woo-product-card, woo-sale-badge, etc.) via
                Advanced > Attributes > class on the relevant modules
    Requires:   WooCommerce plugin + Divi 5 native Woo modules
+   See also:   loop-builder.css — product card grids built with Loop Builder
    Note:       Includes `prefers-reduced-motion` fallback at bottom
    ========================================================================== */
 

@@ -201,15 +201,17 @@ If CSS has animations or interactive elements, add:
 }
 ```
 
-### Conversion 9: Composable Settings Audit (Divi 5.2+)
+### Conversion 9: Builder-Native Alternatives (Divi 5.2+)
 **Skip entirely if `flag_composable_alternatives: false`.**
-Flag CSS that could be replaced by Composable Settings:
+Flag CSS that could be replaced by builder-native features:
 ```
-COMPOSABLE SETTINGS OPPORTUNITIES:
+BUILDER-NATIVE OPPORTUNITIES:
 - Line X: `.et_pb_blurb .et_pb_main_blurb_image { width: 80px; }`
-  → Enable Sizing on blurb image sub-element via Compose Settings
+  → Enable Sizing on blurb image sub-element via Compose Settings (5.2+)
 - Line Y: `.et_pb_button { border-radius: 50px; }`
-  → Set border-radius on button sub-element in builder
+  → Set border-radius on button sub-element in builder (5.2+)
+- Line Z: `.et_pb_contact_field:focus { ... }`
+  → Use pseudo-class editing (:focus tab in design panel) (5.3+)
 ```
 
 Note these as optional — the CSS still works, but builder-native is preferred.

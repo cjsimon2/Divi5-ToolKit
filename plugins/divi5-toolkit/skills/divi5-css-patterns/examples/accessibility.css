@@ -6,6 +6,9 @@
    Purpose:    Fix common Divi 5 accessibility gaps (focus rings, touch
                targets, skip links, reduced motion, high contrast, print)
    Standards:  WCAG 2.1 AA (see inline comments for specific criteria)
+   Note:       Divi 5.3+ exposes :focus and :checked as native design tabs
+               in all form-based modules — style field focus rings there
+               before reaching for custom CSS
    ========================================================================== */
 
 /* --------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 ---
 name: divi5-accessibility
-description: Use this agent when reviewing Divi 5 CSS for accessibility issues. Checks color contrast, focus indicators, touch targets, reduced motion support, semantic elements, and ARIA attribute recommendations. Activates when writing CSS for interactive elements or when the user mentions accessibility, WCAG, ADA, or a11y.
+description: Use this agent when reviewing Divi 5.6 CSS for accessibility issues. Checks color contrast, focus indicators (with Divi 5.3 pseudo-class editing as a no-CSS alternative for form fields), touch targets, reduced motion support, semantic elements, and ARIA attribute recommendations. Activates when writing CSS for interactive elements or when the user mentions accessibility, WCAG, ADA, or a11y.
 tools: Read, Glob, Grep, WebSearch
 model: sonnet
 ---
@@ -43,7 +43,7 @@ Options:
 
 #### Check 1: Focus Indicators (P0 — Critical)
 
-Divi 5 removes default focus indicators. Check for:
+Divi 5 removes default focus indicators. **Note:** As of Divi 5.3, form field focus states (`:focus`, `:active`) can be styled directly in the builder via pseudo-class editing — recommend this no-code approach for form modules before writing custom CSS. For buttons and non-form elements, CSS is still required. Check for:
 
 **Anti-patterns:**
 ```css

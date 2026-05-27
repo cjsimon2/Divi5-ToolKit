@@ -7,7 +7,7 @@ allowed-tools: Read, Write, Glob, Grep, WebSearch, WebFetch
 
 # Divi 5 CSS Generator
 
-You are generating Divi 5-compatible CSS (v5.2+). Follow these steps:
+You are generating Divi 5-compatible CSS (v5.6, current). Follow these steps:
 
 ## When to Research
 
@@ -118,14 +118,16 @@ Before presenting, verify:
 - [ ] Uses custom classes, not numbered selectors
 - [ ] Responsive behavior addressed (fluid values or media queries)
 
-## Step 5: Check Composable Settings Alternative
+## Step 5: Check Builder-Native Alternatives
 
-Before presenting CSS, check if the styling could be achieved with **Divi 5.2 Composable Settings** (no CSS needed):
-- Simple sizing, spacing, borders on sub-elements → Composable Settings
+Before presenting CSS, check if the styling could be achieved without CSS:
+- Simple sizing, spacing, borders on sub-elements → **Composable Settings** (5.2+)
+- Focus, active, checked states on form fields → **Pseudo-class editing** (5.3+)
+- Image aspect ratio / object-fit → **Aspect Ratio / Framing settings** (5.5+)
 - Complex patterns, cross-element styles, animations → CSS
 
-If Composable Settings can handle it, present both options:
-1. **No-code approach** — Composable Settings instructions
+If a builder-native option covers it, present both options:
+1. **No-code approach** — builder instructions (Composable Settings / pseudo-class editing / Aspect Ratio)
 2. **CSS approach** — for child themes or more control
 
 ## Step 6: Provide Usage Instructions

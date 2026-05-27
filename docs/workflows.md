@@ -72,13 +72,13 @@ cp /path/to/Divi5-ToolKit/templates/divi5-toolkit.local.md .claude/divi5-toolkit
 
 Then open `.claude/divi5-toolkit.local.md` and edit:
 - `css_prefix` — change `my` to your project's short prefix (e.g., `acme`)
-- `divi_version` — set to `"5.2"` if you're current
+- `divi_version` — set to `"5.6"` if you're current
 - `accessibility_level` — `aa` for most projects, `aaa` for healthcare/government
 - `active_breakpoints` — leave defaults unless you need more
 
 ### Step 3 — Verify
 
-In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 6 commands (generate, validate, convert, research, scaffold, audit).
+In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 7 commands (generate, validate, convert, diagnose, research, scaffold, audit).
 
 **Verify by running:**
 ```
@@ -145,7 +145,7 @@ You have an existing Divi 4 child theme and need to bring it forward.
 
 In `.claude/divi5-toolkit.local.md`:
 ```yaml
-divi_version: "5.2"
+divi_version: "5.6"
 ```
 
 ### Step 2 — Convert the existing CSS file

@@ -33,7 +33,7 @@ cp /path/to/Divi5-ToolKit/templates/divi5-toolkit.local.md .claude/divi5-toolkit
 
 Edit `.claude/divi5-toolkit.local.md` and set `css_prefix` to your project's class prefix (e.g., `acme`). Leave the other defaults alone.
 
-In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 6 commands. Try one:
+In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 7 commands. Try one:
 
 ```
 /divi5-toolkit:generate primary button with gold hover state
@@ -217,7 +217,7 @@ Key settings:
 validation_mode: advisory             # "advisory" (warnings) or "strict" (blocking errors)
 default_format: theme-options         # "theme-options" | "code-module" | "child-theme" | "free-form"
 auto_validate: true                   # validate CSS files automatically after Write/Edit
-divi_version: "5.2"                   # target Divi version — read by /research and the validators
+divi_version: "5.6"                   # target Divi version — read by /research and the validators
 css_prefix: my                        # your custom CSS class prefix
 active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
   - phone
@@ -226,7 +226,7 @@ active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
 accessibility_level: aa               # "aa" | "aaa" | "off" — strictness of accessibility checks
 flag_composable_alternatives: true    # suggest builder-native alternatives to custom CSS (Divi 5.2+)
 scaffold_style: light                 # "light" | "dark" | "brand" — default color scheme for /scaffold
-last_research: 2026-04-12             # auto-updated by divi5-researcher
+last_research: 2026-05-27             # auto-updated by divi5-researcher
 ```
 
 **What each setting affects:**

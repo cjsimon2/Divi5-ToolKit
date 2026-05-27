@@ -1,6 +1,6 @@
 # Divi 5 CSS Selectors Reference
 
-> **Part of:** the `divi5-css-patterns` skill. See the parent `SKILL.md` for CSS patterns, override strategies, and best practices. Targets Divi 5.2.
+> **Part of:** the `divi5-css-patterns` skill. See the parent `SKILL.md` for CSS patterns, override strategies, and best practices. Targets Divi 5.6.
 
 ## Overview
 
@@ -72,6 +72,7 @@ A complete selector reference for Divi 5's module classes, inner element selecto
 | Selector | Module | Inner Selectors |
 |----------|--------|-----------------|
 | `.et_pb_contact_form` | Contact Form | `.et_pb_contact_field` |
+| `.et_pb_cf7_styler` | Contact Form 7 Styler (5.3) | `.et_pb_cf7_styler_inner` — renders + styles CF7 inside Divi; use builder controls before writing CF7 CSS manually |
 | `.et_pb_search` | Search | `.et_pb_s` (input field) |
 | `.et_pb_login` | Login | `.et_pb_login_form` |
 | `.et_pb_social_media_follow` | Social Follow | `.et_pb_social_media_follow_network_link` |
@@ -97,6 +98,20 @@ These are new modules introduced in Divi 5 (selectors may vary — inspect in De
 | Icon List | Lists with icons | Per-item icons, global style management |
 | Link | Standalone link | For custom navigation menus |
 | Lottie | Animation module | Lottie JSON animations with controls |
+
+## Divi 5.6 New Modules (May 2026)
+
+Selectors for the five modules added in 5.6. The outer selectors are confirmed; inner element selectors are based on observed markup patterns — verify in DevTools if the module ships an update.
+
+| Selector | Module | Inner Selectors |
+|----------|--------|-----------------|
+| `.et_pb_timeline` | Timeline | `.et_pb_timeline_track`, `.et_pb_timeline_event`, `.et_pb_timeline_marker`, `.et_pb_timeline_content`, `.et_pb_timeline_date`, `.et_pb_timeline_title`, `.et_pb_timeline_body` |
+| `.et_pb_breadcrumbs` | Breadcrumbs | `ol`/`ul`, `li`, `li.current`, `li.home`, `a` — Home Link uses separate builder settings |
+| `.et_pb_svg` | SVG | `svg`, `svg path`, `svg circle`, `svg rect` — use `currentColor` pattern for color inheritance |
+| `.et_pb_table_of_contents` | Table of Contents | `.et_pb_toc_title`, `ol`/`ul`, nested `ol ol`/`ul ul`, `a`, `a.is-active` |
+| `.et_pb_instagram_feed` | Instagram Feed | `.et_pb_instagram_item`, `.et_pb_instagram_item img`, `.et_pb_instagram_overlay`, `.stat` |
+
+See `examples/new-modules.css` for complete styling patterns for each 5.6 module.
 
 ## Free-Form CSS Targeting (Divi 5)
 

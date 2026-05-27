@@ -18,14 +18,14 @@ Read `.claude/divi5-toolkit.local.md` if it exists. Apply these settings (use de
 accessibility_level: aa                   # "aa" | "aaa" | "off"
 flag_composable_alternatives: true        # true | false
 css_prefix: my                            # custom class prefix
-divi_version: "5.2"                       # target Divi version
+divi_version: "5.6"                       # target Divi version
 ```
 
 **Behavior:**
 - `accessibility_level: off` — Skip Category E entirely. Reweight remaining categories proportionally so the total still maxes at 100.
 - `accessibility_level: aaa` — Use stricter thresholds: 7:1 contrast for normal text (vs. 4.5:1), focus indicators must be ≥ 2px, flag any animation triggered by hover/focus without reduced-motion fallback.
 - `flag_composable_alternatives: false` — Skip the "Composable Settings Opportunities" report section in Step 6.
-- `divi_version: "5.0"` or `"5.1"` — Mention in the report that Composable Settings (5.2) and certain bug fixes are not available on the user's target version.
+- `divi_version: "5.0"` or `"5.1"` — Mention in the report that Composable Settings (5.2+), pseudo-class editing (5.3+), Aspect Ratio/Framing (5.5+), and certain bug fixes are not available on the user's target version.
 
 ## Step 2: Discover CSS Sources
 
@@ -207,8 +207,8 @@ Capped at: 0 (minimum) — 100 (maximum)
 ║  (omitted if flag_composable_alternatives: false)            ║
 ╠══════════════════════════════════════════════════════════════╣
 ║                                                              ║
-║  These CSS rules could be replaced by Divi 5.2's             ║
-║  Composable Settings (no custom CSS needed):                 ║
+║  These CSS rules could be replaced by Divi 5.2+ Composable   ║
+║  Settings or 5.3+ pseudo-class editing (no custom CSS):      ║
 ║                                                              ║
 ║  1. [selector] → [which Composable Setting replaces it]      ║
 ║                                                              ║
@@ -227,3 +227,4 @@ After presenting the report:
 5. **Scaffold missing sections** — Run `/divi5-toolkit:scaffold` to generate clean, audited section templates
 6. **Export report** — Save audit report to file
 7. **Re-audit** — Run again after fixes to verify improvement
+8. **Performance deep-dive** — If Category D flags major issues, spawn the `divi5-performance` agent for Critical CSS, font loading, and Dynamic CSS analysis. Or run `/divi5-toolkit:diagnose` for ambiguous performance symptoms.
