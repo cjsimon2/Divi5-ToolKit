@@ -373,6 +373,17 @@ divi5-toolkit/                            # ← repo root + marketplace root
 
 ## Changelog
 
+### v2.2.1 (May 27, 2026)
+
+- **Doc sweep — catch up older surfaces to v2.2.0.** The v2.2.0 release pass updated the actively maintained docs (README, STATE, `docs/usage`, `docs/configuration`, `docs/workflows`) and the two refreshed SKILL.md files, but left some surfaces behind. v2.2.1 closes those gaps:
+  - **`CLAUDE.md`** — "currently 5.2" → "currently 5.6"; architecture diagram's `skills/` line now lists `divi5-performance` alongside the two existing skills.
+  - **`docs/troubleshooting.md`** — 5 new entries covering Loop Builder query/template scoping issues, 5.6 module styles not applying (Timeline, Breadcrumbs, SVG, TOC, Instagram Feed), Contact Form 7 Styler unstyled fields, and Core Web Vitals failures (routed to the `divi5-performance` agent).
+  - **9 older agent/command files** — `divi5-validator`, `divi5-researcher`, `divi5-accessibility` agent descriptions now reference Divi 5.6, 5.3 pseudo-class editing, 5.5 Aspect Ratio/Framing. The accessibility agent's focus check notes 5.3's native focus design tabs make no-code focus styling the preferred path. The 6 older commands (`audit`, `generate`, `validate`, `convert`, `research`, `scaffold`) bump default `divi_version` to 5.6, expand their "Builder-Native Alternatives" sections to list Composable Settings (5.2+), pseudo-class editing (5.3+), and Aspect Ratio/Framing (5.5+), and reference `/diagnose` and the `divi5-performance` agent as escalation paths.
+  - **`skills/divi5-css-patterns/references/divi-selectors.md`** — added Contact Form 7 Styler row to the Forms & Utility table; new section for the 5.6 modules with selectors and a cross-reference to `new-modules.css`.
+  - **`skills/divi5-css-patterns/examples/woocommerce.css`** header cross-references `loop-builder.css` for product card grids.
+  - **`skills/divi5-css-patterns/examples/accessibility.css`** header notes 5.3 native focus pseudo-class editing as the preferred path over custom CSS focus ring overrides.
+- **No new features, no breaking changes.** Pure content catch-up after v2.2.0. Plugin still validates with `claude plugin validate .`.
+
 ### v2.2.0 (May 27, 2026)
 - **New:** `divi5-performance` skill — Core Web Vitals (LCP, INP, CLS), Critical CSS strategy, Dynamic CSS pipeline, Inline Stylesheets, local font loading with `size-adjust`/`ascent-override` for CLS prevention, lazy-loading background images, cache plugin compatibility matrix. Includes `examples/critical-css.css` (hand-crafted critical CSS template), `examples/font-loading.css` (local @font-face pattern), and `references/core-web-vitals.md` (full LCP/INP/CLS reference with Divi-specific causes and fixes).
 - **New:** `divi5-performance` agent — Performance auditor that triggers on Core Web Vitals mentions, slow page reports, render-blocking flags, or cache plugin conflicts. Reads Lighthouse / PSI output, project CSS, or Divi settings and returns prioritized fixes.

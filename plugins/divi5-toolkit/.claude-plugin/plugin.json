@@ -1,6 +1,6 @@
 {
   "name": "divi5-toolkit",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Divi 5 development assistant: validates CSS compatibility, generates Divi-ready code, scaffolds page sections, audits project CSS health, checks accessibility, diagnoses symptoms, audits performance for Core Web Vitals, and learns from errors. Updated for Divi 5.6 with the 5 new modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), 5.5 Aspect Ratio + Framing, 5.4 Variable Generators, 5.3 pseudo-class editing + Contact Form 7 Styler + Nested Option Presets, plus Composable Settings, Canvas system, Loop Builder.",
   "keywords": [
     "divi",
