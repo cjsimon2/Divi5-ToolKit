@@ -24,7 +24,7 @@ To create it, copy the template:
 
 ```bash
 mkdir -p .claude
-cp /path/to/Divi5-ToolKit/templates/divi5-toolkit.local.md .claude/divi5-toolkit.local.md
+cp /path/to/Divi5-ToolKit/plugins/divi5-toolkit/templates/divi5-toolkit.local.md .claude/divi5-toolkit.local.md
 ```
 
 Or write the file by hand using the schema below. The plugin works without any config file — it falls back to defaults — but you'll get more consistent results by setting a few key values.
@@ -387,4 +387,4 @@ If you ever add a new setting to the template, the [User Config Schema policy](.
 - [`docs/usage.md`](usage.md) — Detailed reference for every command, agent, and skill
 - [`docs/workflows.md`](workflows.md) — Common multi-step scenarios
 - [`docs/troubleshooting.md`](troubleshooting.md) — FAQ and common issues
-- [`templates/divi5-toolkit.local.md`](../templates/divi5-toolkit.local.md) — The template file itself
+- [`templates/divi5-toolkit.local.md`](../plugins/divi5-toolkit/templates/divi5-toolkit.local.md) — The template file itself

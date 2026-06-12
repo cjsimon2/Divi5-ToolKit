@@ -103,7 +103,7 @@ When you add a new command, agent, or skill: update the README tables AND the co
 Load the plugin from a local checkout:
 
 ```bash
-claude --plugin-dir "/path/to/Divi5-ToolKit"
+claude --plugin-dir "/path/to/Divi5-ToolKit/plugins/divi5-toolkit"
 ```
 
 Then manually exercise `/divi5-toolkit:<command>` and agents against a sample Divi project. Because there is no automated test suite, every change should be verified end-to-end in a live Claude Code session.
@@ -127,7 +127,7 @@ Follow semantic versioning: patch for typo/doc fixes, minor for new commands/age
 
 ## Naming Conventions
 
-- **Custom CSS classes** generated for end users use the prefix from `css_prefix` in the user's config (default `my-`). Never hard-code `my-` in examples — derive it or document the variable.
+- **Custom CSS classes** generated for end users use the prefix from `css_prefix` in the user's config (default `my`, rendered as `my-*` class names). Never hard-code `my-` in command/agent examples — derive it from the config or document the `{prefix}` placeholder. (The static files in `skills/*/examples/` may use `my-` literally; their headers explain the substitution.)
 - **Agents** use the `divi5-` prefix (e.g., `divi5-validator`).
 - **Commands** have no prefix in the filename (`generate.md`), but users invoke them with the `divi5-toolkit:` namespace (`/divi5-toolkit:generate`).
 - **Skills** use the `divi5-` prefix in the directory name (`divi5-css-patterns`, `divi5-compatibility`).
@@ -146,14 +146,14 @@ If you find a violation (e.g., "Divi 5 Toolkit" with a space, or "Divi5" used to
 
 ## User Config Schema
 
-The plugin reads runtime configuration from `.claude/divi5-toolkit.local.md` in the user's project. Every key listed in `templates/divi5-toolkit.local.md` MUST be consumed by at least one command, agent, or hook — orphan config keys are a bug. When adding a new key:
+The plugin reads runtime configuration from `.claude/divi5-toolkit.local.md` in the user's project. Every key listed in `plugins/divi5-toolkit/templates/divi5-toolkit.local.md` MUST be consumed by at least one command, agent, or hook — orphan config keys are a bug. When adding a new key:
 
 1. Add it to the template with a sensible default and an inline comment.
 2. Document which component reads it in the README config table.
 3. Add config-reading instructions to the consuming command/agent (use a "Read Project Config" step early in the file).
 4. Decide what happens when the key is missing — always provide a safe default rather than failing.
 
-Currently consumed keys: `validation_mode`, `default_format`, `auto_validate`, `divi_version`, `css_prefix`, `active_breakpoints`, `accessibility_level`, `flag_composable_alternatives`, `scaffold_style`, `last_research`.
+Currently consumed keys: `validation_mode`, `default_format`, `auto_validate`, `divi_version`, `css_prefix`, `active_breakpoints`, `accessibility_level`, `flag_composable_alternatives`, `scaffold_style`, `last_research`. Two further keys are agent-maintained storage rather than user settings: `learned_errors` (written by `divi5-error-learner`, read by `/diagnose` as the error library) and `research_notes` (written by `divi5-researcher`/`/research`).
 
 ## Knowledge Currency
 
@@ -161,5 +161,5 @@ Divi ships updates frequently. Keeping the plugin accurate matters more than shi
 
 - The `divi5-researcher` agent runs on-demand via `/divi5-toolkit:research` and refreshes knowledge in the skill files.
 - Manual research (new modules, spec changes, bug fixes you learn about) goes into `skills/divi5-css-patterns/SKILL.md` or `skills/divi5-compatibility/SKILL.md` — whichever is more appropriate.
-- Bump `last_research` in the config template (`templates/divi5-toolkit.local.md`) when you do a knowledge refresh.
+- Bump `last_research` in the config template (`plugins/divi5-toolkit/templates/divi5-toolkit.local.md`) when you do a knowledge refresh.
 - v2.1.0–v2.1.5 had a `SessionStart` hook that warned users when `last_research` was more than 7 days stale. v2.1.6 removed it because Claude Code's `prompt`-type hooks require a `ToolUseContext` that doesn't exist at session start; the hook was throwing a startup error in every session. Keep the freshness honest by actually updating `last_research` on every research run, since users no longer get an automatic nudge.

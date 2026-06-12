@@ -67,7 +67,7 @@ Same JSON, but in `~/.claude/settings.json`. The plugin loads in every Claude Co
 This is a separate file from the Claude Code settings above. It tells the plugin commands which prefix, breakpoints, and accessibility level to use for THIS project.
 
 ```bash
-cp /path/to/Divi5-ToolKit/templates/divi5-toolkit.local.md .claude/divi5-toolkit.local.md
+cp /path/to/Divi5-ToolKit/plugins/divi5-toolkit/templates/divi5-toolkit.local.md .claude/divi5-toolkit.local.md
 ```
 
 Then open `.claude/divi5-toolkit.local.md` and edit:

@@ -688,7 +688,7 @@ Each section is independent — paste only the modules you use.
 **Purpose:** A configuration template you copy into your project to customize plugin behavior.
 
 **How to use:**
-1. Copy `templates/divi5-toolkit.local.md` to `.claude/divi5-toolkit.local.md` in your project root.
+1. Copy `plugins/divi5-toolkit/templates/divi5-toolkit.local.md` (from the Divi5-ToolKit repo) to `.claude/divi5-toolkit.local.md` in your project root.
 2. Edit any settings you want to override.
 3. The plugin will read it on every command/agent run.
 

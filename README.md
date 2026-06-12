@@ -17,7 +17,7 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 - **Accessibility Checking**: WCAG 2.1 AA compliance — focus indicators, color contrast, reduced motion, touch targets
 - **Divi 5 Knowledge Base**: Complete selector reference, 8 new D5 modules, Design Variable system, Preset hierarchy, responsive breakpoints, Composable Settings, Canvas system, Loop Builder
 - **Error Learning**: Paste Divi errors — the plugin analyzes, fixes, and remembers the pattern
-- **Self-Updating**: Researches Divi 5 updates weekly and updates its own knowledge base
+- **Self-Updating**: `/divi5-toolkit:research` refreshes the plugin's own knowledge base from upstream Divi sources on demand (recommended weekly — check `last_research` in your config)
 - **Migration Support**: Converts Divi 4 CSS patterns for Divi 5 compatibility
 - **CSS Examples**: Animation patterns, dark mode, WooCommerce, accessibility fixes, design tokens, button variants
 
@@ -28,7 +28,7 @@ Already have the plugin loaded? (See [Installation](#installation) if not.)
 ```bash
 # 1. From your project root, copy the config template
 mkdir -p .claude
-cp /path/to/Divi5-ToolKit/templates/divi5-toolkit.local.md .claude/divi5-toolkit.local.md
+cp /path/to/Divi5-ToolKit/plugins/divi5-toolkit/templates/divi5-toolkit.local.md .claude/divi5-toolkit.local.md
 ```
 
 Edit `.claude/divi5-toolkit.local.md` and set `css_prefix` to your project's class prefix (e.g., `acme`). Leave the other defaults alone.
@@ -113,7 +113,8 @@ Internal docs:
 
 ### Module Library
 - 40+ built-in modules with complete selector reference
-- 8 new D5 modules: Group, Carousel Group, Before/After Image, Canvas Portal, Dropdown, Icon List, Link, Lottie
+- 13+ D5-native modules: Group, Carousel Group, Before/After Image, Canvas Portal, Dropdown, Icon List, Link, Lottie, plus the five 5.6 additions (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed)
+- Contact Form 7 Styler (5.3)
 - 17+ WooCommerce product modules
 
 ### Canvas System (New in D5)
@@ -149,7 +150,7 @@ Internal docs:
 - WooCommerce styling problems
 - Divi 4 to 5 migration patterns
 - Debugging with Safe Mode, DevTools, D5 Dev Tool
-- Divi 5.2 bug fixes (transform corruption, box-shadow hover, loop CSS)
+- Divi 5.2–5.6 bug fix history (transform corruption, box-shadow hover, loop CSS, and the per-version fixes documented in the compatibility skill)
 
 ### CSS Example Library
 - **Button Variants** — primary, secondary, outline, sizes
@@ -209,7 +210,7 @@ No MCP servers required. For extended capabilities, add to your `.mcp.json`:
 
 ## Configuration
 
-Create `.claude/divi5-toolkit.local.md` in your project root. Full template at `templates/divi5-toolkit.local.md`.
+Create `.claude/divi5-toolkit.local.md` in your project root. Full template at `plugins/divi5-toolkit/templates/divi5-toolkit.local.md`.
 
 Key settings:
 
