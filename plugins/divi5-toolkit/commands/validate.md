@@ -244,3 +244,4 @@ End with:
 2. Next steps recommendation
 3. Offer to run `/divi5-toolkit:convert` if major changes needed
 4. For ambiguous symptoms (styles apply in builder but not frontend, unexpected specificity conflicts), suggest `/divi5-toolkit:diagnose` for guided triage
+5. If Check 10 flagged responsive gaps, suggest `/divi5-toolkit:responsive` to test the page at real device sizes

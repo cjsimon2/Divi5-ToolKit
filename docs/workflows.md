@@ -78,7 +78,7 @@ Then open `.claude/divi5-toolkit.local.md` and edit:
 
 ### Step 3 — Verify
 
-In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 7 commands (generate, validate, convert, diagnose, research, scaffold, audit).
+In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 8 commands (generate, validate, convert, diagnose, research, scaffold, audit, responsive).
 
 **Verify by running:**
 ```
@@ -606,6 +606,59 @@ divi_version: "5.3"
 ```
 
 Some fixes that were "warnings" might now be "info" (or vice versa) based on the updated knowledge.
+
+---
+
+## Check a Page Across Device Sizes
+
+Goal: confirm a page actually works on phones, tablets, laptops, and large monitors before (or after) launch — not just that the CSS "has media queries."
+
+### Step 1 — (Optional but recommended) Connect a browser MCP server
+
+Live testing needs browser automation. Add one of these to your project's `.mcp.json` (see the README's **Optional MCP Servers** section):
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    }
+  }
+}
+```
+
+or Chrome DevTools MCP: `"args": ["-y", "chrome-devtools-mcp@latest"]`. Restart Claude Code after adding it. Without a browser server the command still runs — it falls back to static CSS analysis.
+
+### Step 2 — Run the check
+
+Against a live page (local or staging):
+
+```
+/divi5-toolkit:responsive https://staging.example.com/landing
+```
+
+Or against CSS only:
+
+```
+/divi5-toolkit:responsive css/custom.css
+```
+
+### Step 3 — Read the device matrix
+
+Live mode resizes through 9 viewports — 360×800 (small Android), 390×844 (iPhone 14/15), 430×932 (Pro Max), 844×390 (phone landscape), 810×1080 (iPad portrait), 1024×768 (iPad landscape), 1366×768 (laptop), 1920×1080 (widescreen), 2560×1440 (ultrawide) — screenshotting each and probing for horizontal overflow, broken column stacking, unusable navigation, undersized touch targets, and illegible text. Static mode reports *risk patterns* instead (fixed widths without guards, `100vw`/`100vh` traps, vw-only font sizes, misaligned media queries).
+
+You get a PASS/issue line per device, then P0 (broken) / P1 (degraded) / P2 (risk) findings with concrete fixes and paste locations.
+
+### Step 4 — Apply fixes and re-run
+
+Apply the fixes (or take the builder-native route when one is offered — per-breakpoint settings, 5.5 Aspect Ratio). Clear Divi's Static CSS cache, then re-run the same command and confirm the matrix goes green.
+
+### Step 5 — Optional follow-ups
+
+- `/divi5-toolkit:validate` on any CSS you changed
+- `/divi5-toolkit:audit` to see Category C (Responsive Design) score improve
+- The `divi5-performance` agent if mobile rendering is slow rather than broken
 
 ---
 

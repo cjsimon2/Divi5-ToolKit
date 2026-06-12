@@ -31,7 +31,7 @@ Read the user's input and assign it to one of these buckets. If ambiguous, ask o
 
 **Signals:** "my CSS isn't working", "the button is still blue", "styles aren't loading", "looks fine in builder but broken on frontend", "stuck on the old style".
 
-**Route to:** Validation flow against the rules in the `divi5-compatibility` skill. Most common causes:
+**Route to:** Validation flow against the rules in the `divi5-compatibility` skill. **Exception:** if the symptom is *size-specific* ("broken on mobile", "fine on desktop but overlaps on tablet", "horizontal scroll on my phone"), route to `/divi5-toolkit:responsive` instead — that command tests the page across the device matrix. Most common causes:
 1. Missing `body` prefix or `!important` on `.et_pb_button` overrides
 2. CSS variable defined outside `:root`
 3. Code Module CSS without `<style>` tags

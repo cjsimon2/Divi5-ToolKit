@@ -362,3 +362,4 @@ Present the complete scaffold, then offer:
 3. Generate the same section in a different format
 4. Generate additional sections for a full page
 5. Run `/divi5-toolkit:audit` on the generated CSS
+6. Once the section is live, run `/divi5-toolkit:responsive <url>` to verify it across device sizes

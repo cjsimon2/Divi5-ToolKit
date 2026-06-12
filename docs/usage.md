@@ -320,6 +320,33 @@ Status: PASSED
 
 ---
 
+### `/divi5-toolkit:responsive`
+
+**Purpose:** Verify that a Divi 5 page works across real device sizes — small Android phones (360px) through ultrawide monitors (2560px). Two modes: **live** (drives a real browser through a 9-viewport device matrix, screenshots each size, detects horizontal overflow, broken stacking, undersized touch targets) and **static** (scans CSS for 13 responsive risk patterns when no browser is available).
+
+**When to use it:**
+- Before launch, to confirm a page holds up on phones, tablets, laptops, and large monitors
+- "It's broken on my phone" / "looks fine on desktop but overlaps on tablet" reports
+- After `/scaffold` or `/generate` output goes live, as the verification step
+- When `/audit` Category C (Responsive Design) scores poorly and you want device-level evidence
+
+**Arguments:** A URL (enables live mode if a browser MCP server is connected), a CSS file, or a directory. With no argument, scans the project's CSS in static mode.
+
+**What it does:**
+1. Reads `.claude/divi5-toolkit.local.md` for `active_breakpoints`, `divi_version`, `accessibility_level`, `css_prefix` — and resolves the project's *actual* Divi breakpoint widths (defaults vs. customized)
+2. Picks live mode (URL + Chrome DevTools MCP or Playwright MCP available) or static mode
+3. **Live:** for each of 9 device viewports (360×800, 390×844, 430×932, 844×390, 810×1080, 1024×768, 1366×768, 1920×1080, 2560×1440): resizes, screenshots, runs an in-page overflow probe, checks navigation usability, touch targets (24px AA floor / 44px recommended), text legibility, and fixed-header behavior; spot-checks 1px either side of each active breakpoint
+4. **Static:** scans CSS for risk patterns — media queries misaligned with the project's breakpoint widths, fixed widths without `max-width` guards, `100vw`/`100vh` traps, vw-only font sizes, absolute positioning with fixed offsets, missing overflow handling, and more
+5. Reports a per-device PASS/issue matrix with P0 (broken) / P1 (degraded) / P2 (risk) findings, each with a concrete fix and paste location
+
+**Tools used:** `Read`, `Glob`, `Grep`, `WebFetch`, plus Chrome DevTools MCP or Playwright MCP tools when connected
+
+**Reads config:** `active_breakpoints`, `divi_version`, `accessibility_level`, `css_prefix`
+
+**Note:** Live mode needs a browser automation MCP server. The README's **Optional MCP Servers** section has the Playwright snippet; `npx chrome-devtools-mcp@latest` works too. Without one, the command still delivers the static analysis and tells you what live testing would add.
+
+---
+
 ## Agents
 
 Agents are subagents Claude spawns automatically when the context matches their description, or that Claude is told to use explicitly. You don't invoke them with slash commands.

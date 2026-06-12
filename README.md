@@ -14,6 +14,7 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 - **Section Scaffolding**: Complete page section templates (hero, pricing, FAQ, etc.) with CSS, responsive design, and accessibility baked in
 - **Compatibility Validation**: Checks button specificity, numbered selectors, `!important` usage, CSS variable scope, format correctness, accessibility
 - **Project Audit**: Whole-project CSS health scoring with graded report and prioritized fix list
+- **Responsive Device Check**: Verifies a page at 9 real device sizes (360px Android through 2560px ultrawide) — live viewport testing + screenshots via a browser MCP server, or static CSS risk analysis without one
 - **Accessibility Checking**: WCAG 2.1 AA compliance — focus indicators, color contrast, reduced motion, touch targets
 - **Divi 5 Knowledge Base**: Complete selector reference, 8 new D5 modules, Design Variable system, Preset hierarchy, responsive breakpoints, Composable Settings, Canvas system, Loop Builder
 - **Error Learning**: Paste Divi errors — the plugin analyzes, fixes, and remembers the pattern
@@ -33,7 +34,7 @@ cp /path/to/Divi5-ToolKit/plugins/divi5-toolkit/templates/divi5-toolkit.local.md
 
 Edit `.claude/divi5-toolkit.local.md` and set `css_prefix` to your project's class prefix (e.g., `acme`). Leave the other defaults alone.
 
-In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 7 commands. Try one:
+In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 8 commands. Try one:
 
 ```
 /divi5-toolkit:generate primary button with gold hover state
@@ -57,6 +58,7 @@ You should get back Divi 5-ready CSS with `body` prefix, `!important`, your cust
 | `/divi5-toolkit:research` | Research latest Divi 5 updates |
 | `/divi5-toolkit:scaffold` | Generate complete page section templates |
 | `/divi5-toolkit:audit` | Run a full project CSS audit with scoring |
+| `/divi5-toolkit:responsive` | Check a page across device sizes (phones, tablets, laptops, widescreen) — live browser testing via MCP, or static CSS analysis |
 
 ## Agents
 
@@ -84,7 +86,7 @@ The tables above are quick references. For depth, see the `docs/` directory:
 |---|---|
 | [**`docs/usage.md`**](docs/usage.md) | Detailed reference: every command (purpose, args, example, output), every agent (triggers, behavior, output), every skill (when it activates, what it provides), every CSS example, every hook |
 | [**`docs/configuration.md`**](docs/configuration.md) | Every config setting explained, with rationale and recommended values for solo dev, agency, government, WooCommerce, prototype, and legacy project types |
-| [**`docs/workflows.md`**](docs/workflows.md) | Step-by-step guides: first-time setup, build a landing page, migrate from Divi 4, audit an inherited project, add dark mode, build a WooCommerce grid, off-canvas menu, accessibility compliance, debug "styles not applying", refresh knowledge base |
+| [**`docs/workflows.md`**](docs/workflows.md) | Step-by-step guides: first-time setup, build a landing page, migrate from Divi 4, audit an inherited project, add dark mode, build a WooCommerce grid, off-canvas menu, accessibility compliance, debug "styles not applying", refresh knowledge base, check a page across device sizes |
 | [**`docs/troubleshooting.md`**](docs/troubleshooting.md) | FAQ + diagnostic steps for plugin issues, Divi CSS issues, builder issues, plugin conflicts, migration issues, performance, and accessibility |
 
 Internal docs:
@@ -237,10 +239,10 @@ last_research: 2026-05-27             # auto-updated by divi5-researcher
 | `validation_mode` | `/validate`, `divi5-validator` |
 | `default_format` | `/generate`, `/scaffold`, `/convert` |
 | `auto_validate` | PostToolUse hook |
-| `divi_version` | `/audit` (and the project config template default) |
-| `css_prefix` | `/generate`, `/scaffold`, `/convert` |
-| `active_breakpoints` | `/generate`, `/scaffold` |
-| `accessibility_level` | `/validate`, `/audit`, `divi5-accessibility` |
+| `divi_version` | `/generate`, `/audit`, `/diagnose`, `/responsive`, `divi5-performance` |
+| `css_prefix` | `/generate`, `/scaffold`, `/convert`, `/diagnose`, `/responsive` |
+| `active_breakpoints` | `/generate`, `/scaffold`, `/responsive` |
+| `accessibility_level` | `/validate`, `/audit`, `/diagnose`, `/responsive`, `divi5-accessibility` |
 | `flag_composable_alternatives` | `/validate`, `/convert`, `/audit` |
 | `scaffold_style` | `/scaffold` |
 | `last_research` | `/research`, `divi5-researcher` |
@@ -321,7 +323,8 @@ divi5-toolkit/                            # ← repo root + marketplace root
 │       │   ├── diagnose.md              # NEW v2.2.0
 │       │   ├── research.md
 │       │   ├── scaffold.md
-│       │   └── audit.md
+│       │   ├── audit.md
+│       │   └── responsive.md             # NEW v2.3.0
 │       ├── agents/                       # Autonomous agents
 │       │   ├── divi5-validator.md
 │       │   ├── divi5-error-learner.md
@@ -373,6 +376,15 @@ divi5-toolkit/                            # ← repo root + marketplace root
 ```
 
 ## Changelog
+
+### v2.3.0 (June 12, 2026)
+
+- **New:** `/divi5-toolkit:responsive` command — verifies a page works across real device sizes instead of trusting that media queries exist.
+  - **Live mode** (when a Chrome DevTools MCP or Playwright MCP server is connected): drives a real browser through a 9-viewport device matrix — 360×800 small Android, 390×844 iPhone 14/15, 430×932 Pro Max, 844×390 phone landscape, 810×1080 iPad portrait, 1024×768 iPad landscape, 1366×768 laptop, 1920×1080 widescreen, 2560×1440 ultrawide — screenshotting each size and probing for horizontal overflow (with the offending `et_pb_*` elements named), broken column stacking, unusable navigation, touch targets below the 24px AA floor / 44px recommendation, illegible text, and fixed-header problems at short viewports. Spot-checks 1px either side of each active Divi breakpoint.
+  - **Static mode** (no browser server / CSS-only input): scans for 13 responsive risk patterns — media queries misaligned with the project's actual Divi breakpoint widths, fixed widths without `max-width` guards, `100vw` scrollbar traps, `100vh` mobile URL-bar issues (suggests `svh`/`dvh`), vw-only font sizes that ignore user zoom, absolute positioning with fixed offsets, missing table/code overflow handling, and more.
+  - Resolves the project's *actual* breakpoint widths (Divi defaults vs. customized) before judging media-query alignment; reads `active_breakpoints`, `divi_version`, `accessibility_level`, `css_prefix`.
+  - Cross-wired into the suite: `/diagnose` routes size-specific symptoms ("broken on my phone") to it, `/audit` offers it when Category C scores poorly, `/validate` and `/scaffold` suggest it as the verification step. New walkthrough in `docs/workflows.md`; full reference in `docs/usage.md`.
+- **Updated:** README config "Read by" table corrected — now also lists `/diagnose` and `divi5-performance` as consumers of the keys they've read since v2.2.0.
 
 ### v2.2.2 (June 12, 2026)
 

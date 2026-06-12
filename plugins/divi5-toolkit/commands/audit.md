@@ -230,3 +230,4 @@ After presenting the report:
 6. **Export report** — Save audit report to file
 7. **Re-audit** — Run again after fixes to verify improvement
 8. **Performance deep-dive** — If Category D flags major issues, spawn the `divi5-performance` agent for Critical CSS, font loading, and Dynamic CSS analysis. Or run `/divi5-toolkit:diagnose` for ambiguous performance symptoms.
+9. **Device-level verification** — If Category C scored poorly, run `/divi5-toolkit:responsive` to test the live page (or the CSS statically) across the 9-size device matrix.

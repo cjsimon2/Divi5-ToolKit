@@ -39,6 +39,7 @@ css_prefix: my
 
 # Active Breakpoints
 # Which of Divi 5's 7 breakpoints are enabled for this project
+# Read by: /generate, /scaffold, /responsive
 # Default: phone (767px), tablet (980px), desktop (base)
 # Optional: phone-wide (860px), tablet-wide (1024px), widescreen (1280px), ultra-wide (2560px)
 active_breakpoints:
@@ -86,6 +87,7 @@ This file stores project-specific settings for the Divi5 Toolkit plugin.
 - /divi5-toolkit:research - Research latest Divi 5 updates
 - /divi5-toolkit:scaffold - Generate complete page section templates
 - /divi5-toolkit:audit - Run full project CSS audit
+- /divi5-toolkit:responsive - Check a page across device sizes (live browser or static CSS analysis)
 
 ### CSS Integration Methods (Divi 5)
 1. **Theme Options** — Divi > Theme Options > Custom CSS (global, no tags)
