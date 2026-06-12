@@ -325,30 +325,29 @@ body .et_pb_module h2 {
 
 ## Responsive Breakpoints
 
-Divi 5 supports 7 customizable breakpoints (3 active by default). Recommended ranges aligned with 2025 device traffic distribution:
+Divi 5 supports 7 customizable breakpoints (3 active by default). The **defaults** — what your media queries must match unless the site owner has customized the widths:
 
-| # | Breakpoint | Width | Target Devices |
-|---|------------|-------|----------------|
-| 1 | Phone Portrait | ≤479px | Small phones (360–430px most common) |
-| 2 | Phone Landscape | 480–767px | Phones rotated, phablets |
-| 3 | Tablet Portrait | 768–1023px | iPad portrait, tablets |
-| 4 | Tablet Landscape | 1024–1279px | iPad landscape, small laptops |
-| 5 | Desktop | 1280–1535px | Standard laptops (BASE — no media query) |
-| 6 | Widescreen | 1536–1919px | Large monitors |
-| 7 | Ultra Wide | ≥1920px | Full HD, 4K, ultrawides |
+| Divi 5 Name | Default Width | Active by Default | Query Type |
+|-------------|---------------|-------------------|------------|
+| Phone | 767px | Yes | max-width |
+| Phone Wide | 860px | No | max-width |
+| Tablet | 980px | Yes | max-width |
+| Tablet Wide | 1024px | No | max-width |
+| Desktop | BASE | Yes | (no media query) |
+| Widescreen | 1280px | No | min-width |
+| Ultra Wide | 2560px | No | min-width |
 
 ```css
-/* BASE: Desktop (1280–1535px) — no media query */
+/* BASE: Desktop — no media query */
 
-@media (min-width: 1920px) { /* Ultra Wide */ }
-@media (min-width: 1536px) and (max-width: 1919px) { /* Widescreen */ }
-@media (max-width: 1279px) { /* Tablet Landscape */ }
-@media (max-width: 1023px) { /* Tablet Portrait */ }
-@media (max-width: 767px)  { /* Phone Landscape */ }
-@media (max-width: 479px)  { /* Phone Portrait */ }
+@media (max-width: 980px) { /* Tablet and below */ }
+@media (max-width: 767px) { /* Phone */ }
+@media (min-width: 1280px) { /* Widescreen (if enabled) */ }
 ```
 
-**Enable additional breakpoints in Divi:** Visual Builder → three-dot icon next to device icons → **Sitewide Responsive Breakpoints** → enable Phone Wide, Tablet Wide, Widescreen, Ultra Wide.
+**Enable additional breakpoints in Divi:** Visual Builder → three-dot icon next to device icons → **Sitewide Responsive Breakpoints** → enable Phone Wide, Tablet Wide, Widescreen, Ultra Wide. All widths are customizable there too.
+
+**Optional: 2025-aligned custom widths.** The `responsive-breakpoints-2025.md` reference recommends *customizing* the 7 widths to match 2025 device traffic (479 / 767 / 1023 / 1279 / BASE 1280–1535 / 1536 / 1920). Only write media queries against those values if the site's Divi breakpoints have actually been changed to match — otherwise your CSS and the builder's responsive previews will disagree.
 
 **Best practice:** Use `clamp()`, `vw`, `calc()` for fluid responsive values to reduce breakpoint overrides:
 ```css

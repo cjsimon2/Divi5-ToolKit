@@ -19,6 +19,15 @@
  * - Copy relevant sections to your Divi Theme Options or Page CSS
  * - Customize values for your specific design needs
  * - Test on real devices at each breakpoint
+ *
+ * IMPORTANT — these are the 2025-RECOMMENDED CUSTOM widths, not Divi's
+ * defaults. Divi 5 ships with Phone 767px / Tablet 980px active (plus
+ * Phone Wide 860, Tablet Wide 1024, Widescreen 1280, Ultra Wide 2560
+ * available but disabled). Before using this template, either:
+ *   a) change Divi's breakpoint widths to match (Visual Builder ->
+ *      three-dot icon -> Sitewide Responsive Breakpoints), or
+ *   b) replace the media query values below with your active Divi widths.
+ * See references/responsive-breakpoints-2025.md for the mapping table.
  */
 
 /* ============================================

@@ -27,6 +27,13 @@ This guide provides research-backed breakpoint recommendations for Divi 5 develo
 
 ## Recommended 7-Breakpoint System
 
+> **These are recommended *customized* widths, not Divi's defaults.** Out of the box,
+> Divi 5 ships with Phone **767px** and Tablet **980px** active, plus Phone Wide
+> **860px**, Tablet Wide **1024px**, Widescreen **1280px**, and Ultra Wide **2560px**
+> available but disabled. If you keep the defaults, write media queries against
+> 767px/980px (see the `divi5-compatibility` skill). The ranges below are what this
+> guide recommends *changing* the widths to, based on 2025 device data.
+
 Based on Divi 5's native breakpoint system and 2025 device data:
 
 | # | Breakpoint | Width Range | Target Devices |
@@ -133,15 +140,19 @@ Based on Divi 5's native breakpoint system and 2025 device data:
 
 ### Recommended Divi 5 Settings
 
-| Breakpoint | Divi 5 Name | Recommended Width |
-|------------|-------------|-------------------|
-| Phone Portrait | Phone | 479px |
-| Phone Landscape | Phone Wide | 767px |
-| Tablet Portrait | Tablet | 1023px |
-| Tablet Landscape | Tablet Wide | 1279px |
-| Desktop | Desktop | BASE |
-| Widescreen | Widescreen | 1536px |
-| Ultra Wide | Ultra Wide | 1920px |
+| Breakpoint (this guide) | Divi 5 Name | Divi Default Width | Recommended Width |
+|------------|-------------|--------------------|-------------------|
+| Phone Portrait | Phone | 767px | 479px |
+| Phone Landscape | Phone Wide | 860px | 767px |
+| Tablet Portrait | Tablet | 980px | 1023px |
+| Tablet Landscape | Tablet Wide | 1024px | 1279px |
+| Desktop | Desktop | BASE | BASE |
+| Widescreen | Widescreen | 1280px | 1536px |
+| Ultra Wide | Ultra Wide | 2560px | 1920px |
+
+If you adopt the recommended widths, also update any custom media queries to match.
+If you keep Divi's defaults, use 767px/980px (and 860/1024/1280/2560 where enabled)
+in your media queries instead of the ranges in this guide.
 
 ## Typography Scaling
 
@@ -219,7 +230,8 @@ body { font-size: var(--font-body); }
 
 | Framework | Breakpoints |
 |-----------|-------------|
-| **Divi 5** | 479, 767, 1023, 1279, BASE, 1536, 1920 |
+| **Divi 5 (defaults)** | 767, 860, 980, 1024, BASE, 1280, 2560 |
+| **Divi 5 (this guide's recommended widths)** | 479, 767, 1023, 1279, BASE, 1536, 1920 |
 | **Bootstrap 5** | 576, 768, 992, 1200, 1400 |
 | **Tailwind CSS** | 640, 768, 1024, 1280, 1536 |
 | **Material UI** | 600, 900, 1200, 1536 |
