@@ -1,0 +1,7 @@
+# Shell scripts must keep LF line endings — bash cannot execute CRLF scripts.
+# Without this, Windows checkouts with core.autocrlf=true silently break the
+# PostToolUse hook (hooks/css-validate.sh) with "\r: command not found" errors.
+*.sh text eol=lf
+
+# Keep everything else at git's default text handling.
+* text=auto
