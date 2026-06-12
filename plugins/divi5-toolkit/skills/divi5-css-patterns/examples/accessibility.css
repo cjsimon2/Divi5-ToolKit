@@ -142,7 +142,8 @@ select:focus-visible {
 /* --------------------------------------------------------------------------
    Touch Target Sizing
    Ensures interactive elements are large enough for touch input.
-   Minimum 44x44px target (WCAG 2.5.8 Target Size).
+   44x44px targets (WCAG 2.1 SC 2.5.5 Target Size, AAA / Apple HIG minimum).
+   The WCAG 2.2 AA floor (SC 2.5.8) is 24x24px — 44px comfortably exceeds it.
    -------------------------------------------------------------------------- */
 body .et_pb_button {
   min-height: 44px !important;

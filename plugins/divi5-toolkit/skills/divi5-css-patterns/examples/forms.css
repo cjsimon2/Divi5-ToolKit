@@ -33,7 +33,7 @@
   --form-radius: 6px;
   --form-padding-y: 0.625rem;
   --form-padding-x: 0.875rem;
-  --form-touch-min: 44px;  /* WCAG 2.5.8 */
+  --form-touch-min: 44px;  /* WCAG 2.5.5 (AAA) recommendation; 2.2 AA floor is 24px */
 }
 
 /* --------------------------------------------------------------------------

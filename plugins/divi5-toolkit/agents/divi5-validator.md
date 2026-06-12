@@ -27,25 +27,27 @@ Check recent tool calls for:
 
 ### Step 2: Quick Validation Scan
 
+**Note on searching:** The Grep tool's regex engine does not support lookaheads. Locate candidates with the simple patterns below, then Read the surrounding rule block to judge the condition.
+
 **CRITICAL ISSUES (P0) — Always Report:**
 ```
-Pattern: \.et_pb_button\s*\{(?![^}]*!important)
-Issue: Button override missing !important
+Locate: \.et_pb_button   (then read the rule block)
+Issue: Button override missing `body` prefix or `!important` on its properties
 Fix: Add body prefix and !important
 
-Pattern: \.et_pb_\w+_\d+
+Locate: \.et_pb_\w+_\d+
 Issue: Fragile numbered selector
 Fix: Use custom class via Advanced > Attributes instead
 ```
 
 **HIGH PRIORITY (P1) — Report in Advisory Mode:**
 ```
-Pattern: \.et_pb_\w+\s*\{(?![^}]*!important)
+Locate: \.et_pb_\w+\s*\{   (then check the block for !important)
 Issue: Divi override may be ignored
 Fix: Add !important
 
-Pattern: ^(?!:root)[^{]+\{[^}]*--[a-z]
-Issue: CSS variable scope may be incorrect
+Locate: ^\s*--[a-z][\w-]*\s*:   (then check the enclosing selector)
+Issue: CSS variable defined outside :root — scope may be incorrect
 Fix: Move to :root for global access
 ```
 

@@ -116,7 +116,7 @@ WCAG: 1.4.3 Contrast (Minimum) (Level AA)
 
 #### Check 3: Touch Targets (P1 — High)
 
-Mobile touch targets must be at least 44x44px (WCAG 2.5.8):
+Recommend 44x44px touch targets (WCAG 2.1 SC 2.5.5 Target Size, Level AAA — also Apple's HIG minimum). The hard floor is 24x24px per WCAG 2.2 SC 2.5.8 Target Size (Minimum), Level AA. Flag anything under 24px as a violation and anything under 44px as a recommendation:
 
 **Check for:**
 ```css
@@ -135,7 +135,7 @@ a { padding: 0; }
 WARNING: Touch target may be too small
 Line X: Button padding suggests target < 44x44px
 Fix: Ensure minimum padding of 0.75em 1em at mobile sizes
-WCAG: 2.5.8 Target Size (Minimum) (Level AA)
+WCAG: 2.5.8 Target Size (Minimum) (Level AA, 24px floor) — 44px recommended per 2.5.5 (AAA)
 ```
 
 #### Check 4: Reduced Motion (P1 — High)
@@ -368,7 +368,7 @@ Do NOT search for general accessibility advice — the checks above and the refe
 ## Reference Example
 
 A complete, ready-to-use accessibility stylesheet is available at
-`skills/divi5-css-patterns/examples/accessibility.css`. It contains production
+`${CLAUDE_PLUGIN_ROOT}/skills/divi5-css-patterns/examples/accessibility.css`. It contains production
 patterns for focus indicators, skip links, reduced-motion handling, visually
 hidden utilities, and Divi-specific button focus overrides. Point users to
 this file when they need a full starting point rather than individual snippets.

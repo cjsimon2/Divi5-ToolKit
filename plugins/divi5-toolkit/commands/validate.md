@@ -75,10 +75,7 @@ Fix: Add a custom class via Advanced > Attributes > class instead
 ```
 
 ### Check 3: CSS Variables Scope (P1 - High)
-Variables defined outside `:root`:
-```regex
-^(?!:root)[^{]+{[^}]*--[a-z]
-```
+Variables defined outside `:root`. Locate custom property declarations with `^\s*--[a-z][\w-]*\s*:` (the Grep tool doesn't support lookaheads), then check each declaration's enclosing selector — flag any that isn't `:root`:
 
 **Report:**
 ```

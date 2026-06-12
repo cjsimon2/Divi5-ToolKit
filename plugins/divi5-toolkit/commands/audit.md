@@ -57,69 +57,71 @@ For each CSS file, gather:
 
 ## Step 4: Run Audit Checks
 
-### Category A: Divi 5 Compatibility (Weight: 40%)
+Each category has a point budget (A 40, B 20, C 15, D 10, E 15 — total 100) and is scored independently: **deduction categories** (A, D) start at their max and lose points per finding; **award categories** (B, C, E) earn points per criterion met. Every category is floored at 0 and capped at its max.
+
+### Category A: Divi 5 Compatibility (max 40 — start at 40, deduct per finding)
 
 | # | Check | Severity | Points |
 |---|-------|----------|--------|
-| A1 | Button selectors have `body` prefix + `!important` | Critical | -20 each |
-| A2 | No numbered selectors (`.et_pb_*_0`) | Critical | -15 each |
-| A3 | CSS variables in `:root` scope | High | -10 each |
-| A4 | Code Module CSS wrapped in `<style>` tags | High | -10 each |
-| A5 | Theme Options CSS has no `<style>` tags | High | -10 each |
-| A6 | Module Element fields have properties only (no selectors) | High | -10 each |
-| A7 | `.et_pb_*` overrides use `!important` | Medium | -5 each |
-| A8 | No shortcode references (`[et_pb_*]`) — D4 artifact | High | -10 each |
+| A1 | Button selectors have `body` prefix + `!important` | Critical | -10 each |
+| A2 | No numbered selectors (`.et_pb_*_0`) | Critical | -8 each |
+| A3 | CSS variables in `:root` scope | High | -4 each |
+| A4 | Code Module CSS wrapped in `<style>` tags | High | -5 each |
+| A5 | Theme Options CSS has no `<style>` tags | High | -5 each |
+| A6 | Module Element fields have properties only (no selectors) | High | -5 each |
+| A7 | `.et_pb_*` overrides use `!important` | Medium | -2 each |
+| A8 | No shortcode references (`[et_pb_*]`) — D4 artifact | High | -5 each |
 
-### Category B: Design System Quality (Weight: 20%)
-
-| # | Check | Severity | Points |
-|---|-------|----------|--------|
-| B1 | Design tokens defined (CSS variables in `:root`) | High | +15 if present |
-| B2 | Consistent spacing scale (not random pixel values) | Medium | +10 if consistent |
-| B3 | Color values use variables, not hardcoded hex | Medium | -3 per hardcoded |
-| B4 | Font stacks have fallbacks | Medium | -5 each missing |
-| B5 | Naming convention follows BEM or consistent pattern | Low | +10 if consistent |
-| B6 | Custom class prefix used (avoids Divi conflicts) | Medium | +10 if present |
-
-### Category C: Responsive Design (Weight: 15%)
+### Category B: Design System Quality (max 20 — award per criterion)
 
 | # | Check | Severity | Points |
 |---|-------|----------|--------|
-| C1 | Uses fluid values (`clamp()`, `vw`, `calc()`) | Medium | +5 per usage |
-| C2 | Media queries target Divi 5 breakpoints (767, 980) | Medium | +5 if aligned |
-| C3 | No `!important` in media queries that could be avoided | Low | -2 each |
-| C4 | Fixed pixel font sizes without responsive alternative | Medium | -3 each |
-| C5 | Uses `min()`/`max()` for layout constraints | Low | +3 per usage |
+| B1 | Design tokens defined (CSS variables in `:root`) | High | +6 |
+| B2 | Consistent spacing scale (not random pixel values) | Medium | +3 |
+| B3 | Color values use variables, not hardcoded hex | Medium | +4 (reduce proportionally per hardcoded color) |
+| B4 | Font stacks have fallbacks | Medium | +3 |
+| B5 | Naming convention follows BEM or consistent pattern | Low | +2 |
+| B6 | Custom class prefix used (avoids Divi conflicts) | Medium | +2 |
 
-### Category D: Performance (Weight: 10%)
+### Category C: Responsive Design (max 15 — award per criterion)
 
 | # | Check | Severity | Points |
 |---|-------|----------|--------|
-| D1 | Total CSS size (flag if > 50KB custom CSS) | Medium | -10 if over |
-| D2 | Duplicate selectors | Medium | -3 each |
-| D3 | Unused selectors (classes not found in templates) | Low | -2 each |
-| D4 | Overly broad selectors (`* {}`, `div {}`) | Medium | -5 each |
-| D5 | Excessive `!important` (> 30% of declarations) | Low | -5 |
+| C1 | Uses fluid values (`clamp()`, `min()`/`max()`, `vw`, `calc()`) where appropriate | Medium | +6 |
+| C2 | Media queries align with the project's active Divi breakpoints (defaults: 767, 980) | Medium | +4 |
+| C3 | No `!important` in media queries that could be avoided | Low | +2 |
+| C4 | No fixed pixel font sizes without responsive alternative | Medium | +3 |
 
-### Category E: Accessibility (Weight: 15%)
+### Category D: Performance (max 10 — start at 10, deduct per finding)
 
-**Skipped entirely if `accessibility_level: off`** (reweight other categories to total 100%).
+| # | Check | Severity | Points |
+|---|-------|----------|--------|
+| D1 | Total CSS size (flag if > 50KB custom CSS) | Medium | -4 if over |
+| D2 | Duplicate selectors | Medium | -1 each (max -3) |
+| D3 | Unused selectors (classes not found in templates) | Low | -1 each (max -2) |
+| D4 | Overly broad selectors (`* {}`, `div {}`) | Medium | -2 each |
+| D5 | Excessive `!important` (> 30% of declarations) | Low | -3 |
+
+### Category E: Accessibility (max 15 — award per criterion, with one critical deduction)
+
+**Skipped entirely if `accessibility_level: off`** (rescale: final score = (A+B+C+D) × 100/85).
 **Stricter thresholds applied if `accessibility_level: aaa`.**
 
 | # | Check | Severity | Points |
 |---|-------|----------|--------|
-| E1 | Focus styles present (`:focus`, `:focus-visible`) | High | +10 if present, -15 if missing |
-| E2 | `prefers-reduced-motion` media query present | Medium | +10 if present |
-| E3 | `prefers-color-scheme` support (dark mode) | Low | +5 if present |
-| E4 | Text color contrast appears WCAG-compliant | High | -10 per likely violation |
-| E5 | Touch targets suggest adequate size (padding on buttons) | Medium | -5 if too small |
-| E6 | `outline: none` without replacement focus indicator | Critical | -20 each |
+| E1 | Focus styles present (`:focus`, `:focus-visible`) | High | +5 |
+| E2 | `prefers-reduced-motion` query present (auto-award if no animations exist) | Medium | +4 |
+| E3 | `prefers-color-scheme` support (dark mode) | Low | +1 |
+| E4 | Text color contrast appears WCAG-compliant | High | +3 (deduct 1 per likely violation) |
+| E5 | Touch targets suggest adequate size (padding on buttons) | Medium | +2 |
+| E6 | `outline: none` without replacement focus indicator | Critical | -5 each |
 
 ## Step 5: Calculate Score
 
 ```
-Score = 100 + (sum of all points)
-Capped at: 0 (minimum) — 100 (maximum)
+Category score = clamp(category points, 0, category max)
+Total Score    = A + B + C + D + E          (0–100)
+                 (if accessibility_level: off → (A+B+C+D) × 100/85, rounded)
 ```
 
 ### Grade Scale

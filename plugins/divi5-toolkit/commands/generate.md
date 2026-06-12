@@ -13,28 +13,37 @@ You are generating Divi 5-compatible CSS (v5.6, current). Follow these steps:
 
 Your built-in Divi 5 knowledge (selectors, breakpoints, integration methods, Composable Settings, Canvas system) covers the vast majority of generation tasks. Use `WebSearch` or `WebFetch` only when:
 - The user requests styling for a Divi module or feature you're uncertain about
-- You need to verify a specific Divi 5.2+ selector or class name
+- You need to verify a specific Divi 5.x selector or class name (e.g., the 5.6 module classes)
 - The user mentions a recent Divi update or feature you don't recognize
 
 Prefer `help.elegantthemes.com`, `elegantthemes.com/blog`, and `victorduse.com/divi-5-changelog`. Do not search for general CSS knowledge.
 
-## Step 1: Understand the Request
+## Step 1: Read Project Config
+
+Read `.claude/divi5-toolkit.local.md` if it exists. Apply these settings (use defaults if missing):
+
+```yaml
+default_format: theme-options # output format when the user doesn't specify one
+css_prefix: my                # prefix for any custom classes you introduce
+divi_version: "5.6"           # disambiguates which builder-native features apply in Step 5
+active_breakpoints:           # which breakpoints to cover in responsive CSS
+  - phone
+  - tablet
+  - desktop
+```
+
+Also check for existing CSS files with design tokens and reuse any existing CSS variables (e.g., `--{prefix}-*`).
+
+## Step 2: Understand the Request
 
 Ask the user (if not already specified):
 1. **What component/element?** (button, section, card, hero, etc.)
 2. **What style?** (colors, fonts, spacing, effects)
-3. **Output format?**
+3. **Output format?** — only ask if the request doesn't imply one; otherwise use `default_format`
    - Theme Options (global CSS, no wrapper)
    - Code Module (with `<style>` tags)
    - Child Theme (standard CSS file)
    - Free-Form CSS (using `selector` keyword, for per-element styling)
-
-## Step 2: Check Project Context
-
-Look for existing design tokens or CSS:
-- Check for `.claude/divi5-toolkit.local.md` for project preferences
-- Check for existing CSS files with design tokens
-- Use any existing CSS variables (e.g., `--my-*` or similar prefix)
 
 ## Step 3: Generate CSS
 
@@ -56,6 +65,7 @@ Apply these Divi 5 requirements:
 
 ### Responsive Approach
 - 3 breakpoints active by default: Desktop (base), Tablet (980px), Phone (767px)
+- Cover the breakpoints listed in the project's `active_breakpoints` config
 - Use `clamp()` and fluid values to reduce breakpoint-specific CSS
 - Include responsive media queries when layout behavior changes
 
@@ -169,8 +179,8 @@ body .et_pb_button:hover {
 
 **Usage:**
 - This applies to ALL buttons site-wide
-- For variants, add a custom class via **Advanced > Attributes > class** (e.g., `my-btn--secondary`)
-- Target the variant: `body .et_pb_button.my-btn--secondary { ... }`
+- For variants, add a custom class via **Advanced > Attributes > class** (e.g., `{prefix}-btn--secondary`, where `{prefix}` is the project's `css_prefix` — `my` by default)
+- Target the variant: `body .et_pb_button.{prefix}-btn--secondary { ... }`
 
 ## Generation Complete
 

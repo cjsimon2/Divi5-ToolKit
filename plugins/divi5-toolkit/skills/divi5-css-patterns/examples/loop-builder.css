@@ -237,7 +237,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 44px;  /* WCAG 2.5.8 touch target */
+  min-width: 44px;  /* WCAG 2.5.5 (AAA) touch target; 2.2 AA floor is 24px */
   height: 44px;
   padding: 0 0.75rem;
   border-radius: 6px;

@@ -148,40 +148,6 @@ body .et_pb_button:hover {
 }
 ```
 
-## Step 5: Add Header Comment
-
-```css
-/* ==========================================================================
-   DIVI 5 CONVERTED CSS
-
-   Original: [source file or "provided directly"]
-   Format: [Theme Options | Code Module | Child Theme | Free-Form CSS]
-   Converted: [date]
-
-   Changes made:
-   - [list of changes]
-   ========================================================================== */
-```
-
-## Step 6: Validate Converted CSS
-
-Run validation checks to ensure all issues are resolved:
-- All button overrides have `body` prefix
-- All Divi overrides have `!important`
-- No numbered selectors
-- Correct wrapping for format
-- CSS variables in `:root`
-
-After conversion, recommend running `/divi5-toolkit:validate` to confirm the
-converted output passes full compatibility checks.
-
-## Step 7: Output Results
-
-Provide:
-1. **Converted CSS** (ready to use)
-2. **Changelog** (what was modified)
-3. **Usage instructions** (where to paste, how to add classes via Attributes panel)
-
 ### Conversion 8: Accessibility Additions
 If CSS has animations or interactive elements, add:
 ```css
@@ -215,6 +181,40 @@ BUILDER-NATIVE OPPORTUNITIES:
 ```
 
 Note these as optional — the CSS still works, but builder-native is preferred.
+
+## Step 5: Add Header Comment
+
+```css
+/* ==========================================================================
+   DIVI 5 CONVERTED CSS
+
+   Original: [source file or "provided directly"]
+   Format: [Theme Options | Code Module | Child Theme | Free-Form CSS]
+   Converted: [date]
+
+   Changes made:
+   - [list of changes]
+   ========================================================================== */
+```
+
+## Step 6: Validate Converted CSS
+
+Run validation checks to ensure all issues are resolved:
+- All button overrides have `body` prefix
+- All Divi overrides have `!important`
+- No numbered selectors
+- Correct wrapping for format
+- CSS variables in `:root`
+
+After conversion, recommend running `/divi5-toolkit:validate` to confirm the
+converted output passes full compatibility checks.
+
+## Step 7: Output Results
+
+Provide:
+1. **Converted CSS** (ready to use)
+2. **Changelog** (what was modified)
+3. **Usage instructions** (where to paste, how to add classes via Attributes panel)
 
 ## Conversion Complete
 

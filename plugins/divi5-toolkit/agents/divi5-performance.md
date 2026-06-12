@@ -91,7 +91,7 @@ Impact: ~300-500ms added to LCP
 Fix: Disable Google Fonts in Divi (Theme Options > General > Use Google Fonts > No),
      download WOFF2 to /wp-content/fonts/, declare via @font-face,
      preload the heading font.
-Reference: skills/divi5-performance/examples/font-loading.css
+Reference: ${CLAUDE_PLUGIN_ROOT}/skills/divi5-performance/examples/font-loading.css
 ```
 
 #### Check 3: Image Loading (P0 — affects LCP and CLS)

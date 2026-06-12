@@ -154,7 +154,7 @@ Before presenting, verify:
 ```css
 .{prefix}-hero {
   position: relative;
-  min-height: clamp(60vh, 70vh, 90vh);
+  min-height: clamp(480px, 70vh, 900px); /* 70vh, guarded against extreme viewports */
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;

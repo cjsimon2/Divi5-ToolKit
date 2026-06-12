@@ -23,7 +23,7 @@ Read the user's input and assign it to one of these buckets. If ambiguous, ask o
 
 ### Bucket A: Divi error message or PHP/JS console error
 
-**Signals:** Output contains "Error:", "Warning:", stack trace, `et_pb_*` function name, "Uncaught TypeError", "PHP Notice", "ToolUseContext", etc.
+**Signals:** Output contains "Error:", "Warning:", stack trace, `et_pb_*` function name, "Uncaught TypeError", "PHP Notice", etc.
 
 **Route to:** `divi5-error-learner` agent pattern. Match against the known error library; if unknown, research and add a new pattern.
 
@@ -44,7 +44,7 @@ Read the user's input and assign it to one of these buckets. If ambiguous, ask o
 
 **Signals:** "slow", "PageSpeed score", "Lighthouse", "LCP", "INP", "CLS", "render-blocking", "Core Web Vitals".
 
-**Route to:** `divi5-performance` agent. Walk through the LCP/INP/CLS diagnostic in `skills/divi5-performance/SKILL.md`.
+**Route to:** `divi5-performance` agent. Walk through the LCP/INP/CLS diagnostic in `${CLAUDE_PLUGIN_ROOT}/skills/divi5-performance/SKILL.md`.
 
 ### Bucket D: Accessibility issue
 
@@ -56,19 +56,19 @@ Read the user's input and assign it to one of these buckets. If ambiguous, ask o
 
 **Signals:** "Visual Builder won't load", "module not saving", "drag-drop broken", "Composable Settings not appearing", "preset not applying".
 
-**Route to:** Knowledge in `divi5-compatibility/SKILL.md` "Common Issues & Fixes" section. If unmatched, research via WebSearch.
+**Route to:** Knowledge in the `divi5-compatibility` skill (`${CLAUDE_PLUGIN_ROOT}/skills/divi5-compatibility/SKILL.md`), "Common Issues & Fixes" section. If unmatched, research via WebSearch.
 
 ### Bucket F: Migration from Divi 4
 
 **Signals:** "Divi 4 → 5", "after upgrading", "shortcodes", "legacy", "broke after migration".
 
-**Route to:** `divi5-compatibility/SKILL.md` "Divi 4 to Divi 5 Migration" section. Suggest `/divi5-toolkit:convert` on affected CSS.
+**Route to:** The `divi5-compatibility` skill's "Divi 4 to Divi 5 Migration" section. Suggest `/divi5-toolkit:convert` on affected CSS.
 
 ### Bucket G: Plugin conflict
 
 **Signals:** Names a specific plugin (WP Rocket, LiteSpeed, Autoptimize, Wordfence, ACF, WooCommerce, Perfmatters).
 
-**Route to:** Plugin Conflict Reference in `divi5-compatibility/SKILL.md` and Plugin Compatibility Matrix in `divi5-performance/SKILL.md`.
+**Route to:** Plugin Conflict Reference in the `divi5-compatibility` skill and Plugin Compatibility Matrix in the `divi5-performance` skill.
 
 ## Step 3: Gather Context
 
