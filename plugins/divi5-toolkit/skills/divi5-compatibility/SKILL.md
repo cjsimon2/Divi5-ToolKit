@@ -242,6 +242,16 @@ body .et_pb_button:hover {
 }
 ```
 
+### Issue: Header/menu layout breaks after clearing Static CSS (5.6, field-verified 2026-06-12)
+**Symptom:** A previously centered header menu (e.g., `inline_centered_logo` style) packs to the left on every page immediately after clearing the Static CSS cache. No custom CSS touches the menu.
+**Cause:** Regeneration re-emits the template's flex layout CSS using current defaults (`justify-content: start`). Modules configured before Divi exposed explicit Flex options (or left at "default") inherited centering implicitly; the regenerated CSS doesn't reproduce it. Diagnostic signature: `.et_pb_menu_inner_container` computes `justify-content: start` and `.et_pb_menu__wrap` computes `flex: 0 1 auto` while the stylesheet still contains `flex: 1 1 auto` for it.
+**Fix:** In the Theme Builder, set the menu module's **Justify Content** and **Align Items** explicitly — per breakpoint (e.g., Desktop: Center; Tablet/Phone: Space Between so the logo stays left and the hamburger stays right). Any setting change + Save forces a clean regeneration. Do NOT patch with custom CSS first — the builder-native fix survives future regenerations.
+
+### Issue: Custom CSS targeting `et_pb_section_N_tb_header` / `_tb_footer` silently stops matching (field-verified 2026-06-12)
+**Symptom:** A rule scoped to a numbered Theme Builder template class (e.g., `.et_pb_section_1_tb_footer`) stops applying after editing/resaving any template — no error, the selector just matches nothing.
+**Cause:** Resaving a Theme Builder template can renumber its `et_pb_section_N_tb_*` classes (e.g., `_1_` → `_3_`). Numbered **template** classes are exactly as fragile as page-level numbered selectors (`.et_pb_text_0`), but they look stable because they survive page edits — they only break on template saves, which makes the failure hard to trace.
+**Fix:** Scope to the stable Theme Builder layout wrappers instead: `.et-l--header`, `.et-l--body`, `.et-l--footer` (e.g., `.et-l--footer a[href^="tel:"]`). Treat `et_pb_*_N_tb_*` in custom CSS as a P0 finding, same as any numbered selector.
+
 ## Plugin Conflict Reference
 
 ### Cache Plugins

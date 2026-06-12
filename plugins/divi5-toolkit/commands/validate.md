@@ -74,6 +74,8 @@ Line X: `.et_pb_text_0 { color: red; }`
 Fix: Add a custom class via Advanced > Attributes > class instead
 ```
 
+This includes numbered **Theme Builder template** classes (`.et_pb_section_2_tb_header`, `.et_pb_row_1_tb_footer`, …) — template resaves renumber them. For those, the fix is the stable layout wrappers (`.et-l--header`, `.et-l--body`, `.et-l--footer`) rather than a custom class.
+
 ### Check 3: CSS Variables Scope (P1 - High)
 Variables defined outside `:root`. Locate custom property declarations with `^\s*--[a-z][\w-]*\s*:` (the Grep tool doesn't support lookaheads), then check each declaration's enclosing selector — flag any that isn't `:root`:
 
