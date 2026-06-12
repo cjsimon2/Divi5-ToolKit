@@ -374,6 +374,17 @@ divi5-toolkit/                            # ← repo root + marketplace root
 
 ## Changelog
 
+### v2.2.2 (June 12, 2026)
+
+Bug-fix release: cross-platform hook reliability, knowledge-base contradictions, and command correctness.
+
+- **Fixed (critical, Windows):** `hooks/css-validate.sh` hard-required `python3`, which most Windows Git Bash setups don't have — under `set -e` the hook exited 127 on **every** Write/Edit. Windows backslash paths also broke the upward config-walk, so `auto_validate` never fired even where Python existed. Extraction now falls back jq → python3/python/py → sed, paths are normalized, the extension match is case-insensitive, and the script never exits non-zero. `hooks.json` now quotes `${CLAUDE_PLUGIN_ROOT}` (paths with spaces). New `.gitattributes` pins `*.sh` to LF so `core.autocrlf` can't corrupt the hook on Windows checkouts.
+- **Fixed (knowledge base):** The css-patterns skill and `responsive-breakpoints-2025.md` presented the 2025-recommended *custom* widths (479/767/1023/1279/1536/1920) as Divi 5's native breakpoints, contradicting the compatibility skill and selector reference (real defaults: Phone 767 / Phone Wide 860 / Tablet 980 / Tablet Wide 1024 / Widescreen 1280 / Ultra Wide 2560). The skill now leads with the defaults; the reference clearly labels its values as opt-in customizations and documents the default↔recommended mapping; the `responsive-7-breakpoints.css` header warns accordingly.
+- **Fixed (accessibility facts):** 44px touch targets were cited as WCAG 2.5.8 (Level AA) in 5 files. Correct citations: 44px is WCAG 2.1 SC 2.5.5 (AAA) / Apple HIG; SC 2.5.8 is the WCAG 2.2 AA **24px** floor. The accessibility agent now flags <24px as a violation and <44px as a recommendation.
+- **Fixed (commands):** `/scaffold`'s hero used `min-height: clamp(60vh, 70vh, 90vh)` — a no-op that always computes to 70vh (now `clamp(480px, 70vh, 900px)`). `/diagnose` listed "ToolUseContext" as a Divi error signal (leaked from this plugin's own v2.1.6 hook-bug history). `/validate` and the `divi5-validator` agent shipped negative-lookahead regexes the Grep tool can't execute (replaced with locate-then-inspect guidance). `/convert`'s Conversions 8–9 were stranded after Step 7 (moved into Step 4). `/audit`'s score formula (`100 + sum`) ignored its own category weights — scoring is now per-category budgets (40/20/15/10/15) matching the report breakdown.
+- **Improved:** `/generate` gained a "Read Project Config" step and now actually consumes `default_format`, `css_prefix`, `divi_version`, and `active_breakpoints` (the README config table had claimed this since v2.1.1); its variant example derives the class prefix instead of hard-coding `my-`.
+- **Fixed (docs):** Template-copy instructions in README/`docs/configuration.md`/`docs/workflows.md`/`docs/usage.md` pointed at a root-level `templates/` directory that hasn't existed since v2.1.5 (now `plugins/divi5-toolkit/templates/`). `CLAUDE.md`'s test command still showed the pre-v2.1.5 `--plugin-dir` path. README's "researches weekly" claim corrected to on-demand. Agents' in-plugin file references now use `${CLAUDE_PLUGIN_ROOT}` per convention.
+
 ### v2.2.1 (May 27, 2026)
 
 - **Doc sweep — catch up older surfaces to v2.2.0.** The v2.2.0 release pass updated the actively maintained docs (README, STATE, `docs/usage`, `docs/configuration`, `docs/workflows`) and the two refreshed SKILL.md files, but left some surfaces behind. v2.2.1 closes those gaps:
