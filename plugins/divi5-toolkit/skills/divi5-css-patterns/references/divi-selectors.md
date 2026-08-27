@@ -1,6 +1,6 @@
 # Divi 5 CSS Selectors Reference
 
-> **Part of:** the `divi5-css-patterns` skill. See the parent `SKILL.md` for CSS patterns, override strategies, and best practices. Targets Divi 5.6.
+> **Part of:** the `divi5-css-patterns` skill. See the parent `SKILL.md` for CSS patterns, override strategies, and best practices. Targets Divi 5.11.
 
 ## Overview
 
@@ -112,6 +112,22 @@ Selectors for the five modules added in 5.6. The outer selectors are confirmed; 
 | `.et_pb_instagram_feed` | Instagram Feed | `.et_pb_instagram_item`, `.et_pb_instagram_item img`, `.et_pb_instagram_overlay`, `.stat` |
 
 See `examples/new-modules.css` for complete styling patterns for each 5.6 module.
+
+## Divi 5.8 – 5.11 New Modules (June – August 2026)
+
+Modules added on the weekly release cadence after 5.6. Wrapper class names follow the standard `et_pb_*` convention but several of these modules are new — **verify all selectors in DevTools before shipping CSS against them.**
+
+| Selector | Module | Notes |
+|----------|--------|-------|
+| `.et_pb_tooltip` | Tooltip (5.8) | Tooltip content styled via module design controls; look for a `[role="tooltip"]` inner element |
+| `.et_pb_post_filter` | Post Filter (5.10) | Front-end Loop Builder filter form; standard `select`/`input` elements inside |
+| `.et_pb_post_filter_item` | Post Filter Item (5.10) | Individual filter control within a Post Filter |
+| `.et_pb_charts` | Charts (5.11) | Renders into canvas/SVG; series colors set in the tabular data editor, not CSS |
+| `.et_pb_gravity_forms` | Gravity Forms (5.11) | Wraps standard GF markup — `.gform_wrapper`, `.gfield`, `.gform_button` work inside the module scope |
+| `.et_pb_imagely_gallery` | Imagely Gallery (5.11) | Wraps NextGEN gallery markup |
+| `.et_pb_payment_button` | Payment Button (5.11) | Shares Button design parity — `body .et_pb_button` override patterns apply |
+
+Flexbox note (5.11+): Column, Section, Row, and Group modules emit CSS classes reflecting their `alignItems` setting — inspect before overriding alignment.
 
 ## Free-Form CSS Targeting (Divi 5)
 

@@ -47,7 +47,7 @@ default_format: theme-options         # "theme-options" | "code-module"
 css_prefix: my                        # custom CSS class prefix
 
 # ─── Project Targeting ────────────────────────────────────────────────────
-divi_version: "5.6"                   # "5.0" | "5.1" | "5.2" | "5.3" | "5.4" | "5.5" | "5.6"
+divi_version: "5.11"                  # "5.0" through "5.11"
 active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
   - phone
   - tablet
@@ -145,9 +145,14 @@ The Divi version your project targets.
 | `"5.3"` | Adds pseudo-class editing (`:checked`/`:focus`/`:active`), Contact Form 7 Styler module, Nested Option Presets, harmonized form fields. |
 | `"5.4"` | Adds Sizing Variable Generator (fluid `clamp()` automation) and Relative Colorscheme Generator (HSL-based color systems). |
 | `"5.5"` | Adds Aspect Ratio + Framing settings on all images (cleanest CLS fix), Image Presets, SVG sanitization, composable settings for image option groups. |
-| `"5.6"` (recommended) | Adds 5 new modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), Color Scale + Color Harmony Generators, decimal Section Divider, full CSS track values in Grid Auto Columns/Rows. |
+| `"5.6"` | Adds 5 new modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), Color Scale + Color Harmony Generators, decimal Section Divider, full CSS track values in Grid Auto Columns/Rows. |
+| `"5.7"` | Adds Gradient Variables (7th Design Variable type), gradient picker overhaul, gradient/image text fills, text-stroke. |
+| `"5.8"` | Adds customizable Workspaces and the Tooltip module. Fixes false CSS linter errors on nested selectors and cache-related style loss. |
+| `"5.9"` | Adds Variable Fonts, new typography controls (drop caps, text columns, hyphenation), and the visual CSS Grid Editor. |
+| `"5.10"` | Adds Post Filter + Post Filter Item modules (front-end Loop Builder filtering), row-granular lazy loading, deferred local videos, corrected fluid breakpoint sizing. |
+| `"5.11"` (recommended) | Adds Charts, Gravity Forms, Imagely Gallery, and Payment Button modules; flexbox `alignItems` CSS classes on Column/Section/Row/Group. |
 
-**Recommendation:** Use `"5.6"`. The plugin tailors its advice to the version you set — `/audit` gates Composable Settings suggestions on 5.2+, the performance agent recommends Aspect Ratio for CLS only on 5.5+, the form CSS examples assume 5.3+ pseudo-class editing, and so on.
+**Recommendation:** Use `"5.11"`. The plugin tailors its advice to the version you set — `/audit` gates Composable Settings suggestions on 5.2+, the performance agent recommends Aspect Ratio for CLS only on 5.5+, the form CSS examples assume 5.3+ pseudo-class editing, grid advice prefers the Grid Editor on 5.9+, and so on.
 
 **Read by:** `/audit`, `/diagnose`, `divi5-performance` agent (feature gating and version-aware advice)
 

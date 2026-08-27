@@ -18,7 +18,7 @@ Read `.claude/divi5-toolkit.local.md` if it exists. Apply these settings (use de
 accessibility_level: aa                   # "aa" | "aaa" | "off"
 flag_composable_alternatives: true        # true | false
 css_prefix: my                            # custom class prefix
-divi_version: "5.6"                       # target Divi version
+divi_version: "5.11"                      # target Divi version
 ```
 
 **Behavior:**

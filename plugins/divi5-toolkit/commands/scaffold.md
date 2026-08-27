@@ -13,7 +13,7 @@ You are generating complete, production-ready Divi 5 page section templates. Eac
 
 The built-in scaffolds in this command cover the common cases. Use `WebFetch` or `WebSearch` only when:
 - The user requests a section type that isn't covered by the built-in templates (Step 1 menu)
-- You need to verify a specific Divi 5.6 selector, class name, or new module behavior
+- You need to verify a specific Divi 5.11 selector, class name, or new module behavior
 - You're unsure whether a CSS feature is currently supported in the builder vs. only via custom CSS
 
 Prefer official sources: `help.elegantthemes.com`, `elegantthemes.com/blog`, `victorduse.com/divi-5-changelog`. Do not research for general CSS knowledge — only Divi-specific facts.

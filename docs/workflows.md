@@ -72,7 +72,7 @@ cp /path/to/Divi5-ToolKit/plugins/divi5-toolkit/templates/divi5-toolkit.local.md
 
 Then open `.claude/divi5-toolkit.local.md` and edit:
 - `css_prefix` — change `my` to your project's short prefix (e.g., `acme`)
-- `divi_version` — set to `"5.6"` if you're current
+- `divi_version` — set to `"5.11"` if you're current
 - `accessibility_level` — `aa` for most projects, `aaa` for healthcare/government
 - `active_breakpoints` — leave defaults unless you need more
 
@@ -145,7 +145,7 @@ You have an existing Divi 4 child theme and need to bring it forward.
 
 In `.claude/divi5-toolkit.local.md`:
 ```yaml
-divi_version: "5.6"
+divi_version: "5.11"
 ```
 
 ### Step 2 — Convert the existing CSS file

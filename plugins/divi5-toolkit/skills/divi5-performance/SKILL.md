@@ -1,12 +1,12 @@
 ---
 name: Divi 5 Performance
-description: Use this skill when optimizing Divi 5 site performance, improving Core Web Vitals (LCP, INP, CLS), reducing render-blocking CSS, working with Divi's Critical CSS / Dynamic CSS / Inline Stylesheet system, configuring font loading (WOFF2, preload, font-display), lazy-loading background images, preloading above-the-fold images, debugging slow Divi pages, or auditing cache-plugin interactions (WP Rocket RUCSS, LiteSpeed, Autoptimize, Perfmatters). Covers Divi 5.6's per-page component CSS, Section 5.5 Aspect Ratio for CLS prevention, and the per-module helper class pattern for lazy-loading.
+description: Use this skill when optimizing Divi 5 site performance, improving Core Web Vitals (LCP, INP, CLS), reducing render-blocking CSS, working with Divi's Critical CSS / Dynamic CSS / Inline Stylesheet system, configuring font loading (WOFF2, preload, font-display, variable fonts from 5.9), lazy-loading background images, preloading above-the-fold images, debugging slow Divi pages, or auditing cache-plugin interactions (WP Rocket RUCSS, LiteSpeed, Autoptimize, Perfmatters). Covers Divi 5's per-page component CSS, the 5.5 Aspect Ratio for CLS prevention, the 5.10 native below-the-fold lazy loading and deferred local videos, and the per-module helper class pattern for lazy-loading.
 user-invocable: false
 ---
 
 # Divi 5 Performance Optimization
 
-**Divi 5 Version:** 5.6.0 (May 2026)
+**Divi 5 Version:** 5.11.0 (August 2026)
 **Core Web Vitals targets:** LCP < 2.5s, INP < 200ms, CLS < 0.1
 
 ## Overview
@@ -26,6 +26,16 @@ Three Theme Options work together. Enable in: **Divi → Theme Options → Build
 | **Inline Stylesheets** | Inlines the small per-page CSS file in `<head>` instead of loading via `<link>`. Removes one render-blocking request. | If your stylesheet is unusually large (>50KB inlined hurts more than it helps) |
 
 **Verification:** View source on a frontend page. You should see no `<link rel="stylesheet">` blocking the parser — only inline `<style>` tags and deferred preloads. Run Lighthouse and confirm "Eliminate render-blocking resources" is not flagged.
+
+### Native lazy loading (5.10+)
+
+Divi 5.10 added engine-level deferral, reducing the need for custom lazy-load work:
+
+- **Below-the-fold modules** load only when scrolled into view, detected at row granularity within sections.
+- **Local MP4/WebM background/module videos** are deferred until they enter the viewport.
+- **Dynamic Assets generation** is memoized, so repeated filter callbacks don't re-run.
+
+On 5.10+, verify the built-in deferral covers your case before adding the IntersectionObserver helper-class pattern below. Also note two cache-related fixes worth updating for: intermittent disappearing styles (fixed across 5.8/5.9) and LiteSpeed purging entire entry sets per edit (fixed in 5.8).
 
 ## Core Web Vitals: What Hurts You in Divi 5
 
@@ -95,6 +105,8 @@ See `${CLAUDE_PLUGIN_ROOT}/skills/divi5-performance/examples/critical-css.css` f
 ## Font Loading Strategy
 
 Default Divi behavior loads Google Fonts via external request. This costs LCP and CLS. **Always host fonts locally** for production.
+
+**Variable fonts (5.9+):** Divi supports the current Google Fonts collection including variable fonts. One variable WOFF2 replaces several static weight files — fewer requests, smaller total transfer when you use 3+ weights of a family. The same local-hosting steps below apply; download the variable axis file and declare `font-weight: 100 900;` in the `@font-face` rule.
 
 ### Steps
 

@@ -7,7 +7,7 @@ allowed-tools: Read, Write, Glob, Grep, WebSearch, WebFetch
 
 # Divi 5 CSS Generator
 
-You are generating Divi 5-compatible CSS (v5.6, current). Follow these steps:
+You are generating Divi 5-compatible CSS (v5.11, current). Follow these steps:
 
 ## When to Research
 
@@ -25,7 +25,7 @@ Read `.claude/divi5-toolkit.local.md` if it exists. Apply these settings (use de
 ```yaml
 default_format: theme-options # output format when the user doesn't specify one
 css_prefix: my                # prefix for any custom classes you introduce
-divi_version: "5.6"           # disambiguates which builder-native features apply in Step 5
+divi_version: "5.11"          # disambiguates which builder-native features apply in Step 5
 active_breakpoints:           # which breakpoints to cover in responsive CSS
   - phone
   - tablet

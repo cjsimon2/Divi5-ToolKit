@@ -4,7 +4,7 @@ Guidance for developers working **on** the Divi5 Toolkit plugin itself (not end 
 
 ## Project Type
 
-Claude Code **plugin** for Divi 5 (WordPress page builder, currently 5.6) development. This repository is composed of markdown, JSON, and CSS — there is no compiled code, no build step, and no runtime beyond what Claude Code provides when the plugin is loaded.
+Claude Code **plugin** for Divi 5 (WordPress page builder, currently 5.11) development. This repository is composed of markdown, JSON, and CSS — there is no compiled code, no build step, and no runtime beyond what Claude Code provides when the plugin is loaded.
 
 ## Architecture
 

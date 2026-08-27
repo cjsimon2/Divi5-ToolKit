@@ -497,7 +497,7 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 
 ### `divi5-css-patterns`
 
-**Activates when:** Writing CSS for Divi 5 / Divi 5.6, styling Divi modules (buttons, sections, rows, blurbs, toggles, forms including the 5.3 Contact Form 7 Styler), the five 5.6 modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), working with Free-Form CSS and the `selector` keyword, overriding `.et_pb_*` classes, setting up design tokens or dark mode, using the 5.4 Sizing Variable Generator or Relative Colorscheme Generator, applying the 5.5 Aspect Ratio / Framing settings, the 5.3 pseudo-class editing modes (`:checked`, `:focus`, `:active`), Nested Option Presets, adding animations, styling WooCommerce, building accessible layouts, or developing a Divi child theme.
+**Activates when:** Writing CSS for Divi 5 / Divi 5.11, styling Divi modules (buttons, sections, rows, blurbs, toggles, forms including the 5.3 Contact Form 7 Styler and 5.11 Gravity Forms module), the newer modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Payment Button, Imagely Gallery), working with Free-Form CSS and the `selector` keyword, overriding `.et_pb_*` classes, setting up design tokens or dark mode, using the 5.4 Sizing Variable Generator or Relative Colorscheme Generator, the 5.7 Gradient Variables and text effects, the 5.9 Variable Fonts and CSS Grid Editor, applying the 5.5 Aspect Ratio / Framing settings, the 5.3 pseudo-class editing modes (`:checked`, `:focus`, `:active`), Nested Option Presets, adding animations, styling WooCommerce, building accessible layouts, or developing a Divi child theme.
 
 **What it provides:**
 - Divi 5 architecture overview (React 18, Flexbox-first, Dynamic CSS, Composable Settings)
@@ -505,11 +505,12 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 - Selector specificity patterns and override templates
 - Class naming conventions
 - Common module selectors (Section, Row, Column, Text, Button, Image, Blurb, all 40+ modules)
-- 8 new D5 modules (Group, Carousel Group, Before/After Image, Canvas Portal, Dropdown, Icon List, Link, Lottie)
-- Design Variable system and Preset hierarchy
+- 20+ D5-native modules (Group, Carousel Group, Before/After Image, Canvas Portal, Dropdown, Icon List, Link, Lottie, plus the 5.6–5.11 additions: Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Gravity Forms, Imagely Gallery, Payment Button)
+- Design Variable system (7 types including 5.7 Gradients) and Preset hierarchy
 - Composable Settings overview (5.2+) — what's now possible without CSS
 - Canvas system patterns (off-canvas menus, popups, mega menus)
-- Loop Builder + CSS Grid patterns
+- Loop Builder + CSS Grid patterns, front-end Loop Filters (5.10+)
+- CSS Grid Editor guidance (5.9+) — when to use it vs. custom grid CSS
 - Typography, responsive (`clamp()`), layout, component, and dark mode patterns
 - Performance and accessibility best practices
 
@@ -531,7 +532,7 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 
 ### `divi5-compatibility`
 
-**Activates when:** Validating CSS for Divi 5 / Divi 5.6 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce, Perfmatters), migrating from Divi 4 to Divi 5, understanding breakpoints, applying the 5.5 Aspect Ratio + Framing for CLS prevention, using the 5.3 pseudo-class editing modes, the 5.4 Variable Generators, Nested Option Presets, Critical CSS / Dynamic CSS / Inline Stylesheets, or fixing "styles not working" issues.
+**Activates when:** Validating CSS for Divi 5 / Divi 5.11 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce, Perfmatters), migrating from Divi 4 to Divi 5, understanding breakpoints, applying the 5.5 Aspect Ratio + Framing for CLS prevention, using the 5.3 pseudo-class editing modes, the 5.4 Variable Generators, the 5.7 Gradient Variables, the 5.9 Variable Fonts and CSS Grid Editor, Nested Option Presets, Critical CSS / Dynamic CSS / Inline Stylesheets, or fixing "styles not working" issues.
 
 **What it provides:**
 - CSS unit support (dropdown vs. advanced/custom CSS)
@@ -543,8 +544,8 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 - Plugin conflict reference (cache plugins, security plugins, WooCommerce)
 - Divi 4 → Divi 5 migration checklist
 - Debugging techniques (DevTools, Safe Mode, Static CSS, D5 Dev Tool)
-- Composable Settings compatibility table (what CSS Composable Settings replaces)
-- Known Divi 5.2 bug fixes
+- Composable Settings compatibility table (what CSS Composable Settings replaces, through 5.11)
+- Known Divi 5.2–5.11 bug fix history
 - Error messages reference
 
 **Supporting files (loaded on demand):**
@@ -675,16 +676,20 @@ Ten ready-to-use CSS files in `skills/divi5-css-patterns/examples/` and two more
 
 **Where to paste:** Divi > Theme Options > Custom CSS (or Free-Form CSS on a specific form module)
 
-### `new-modules.css` (NEW in v2.2.0)
+### `new-modules.css` (NEW in v2.2.0, extended in v2.4.0)
 
-**Contains:** Styling for the five modules released in Divi 5.6 (May 25, 2026):
-- **Timeline** — vertical timeline with marker + line + date + title + body, horizontal timeline with scroll-snap on mobile
-- **Breadcrumbs** — hierarchy display with separator + hover + current page styling (note: Home Link uses dedicated builder settings)
-- **SVG** — `currentColor` pattern for inheriting color, stroke-only icons, hover animation with `prefers-reduced-motion` fallback
-- **Table of Contents** — sidebar styling with nested entries, sticky on desktop, smooth scroll with `scroll-padding-top` for sticky headers
-- **Instagram Feed** — responsive grid (3/4/6 columns), square aspect ratio, hover zoom + overlay with engagement stats
+**Contains:** Styling for the modules released in Divi 5.6 through 5.11:
+- **Timeline** (5.6) — vertical timeline with marker + line + date + title + body, horizontal timeline with scroll-snap on mobile
+- **Breadcrumbs** (5.6) — hierarchy display with separator + hover + current page styling (note: Home Link uses dedicated builder settings)
+- **SVG** (5.6) — `currentColor` pattern for inheriting color, stroke-only icons, hover animation with `prefers-reduced-motion` fallback
+- **Table of Contents** (5.6) — sidebar styling with nested entries, sticky on desktop, smooth scroll with `scroll-padding-top` for sticky headers
+- **Instagram Feed** (5.6) — responsive grid (3/4/6 columns), square aspect ratio, hover zoom + overlay with engagement stats
+- **Tooltip** (5.8) — width constraint, readability, reduced-motion handling (most styling belongs in the module's design controls)
+- **Post Filter + Post Filter Item** (5.10) — wrapping filter bar layout, 44px touch targets, focus rings on filter controls
+- **Gravity Forms** (5.11) — accessible field sizing and focus rings scoped to `.et_pb_gravity_forms .gform_wrapper`
+- **Charts / Payment Button / Imagely Gallery** (5.11) — responsive chart containers, payment button touch targets
 
-Each section is independent — paste only the modules you use.
+Each section is independent — paste only the modules you use. Selectors for the 5.8–5.11 modules are based on observed markup conventions — verify in DevTools.
 
 **Where to paste:** Divi > Theme Options > Custom CSS
 

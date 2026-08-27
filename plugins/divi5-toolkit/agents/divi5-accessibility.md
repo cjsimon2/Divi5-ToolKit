@@ -1,6 +1,6 @@
 ---
 name: divi5-accessibility
-description: Use this agent when reviewing Divi 5.6 CSS for accessibility issues. Checks color contrast, focus indicators (with Divi 5.3 pseudo-class editing as a no-CSS alternative for form fields), touch targets, reduced motion support, semantic elements, and ARIA attribute recommendations. Activates when writing CSS for interactive elements or when the user mentions accessibility, WCAG, ADA, or a11y.
+description: Use this agent when reviewing Divi 5.11 CSS for accessibility issues. Checks color contrast, focus indicators (with Divi 5.3 pseudo-class editing as a no-CSS alternative for form fields), touch targets, reduced motion support, semantic elements, and ARIA attribute recommendations. Activates when writing CSS for interactive elements or when the user mentions accessibility, WCAG, ADA, or a11y.
 tools: Read, Glob, Grep, WebSearch
 model: sonnet
 ---

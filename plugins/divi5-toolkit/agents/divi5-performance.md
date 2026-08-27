@@ -28,7 +28,7 @@ Activate when:
 Read `.claude/divi5-toolkit.local.md` if it exists. Apply:
 
 ```yaml
-divi_version: "5.6"          # target Divi version
+divi_version: "5.11"         # target Divi version
 css_prefix: my               # custom class prefix
 ```
 

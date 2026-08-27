@@ -1,11 +1,16 @@
 /* ==========================================================================
-   DIVI 5.6 NEW MODULES STYLING
-   The five modules released May 25, 2026:
+   DIVI 5.6 – 5.11 NEW MODULES STYLING
+   The five modules released in 5.6 (May 25, 2026):
    1. Timeline
    2. Breadcrumbs
    3. SVG (inline, native stroke/width)
    4. Table of Contents
    5. Instagram Feed
+   Plus the modules released 5.8 – 5.11 (June – August 2026):
+   6. Tooltip (5.8)
+   7. Post Filter + Post Filter Item (5.10)
+   8. Gravity Forms (5.11)
+   9. Charts / Payment Button / Imagely Gallery (5.11)
 
    Paste into: Divi > Theme Options > Custom CSS (or scope to a specific
               module via Free-Form CSS on the module)
@@ -415,6 +420,109 @@ html {
 }
 
 /* ==========================================================================
+   6. TOOLTIP MODULE (5.8)
+   Native tooltips with full design controls. Most tooltip styling belongs
+   in the builder — use CSS only for behaviors the controls don't expose.
+   Outer wrapper: .et_pb_tooltip — verify inner selectors in DevTools.
+   ========================================================================== */
+
+/* Constrain tooltip width and improve readability */
+.et_pb_tooltip [role="tooltip"],
+.et_pb_tooltip .et_pb_tooltip_content {
+  max-width: min(320px, 90vw);
+  line-height: 1.5;
+}
+
+/* Respect reduced motion for tooltip transitions */
+@media (prefers-reduced-motion: reduce) {
+  .et_pb_tooltip [role="tooltip"],
+  .et_pb_tooltip .et_pb_tooltip_content {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
+   7. POST FILTER + POST FILTER ITEM (5.10)
+   Front-end Loop Builder filtering. Filter state lives in bookmarkable URL
+   parameters. Outer wrappers: .et_pb_post_filter / .et_pb_post_filter_item
+   — verify inner selectors in DevTools.
+   ========================================================================== */
+
+/* Horizontal filter bar that wraps on small screens */
+.et_pb_post_filter .et_pb_post_filter_items,
+.et_pb_post_filter form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+}
+
+/* Filter controls: consistent height + focus ring */
+.et_pb_post_filter select,
+.et_pb_post_filter input[type="search"],
+.et_pb_post_filter input[type="text"] {
+  min-height: 44px; /* touch target */
+  border-radius: 6px;
+}
+
+.et_pb_post_filter select:focus-visible,
+.et_pb_post_filter input:focus-visible {
+  outline: 2px solid #2ea3f2;
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   8. GRAVITY FORMS MODULE (5.11)
+   Renders Gravity Forms inside Divi with design controls. The module wraps
+   standard Gravity Forms markup (.gform_wrapper), so GF's stable classes
+   work inside the module scope. Use the module's design controls first.
+   ========================================================================== */
+
+/* Scope GF fixes to the Divi module wrapper */
+.et_pb_gravity_forms .gform_wrapper .gfield input,
+.et_pb_gravity_forms .gform_wrapper .gfield textarea,
+.et_pb_gravity_forms .gform_wrapper .gfield select {
+  min-height: 44px;
+  border-radius: 6px;
+}
+
+/* Focus ring (GF removes some default outlines) */
+.et_pb_gravity_forms .gform_wrapper .gfield input:focus-visible,
+.et_pb_gravity_forms .gform_wrapper .gfield textarea:focus-visible {
+  outline: 2px solid #2ea3f2;
+  outline-offset: 2px;
+}
+
+/* Validation message readability */
+.et_pb_gravity_forms .gform_wrapper .gfield_validation_message {
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   9. CHARTS / PAYMENT BUTTON / IMAGELY GALLERY (5.11)
+   Charts render into a canvas/SVG container — colors and data styling are
+   set in the module's tabular data editor, not CSS. Keep CSS to layout.
+   Payment Button shares Button design parity: body .et_pb_button patterns
+   apply. Imagely Gallery wraps NextGEN markup.
+   Verify wrappers in DevTools: .et_pb_charts / .et_pb_payment_button /
+   .et_pb_imagely_gallery naming may evolve as the modules mature.
+   ========================================================================== */
+
+/* Keep charts responsive inside flex/grid parents */
+.et_pb_charts canvas,
+.et_pb_charts svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Payment buttons follow the standard Divi button override pattern */
+body .et_pb_payment_button .et_pb_button {
+  min-height: 44px; /* touch target for payment actions */
+}
+
+/* ==========================================================================
    COMPOSABLE SETTINGS HINTS (Divi 5.2+)
    Several of these patterns map to native builder controls:
 
@@ -424,6 +532,10 @@ html {
    - SVG stroke width          → Stroke Width setting (native in 5.6)
    - TOC sticky                → Position > Sticky in the module's design tab
    - Instagram grid columns    → Set in the module's layout settings
+   - Tooltip colors/arrows     → Tooltip module design controls (5.8)
+   - Filter form field styles  → Post Filter design controls (5.10)
+   - Gravity Forms output      → Gravity Forms module design controls (5.11)
+   - Chart colors/series       → Charts module tabular data editor (5.11)
 
    Use Composable Settings first; reach for this CSS for fine-tuning
    beyond what the builder exposes (custom separators, hover effects,

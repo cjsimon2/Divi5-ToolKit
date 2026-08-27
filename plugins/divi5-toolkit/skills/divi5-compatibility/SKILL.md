@@ -1,12 +1,12 @@
 ---
 name: Divi 5 Compatibility
-description: Use this skill when validating CSS for Divi 5 / Divi 5.6 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce, Perfmatters), migrating from Divi 4 to Divi 5, understanding breakpoints, applying the 5.5 Aspect Ratio + Framing settings to prevent CLS, using the 5.3 pseudo-class editing modes (:checked / :focus / :active) instead of custom CSS, the 5.4 Sizing Variable Generator and Relative Colorscheme Generator, the 5.6 new modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), Nested Option Presets, Critical CSS / Dynamic CSS / Inline Stylesheets, or fixing "styles not working" / "button override not working" / "static CSS cache" issues. Provides compatibility rules, validation patterns, specificity fixes, composable settings alternatives, version-specific bug fix history, and a full error-message reference.
+description: Use this skill when validating CSS for Divi 5 / Divi 5.11 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce, Perfmatters), migrating from Divi 4 to Divi 5, understanding breakpoints, applying the 5.5 Aspect Ratio + Framing settings to prevent CLS, using the 5.3 pseudo-class editing modes (:checked / :focus / :active) instead of custom CSS, the 5.4 Sizing Variable Generator and Relative Colorscheme Generator, the 5.7 Gradient Variables and text effects, the 5.9 Variable Fonts and CSS Grid Editor, the newer modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Gravity Forms, Payment Button, Imagely Gallery), Nested Option Presets, Critical CSS / Dynamic CSS / Inline Stylesheets, or fixing "styles not working" / "button override not working" / "static CSS cache" issues. Provides compatibility rules, validation patterns, specificity fixes, composable settings alternatives, version-specific bug fix history, and a full error-message reference.
 user-invocable: false
 ---
 
 # Divi 5 Compatibility Reference
 
-**Divi 5 Version:** 5.6.0 (May 25, 2026 — Divi 5.0 released February 26, 2026)
+**Divi 5 Version:** 5.11.0 (August 15, 2026 — Divi 5.0 released February 26, 2026; weekly release cadence)
 **Architecture:** React 18, no Shadow DOM, standard DOM with `et_pb_*` classes
 **Key recent additions:**
 - 5.2 — Composable Settings (toggle any design option on any sub-element)
@@ -14,6 +14,11 @@ user-invocable: false
 - 5.4 — Sizing Variable Generator, Relative Colorscheme Generator
 - 5.5 — Aspect Ratio + Framing on all images, Image Presets, SVG sanitization
 - 5.6 — Five new modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed), Color Scale + Color Harmony Generators
+- 5.7 — Gradient picker overhaul, Gradient Variables (7th Design Variable type), gradient/image text fills, text-stroke
+- 5.8 — Customizable Workspaces, Tooltip module
+- 5.9 — Variable Fonts + new typography controls (drop caps, text columns, hyphenation), visual CSS Grid Editor
+- 5.10 — Post Filter + Post Filter Item modules (front-end Loop Builder filtering), corrected fluid breakpoint sizing, row-granular lazy loading
+- 5.11 — Charts, Gravity Forms, Imagely Gallery, Payment Button modules; flexbox `alignItems` CSS classes on Column/Section/Row/Group
 
 ## CSS Feature Support
 
@@ -256,7 +261,7 @@ body .et_pb_button:hover {
 
 ### Cache Plugins
 - **WP Rocket + RUCSS**: Divi auto-disables Dynamic CSS when RUCSS is active. Use CSS Safelist to preserve Divi selectors.
-- **LiteSpeed Cache**: May show unstyled HTML initially. Whitelist `admin-ajax.php` in ModSecurity.
+- **LiteSpeed Cache**: May show unstyled HTML initially. Whitelist `admin-ajax.php` in ModSecurity. (Pre-5.8 Divi caused LiteSpeed to purge entire entry sets on every edit — fixed in Divi 5.8.)
 - **Autoptimize**: jQuery deferral can cause fatal errors with Divi.
 - **General rule:** Disable Divi performance options (Static CSS, Dynamic CSS, JS deferral) during development. Enable after finalization.
 
@@ -312,7 +317,7 @@ body .et_pb_button:hover {
 ### D5 Dev Tool
 - [github.com/elegantthemes/d5-dev-tool](https://github.com/elegantthemes/d5-dev-tool) — debugging modal for the Visual Builder
 
-## Composable Settings Compatibility (Divi 5.2+ through 5.5)
+## Composable Settings Compatibility (Divi 5.2+ through 5.11)
 
 Composable Settings let you enable any design option for any module sub-element directly in the builder. Before reaching for custom CSS, check if the styling can be achieved natively:
 
@@ -328,6 +333,15 @@ Composable Settings let you enable any design option for any module sub-element 
 | `object-fit` / `object-position` on cropped images | Framing settings | 5.5 |
 | Image-specific options on non-image modules | Composable settings for image option groups | 5.5 |
 | Nested presets (e.g., button border inside CTA preset) | Nested Option Presets | 5.3 |
+| Repeated `linear-gradient()` values across elements | Gradient Variables | 5.7 |
+| `background-clip: text` gradient/image text fills | Gradient + image text fill controls | 5.7 |
+| `-webkit-text-stroke` on headings | Text-stroke controls | 5.7 (expanded 5.9) |
+| `::after`-based tooltip CSS | Tooltip module | 5.8 |
+| `font-variation-settings` / variable font axes | Variable Fonts controls | 5.9 |
+| Drop caps (`::first-letter`), `column-count`, `hyphens` | New typography options | 5.9 |
+| `grid-template-*` / `grid-column: span` layouts | CSS Grid Editor (start/end/span offsets) | 5.9 |
+| Custom JS loop filtering | Post Filter + Post Filter Item modules | 5.10 |
+| `align-items` overrides on rows/columns | Flexbox `alignItems` classes + builder setting | 5.11 |
 
 **When CSS is still needed:**
 - Complex selectors (`:has()`, sibling combinators, attribute selectors)
@@ -365,6 +379,44 @@ If a user reports one of these symptoms, check whether their Divi version predat
 - Responsive padding calculations corrected for columns with child modules
 - Background videos no longer load on devices where the module is removed
 
+### Fixed in 5.7 (June 10, 2026 — 72 fixes total)
+- Border-radius clipping broken for complex values (e.g., `clamp()`)
+- Icon module background color stretching across the full column width in flex layouts
+- Unit synchronization in Transform Scale fields
+- Image module aspect ratio targeting for portrait videos
+- Visual Builder save failures after extended idle periods (stale nonces)
+
+### Fixed in 5.8 (June 20, 2026 — 66 fixes total)
+- False CSS linter errors for nested selectors without `&` in Free-Form CSS and CodeMirror CSS fields
+- Incorrect heading font sizes on frontend + Visual Builder when Text modules use option group presets
+- Migrated background gradients rendering with wrong length units (units now preserved)
+- Contact Form 7 Styler button icon and rounded corners on hover
+- Slider module control layering — arrows/navigation now stay above high-z-index content
+- Cache bugs causing styles to intermittently disappear
+- LiteSpeed Cache purging entire entry sets instead of just the edited page
+
+### Fixed in 5.9 (July 13, 2026 — 65 fixes total)
+- Grid layout consolidation when switching a container from flex to grid
+- Button line color/style unavailable in hover and sticky states
+- Section visibility issues with animations
+- Blurb image alignment with percentage-based widths
+- CSS numeric field values lost in settings modals
+
+### Fixed in 5.10 (August 11, 2026 — 85 fixes total)
+- Custom attributes declaring duplicate `class`/`style` names now merge instead of dropping entries
+- Theme Builder layout custom CSS not outputting on search results pages
+- Column sizing broken when row horizontal gap uses global variables
+- Post Slider Dark/Light text color specificity across the breakpoint ladder
+- Fluid breakpoint sizing in the Visual Builder corrected (desktop 1025px, tablet-wide 981px, tablet 861px, phone-wide 768px preview widths)
+
+### Fixed in 5.11 (August 15, 2026 — 18 fixes total)
+- List items in Text module rich-text fields now inherit body text styles
+- Circle Counter margin spacing in flex containers without stretch alignment
+- Image module "Grow to Fill" shrinking instead of filling columns when lightbox is enabled
+- Global Color circular references crashing the Visual Builder
+- Desktop breakpoint zoom defaulting incorrectly when the widescreen breakpoint is enabled
+- Theme Builder Shop page rendering with WooCommerce 11.0
+
 ### Pattern
 If a user is on a Divi version older than the fix for their issue, the answer is "update Divi." For users who can't update (compatibility constraints, third-party module dependencies), provide a workaround appropriate to their version.
 
@@ -380,6 +432,8 @@ If a user is on a Divi version older than the fix for their issue, the answer is
 | Transform values corrupted | Dragging Scale handles corrupts calc()/var() values | Re-enter values manually (fixed in 5.2) |
 | Box shadow hover broken | Empty string values overwrite presets | Update to 5.2, or set explicit hover shadow |
 | Loop page CSS missing | Pagination cache conflict | Clear Static CSS; fixed in 5.2 |
+| Linter errors on valid nested CSS | False positives on nested selectors without `&` in Free-Form CSS | Update to 5.8 — the CSS is valid, the linter was wrong |
+| Styles intermittently disappearing | Cache bugs in Dynamic CSS pipeline | Update to 5.8/5.9 (multiple cache fixes); clear Static CSS |
 
 ## Compatibility Modes
 

@@ -13,7 +13,7 @@ You are a Divi 5 diagnostician. The user pasted an error, described a symptom, o
 ## Step 1: Read Project Config
 
 Read `.claude/divi5-toolkit.local.md` if it exists. Note:
-- `divi_version` (default `5.6`) — knowing the target version disambiguates which bug fixes/features apply
+- `divi_version` (default `5.11`) — knowing the target version disambiguates which bug fixes/features apply
 - `css_prefix` — used in any generated fix CSS
 - `accessibility_level` — affects whether to suggest a11y fixes alongside the primary fix
 

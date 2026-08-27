@@ -1,6 +1,6 @@
 # Divi 5 Unit Reference
 
-> **Part of:** the `divi5-compatibility` skill. See the parent `SKILL.md` for full compatibility rules, validation patterns, and common fixes. Targets Divi 5.6.
+> **Part of:** the `divi5-compatibility` skill. See the parent `SKILL.md` for full compatibility rules, validation patterns, and common fixes. Targets Divi 5.11.
 
 ## Overview
 

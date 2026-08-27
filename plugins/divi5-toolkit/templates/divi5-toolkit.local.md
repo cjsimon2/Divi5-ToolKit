@@ -20,18 +20,23 @@ auto_validate: true
 
 # Last Research Date
 # Auto-updated by divi5-researcher agent
-last_research: 2026-05-27
+last_research: 2026-08-26
 
 # Divi Version
 # Track which Divi version this project targets
-# Supported: "5.0", "5.1", "5.2", "5.3", "5.4", "5.5", "5.6"
+# Supported: "5.0" through "5.11"
 # 5.3 added: Contact Form 7 module, pseudo-class editing (:checked/:focus/:active),
 #           Nested Option Presets, harmonized form fields
 # 5.4 added: Sizing Variable Generator, Relative Colorscheme Generator
 # 5.5 added: Aspect Ratio + Framing on all images, Image Presets, SVG sanitization
 # 5.6 added: Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed modules,
 #           Color Scale + Color Harmony Generators
-divi_version: "5.6"
+# 5.7 added: Gradient Variables, gradient/image text fills, text-stroke
+# 5.8 added: Workspaces, Tooltip module
+# 5.9 added: Variable Fonts, new typography controls, CSS Grid Editor
+# 5.10 added: Post Filter + Post Filter Item modules, native lazy loading
+# 5.11 added: Charts, Gravity Forms, Imagely Gallery, Payment Button modules
+divi_version: "5.11"
 
 # Project Design Tokens (optional)
 # Define your project's CSS variable prefix
@@ -110,6 +115,8 @@ Go to **Advanced > Attributes** (not the old CSS ID & Classes field).
 - Check Composable Settings before writing CSS (Divi 5.2+)
 - Set Aspect Ratio on images for CLS prevention (Divi 5.5+)
 - Use pseudo-class editing in the builder for :checked/:focus/:active (Divi 5.3+)
+- Use Gradient Variables instead of repeated linear-gradient() values (Divi 5.7+)
+- Use the CSS Grid Editor before writing grid-template-* CSS (Divi 5.9+)
 - Include `prefers-reduced-motion` with animations
 - Add `:focus-visible` styles for keyboard navigation
 

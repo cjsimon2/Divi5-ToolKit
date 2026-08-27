@@ -53,8 +53,8 @@ If more than 7 days old or user explicitly requested, proceed with research.
 - Builder field changes?
 
 ### Topic 2: New Features
-- New modules added? (5.6 added Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed — total now 13+ D5-native modules)
-- New design options (e.g., 5.5 Aspect Ratio/Framing, 5.4 Sizing/Colorscheme Variable Generators, 5.6 Color Scale/Harmony Generators)?
+- New modules added? (5.6 added Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed; 5.8 Tooltip; 5.10 Post Filter + Post Filter Item; 5.11 Charts, Gravity Forms, Imagely Gallery, Payment Button — total now 20+ D5-native modules)
+- New design options (e.g., 5.5 Aspect Ratio/Framing, 5.4 Sizing/Colorscheme Variable Generators, 5.6 Color Scale/Harmony Generators, 5.7 Gradient Variables + text effects, 5.9 Variable Fonts + CSS Grid Editor)?
 - New breakpoints or responsive tools?
 - Performance improvements?
 - Interactions and animation updates?

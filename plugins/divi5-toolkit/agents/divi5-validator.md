@@ -1,6 +1,6 @@
 ---
 name: divi5-validator
-description: Use this agent after writing or editing CSS files to validate Divi 5.6 compatibility. Triggers on CSS file changes and checks for button specificity issues, numbered selectors, missing !important on Divi overrides, and other compatibility problems. Knows about 5.3 form field selectors and pseudo-class editing, 5.5 Aspect Ratio/Framing, and Composable Settings opportunities.
+description: Use this agent after writing or editing CSS files to validate Divi 5.11 compatibility. Triggers on CSS file changes and checks for button specificity issues, numbered selectors, missing !important on Divi overrides, and other compatibility problems. Knows about 5.3 form field selectors and pseudo-class editing, 5.5 Aspect Ratio/Framing, and Composable Settings opportunities.
 tools: Read, Glob, Grep
 model: haiku
 ---

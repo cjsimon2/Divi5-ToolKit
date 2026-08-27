@@ -336,6 +336,45 @@ Use `/divi5-toolkit:generate` with "loop builder card" as the prompt to get a co
 - Run `/divi5-toolkit:generate` and specify the module name — the plugin knows the 5.6 selectors
 - Reference: `skills/divi5-css-patterns/examples/new-modules.css`
 
+### New 5.8–5.11 module styles not applying (Tooltip, Post Filter, Charts, Gravity Forms, Payment Button)
+
+**Symptom:** Custom CSS targeting one of the newer modules (Tooltip, Post Filter, Charts, Gravity Forms, Imagely Gallery, Payment Button) has no effect.
+
+**Fix:**
+- Verify the wrapper class in DevTools first — these modules are new and their markup may still be evolving between weekly releases
+- Gravity Forms: the Divi module wraps standard GF markup, so scope GF's stable classes under the module: `.et_pb_gravity_forms .gform_wrapper .gfield input { ... }`
+- Charts: series colors and data styling are set in the module's tabular data editor, not CSS — keep CSS to container layout
+- Payment Button: shares Button design parity, so the `body .et_pb_button` override pattern applies
+- Most of these modules have full design controls — check the builder before writing CSS
+- Reference: `skills/divi5-css-patterns/examples/new-modules.css` and `references/divi-selectors.md`
+
+### Styles intermittently disappear, then reappear after a cache clear
+
+**Symptom:** A page that looked fine loses some or all of its Divi styling at random (often reported as "styles vanished overnight"), and clearing caches brings it back.
+
+**Cause:** Cache bugs in the Dynamic CSS pipeline present before Divi 5.8/5.9 could serve pages with missing generated styles.
+
+**Fix:**
+1. Update to Divi 5.9 or later — multiple cache-related fixes landed in 5.8 and 5.9
+2. Clear Static CSS (Divi > Theme Options > Builder > Advanced > Static CSS > Clear) and your cache plugin after updating
+3. If it persists on 5.9+, run `/divi5-toolkit:diagnose` with the symptom
+
+### CSS linter flags valid nested CSS in Free-Form fields
+
+**Symptom:** The Visual Builder's CSS linter shows errors on nested selectors written without `&` in Free-Form CSS or CodeMirror fields, but the CSS works on the frontend.
+
+**Cause:** A linter bug — false positives on browser-native CSS nesting. Fixed in Divi 5.8.
+
+**Fix:** Update to Divi 5.8+. The CSS itself was always valid; no rewrite needed.
+
+### WooCommerce Shop page broken in Theme Builder after WooCommerce 11.0
+
+**Symptom:** The Theme Builder Shop template renders incorrectly after updating WooCommerce to 11.0.
+
+**Cause:** Divi compatibility gap with WooCommerce 11.0's Shop rendering, fixed in Divi 5.11.
+
+**Fix:** Update to Divi 5.11+. If you can't update, roll WooCommerce back below 11.0 until you can.
+
 ### Contact Form 7 Styler fields look unstyled
 
 **Symptom:** Contact Form 7 fields inside a Divi page ignore your custom CSS after upgrading to Divi 5.3+.

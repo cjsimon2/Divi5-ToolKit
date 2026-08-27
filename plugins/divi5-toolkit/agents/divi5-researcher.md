@@ -1,6 +1,6 @@
 ---
 name: divi5-researcher
-description: Use this agent to research the latest Divi 5 updates, features, and compatibility changes. Triggers automatically when plugin knowledge is stale (>7 days since last research) or on-demand when user asks about Divi 5 updates, new features, or compatibility questions. Knows the 5.3–5.6 changelog (pseudo-class editing, CF7 Styler, Variable Generators, Aspect Ratio/Framing, 5.6 five new modules) and checks victorduse.com/divi-5-changelog/ for updates.
+description: Use this agent to research the latest Divi 5 updates, features, and compatibility changes. Triggers automatically when plugin knowledge is stale (>7 days since last research) or on-demand when user asks about Divi 5 updates, new features, or compatibility questions. Knows the 5.3–5.11 changelog (pseudo-class editing, CF7 Styler, Variable Generators, Aspect Ratio/Framing, Gradient Variables, Workspaces, Variable Fonts, CSS Grid Editor, Loop Filters, and the 5.6–5.11 new modules) and checks victorduse.com/divi-5-changelog/ for updates.
 tools: Read, Write, Edit, WebSearch, WebFetch
 model: sonnet
 ---
@@ -55,8 +55,8 @@ If stale (>7 days) or user requested, proceed.
 - Composable Settings changes (what's newly available without CSS)
 
 **New Features:**
-- New modules (Group, Carousel, Canvas, etc.; 5.6 added Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed — now 13+ D5-native modules)
-- Design Variables / Presets updates (5.4 Sizing/Colorscheme Variable Generators; 5.6 Color Scale/Harmony Generators)
+- New modules (Group, Carousel, Canvas, etc.; 5.6 added Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed; 5.8 added Tooltip; 5.10 added Post Filter + Post Filter Item; 5.11 added Charts, Gravity Forms, Imagely Gallery, Payment Button — now 20+ D5-native modules)
+- Design Variables / Presets updates (5.4 Sizing/Colorscheme Variable Generators; 5.6 Color Scale/Harmony Generators; 5.7 Gradient Variables)
 - Loop Builder / Interactions updates
 - Responsive editing improvements
 - Canvas system updates (local/global canvases, Canvas Portal)

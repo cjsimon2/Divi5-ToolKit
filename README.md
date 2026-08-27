@@ -2,7 +2,7 @@
 
 The first Claude Code plugin for Divi 5 development. Validates CSS compatibility, generates Divi-ready code, scaffolds page sections, audits project health, checks accessibility, audits Core Web Vitals performance, diagnoses symptoms, learns from errors, and stays current with Divi 5 updates — all powered by Claude instead of GPT-3.5.
 
-**For Divi 5.6+** (5 new modules — Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed — plus Aspect Ratio/Framing, Variable Generators, pseudo-class editing, Composable Settings, Canvas system, Loop Builder)
+**For Divi 5.11+** (11 new modules since 5.6 — Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Gravity Forms, Imagely Gallery, Payment Button — plus Gradient Variables, Variable Fonts, CSS Grid Editor, Loop Filters, Aspect Ratio/Framing, Variable Generators, pseudo-class editing, Composable Settings, Canvas system, Loop Builder)
 
 ## Why This Exists
 
@@ -16,7 +16,7 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 - **Project Audit**: Whole-project CSS health scoring with graded report and prioritized fix list
 - **Responsive Device Check**: Verifies a page at 9 real device sizes (360px Android through 2560px ultrawide) — live viewport testing + screenshots via a browser MCP server, or static CSS risk analysis without one
 - **Accessibility Checking**: WCAG 2.1 AA compliance — focus indicators, color contrast, reduced motion, touch targets
-- **Divi 5 Knowledge Base**: Complete selector reference, 8 new D5 modules, Design Variable system, Preset hierarchy, responsive breakpoints, Composable Settings, Canvas system, Loop Builder
+- **Divi 5 Knowledge Base**: Complete selector reference, 20+ D5-native modules, Design Variable system, Preset hierarchy, responsive breakpoints, Composable Settings, Canvas system, Loop Builder + Loop Filters
 - **Error Learning**: Paste Divi errors — the plugin analyzes, fixes, and remembers the pattern
 - **Self-Updating**: `/divi5-toolkit:research` refreshes the plugin's own knowledge base from upstream Divi sources on demand (recommended weekly — check `last_research` in your config)
 - **Migration Support**: Converts Divi 4 CSS patterns for Divi 5 compatibility
@@ -115,7 +115,7 @@ Internal docs:
 
 ### Module Library
 - 40+ built-in modules with complete selector reference
-- 13+ D5-native modules: Group, Carousel Group, Before/After Image, Canvas Portal, Dropdown, Icon List, Link, Lottie, plus the five 5.6 additions (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed)
+- 20+ D5-native modules: Group, Carousel Group, Before/After Image, Canvas Portal, Dropdown, Icon List, Link, Lottie, Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed (5.6), Tooltip (5.8), Post Filter + Post Filter Item (5.10), Charts, Gravity Forms, Imagely Gallery, Payment Button (5.11)
 - Contact Form 7 Styler (5.3)
 - 17+ WooCommerce product modules
 
@@ -128,9 +128,11 @@ Internal docs:
 - Off-canvas menus, popups, mega menus, staging areas
 
 ### Design System
-- 6 Design Variable types (Colors, Fonts, Numbers, Images, Text, Links)
+- 7 Design Variable types (Colors, Fonts, Numbers, Images, Text, Links, Gradients)
+- Variable Generators: Sizing (5.4), Relative Colorscheme (5.4), Color Scale + Harmony (5.6)
 - 4-tier Preset hierarchy (Option Group, Element, Stacked, Nested)
 - Composable Settings — enable any option on any sub-element
+- Variable Fonts + advanced typography controls (5.9), visual CSS Grid Editor (5.9)
 - CSS custom properties fully supported
 
 ### Responsive Design
@@ -152,7 +154,7 @@ Internal docs:
 - WooCommerce styling problems
 - Divi 4 to 5 migration patterns
 - Debugging with Safe Mode, DevTools, D5 Dev Tool
-- Divi 5.2–5.6 bug fix history (transform corruption, box-shadow hover, loop CSS, and the per-version fixes documented in the compatibility skill)
+- Divi 5.2–5.11 bug fix history (transform corruption, box-shadow hover, loop CSS, linter false positives, cache-related style loss, and the per-version fixes documented in the compatibility skill)
 
 ### CSS Example Library
 - **Button Variants** — primary, secondary, outline, sizes
@@ -164,7 +166,7 @@ Internal docs:
 - **Responsive 7-Breakpoints** — full 2025-aligned breakpoint template
 - **Loop Builder** — CSS Grid card layouts, masonry, product cards, horizontal lists, pagination
 - **Forms** — Divi 5.3 pseudo-class editing (:checked/:focus/:active), custom checkboxes/radios, Contact Form 7 Styler
-- **New Modules (5.6)** — Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed styling
+- **New Modules (5.6–5.11)** — Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Gravity Forms, Charts, Payment Button styling
 - **Critical CSS** — hand-crafted above-the-fold template (in divi5-performance skill)
 - **Font Loading** — local @font-face with CLS-prevention metric overrides (in divi5-performance skill)
 
@@ -220,7 +222,7 @@ Key settings:
 validation_mode: advisory             # "advisory" (warnings) or "strict" (blocking errors)
 default_format: theme-options         # "theme-options" | "code-module" | "child-theme" | "free-form"
 auto_validate: true                   # validate CSS files automatically after Write/Edit
-divi_version: "5.6"                   # target Divi version — read by /research and the validators
+divi_version: "5.11"                  # target Divi version — read by /research and the validators
 css_prefix: my                        # your custom CSS class prefix
 active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
   - phone
@@ -229,7 +231,7 @@ active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
 accessibility_level: aa               # "aa" | "aaa" | "off" — strictness of accessibility checks
 flag_composable_alternatives: true    # suggest builder-native alternatives to custom CSS (Divi 5.2+)
 scaffold_style: light                 # "light" | "dark" | "brand" — default color scheme for /scaffold
-last_research: 2026-05-27             # auto-updated by divi5-researcher
+last_research: 2026-08-26             # auto-updated by divi5-researcher
 ```
 
 **What each setting affects:**
@@ -377,6 +379,21 @@ divi5-toolkit/                            # ← repo root + marketplace root
 
 ## Changelog
 
+### v2.4.0 (August 26, 2026)
+
+- **Knowledge base caught up to Divi 5.11** (August 15, 2026) from Divi 5.6. Five minor Divi releases shipped on the new weekly cadence:
+  - **5.7 (June 10):** Gradient picker overhaul, **Gradient Variables** (7th Design Variable type), gradient/image text fills, text-stroke. 72 fixes.
+  - **5.8 (June 20):** Customizable **Workspaces**, **Tooltip module**. Fixed false CSS linter errors on nested selectors, cache-related style loss, LiteSpeed over-purging. 66 fixes.
+  - **5.9 (July 13):** **Variable Fonts** + new typography controls (drop caps, text columns, hyphenation, text direction), visual **CSS Grid Editor** with start/end/span offsets. 65 fixes.
+  - **5.10 (August 11):** **Post Filter + Post Filter Item modules** (front-end Loop Builder filtering with bookmarkable URL params), row-granular below-the-fold lazy loading, deferred local videos, corrected Visual Builder fluid breakpoint sizing. 85 fixes.
+  - **5.11 (August 15):** **Charts, Gravity Forms, Imagely Gallery, Payment Button modules**; flexbox `alignItems` CSS classes on Column/Section/Row/Group. 18 fixes.
+- **Both core skills refreshed:** `divi5-css-patterns` documents the 5.7–5.11 additions with builder-first guidance (Gradient Variables over repeated `linear-gradient()`, Grid Editor over `grid-template-*` CSS, builder typography over custom text CSS); `divi5-compatibility` extends the Composable Settings table with 9 new builder-native equivalents and the per-version bug fix history through 5.11.
+- **`divi5-performance` skill** covers the 5.10 native lazy-loading/deferred-video pipeline and 5.9 variable fonts as a font-loading optimization.
+- **`new-modules.css` example extended** with sections for Tooltip, Post Filter, Gravity Forms, and Charts/Payment Button/Imagely, plus updated Composable Settings hints.
+- **`divi-selectors.md`** adds a 5.8–5.11 module selector table (with verify-in-DevTools caveats) and the 5.11 `alignItems` class note.
+- **4 new troubleshooting entries:** 5.8–5.11 module styles not applying, intermittent style disappearance (cache bugs fixed in 5.8/5.9), CSS linter false positives on nested selectors (fixed 5.8), WooCommerce 11.0 Shop rendering (fixed 5.11).
+- **Config:** template default `divi_version` bumped `"5.6"` → `"5.11"`; `last_research` bumped to `2026-08-26`. All agents and commands reference 5.11 as current.
+
 ### v2.3.0 (June 12, 2026)
 
 - **New:** `/divi5-toolkit:responsive` command — verifies a page works across real device sizes instead of trusting that media queries exist.
@@ -396,7 +413,6 @@ Bug-fix release: cross-platform hook reliability, knowledge-base contradictions,
 - **Fixed (commands):** `/scaffold`'s hero used `min-height: clamp(60vh, 70vh, 90vh)` — a no-op that always computes to 70vh (now `clamp(480px, 70vh, 900px)`). `/diagnose` listed "ToolUseContext" as a Divi error signal (leaked from this plugin's own v2.1.6 hook-bug history). `/validate` and the `divi5-validator` agent shipped negative-lookahead regexes the Grep tool can't execute (replaced with locate-then-inspect guidance). `/convert`'s Conversions 8–9 were stranded after Step 7 (moved into Step 4). `/audit`'s score formula (`100 + sum`) ignored its own category weights — scoring is now per-category budgets (40/20/15/10/15) matching the report breakdown.
 - **Improved:** `/generate` gained a "Read Project Config" step and now actually consumes `default_format`, `css_prefix`, `divi_version`, and `active_breakpoints` (the README config table had claimed this since v2.1.1); its variant example derives the class prefix instead of hard-coding `my-`.
 - **Fixed (docs):** Template-copy instructions in README/`docs/configuration.md`/`docs/workflows.md`/`docs/usage.md` pointed at a root-level `templates/` directory that hasn't existed since v2.1.5 (now `plugins/divi5-toolkit/templates/`). `CLAUDE.md`'s test command still showed the pre-v2.1.5 `--plugin-dir` path. README's "researches weekly" claim corrected to on-demand. Agents' in-plugin file references now use `${CLAUDE_PLUGIN_ROOT}` per convention.
-
 ### v2.2.1 (May 27, 2026)
 
 - **Doc sweep — catch up older surfaces to v2.2.0.** The v2.2.0 release pass updated the actively maintained docs (README, STATE, `docs/usage`, `docs/configuration`, `docs/workflows`) and the two refreshed SKILL.md files, but left some surfaces behind. v2.2.1 closes those gaps:
