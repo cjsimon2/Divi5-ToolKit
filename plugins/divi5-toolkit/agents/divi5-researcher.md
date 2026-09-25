@@ -1,6 +1,6 @@
 ---
 name: divi5-researcher
-description: Use this agent to research the latest Divi 5 updates, features, and compatibility changes. Triggers automatically when plugin knowledge is stale (>7 days since last research) or on-demand when user asks about Divi 5 updates, new features, or compatibility questions. Knows the 5.3–5.11 changelog (pseudo-class editing, CF7 Styler, Variable Generators, Aspect Ratio/Framing, Gradient Variables, Workspaces, Variable Fonts, CSS Grid Editor, Loop Filters, and the 5.6–5.11 new modules) and checks victorduse.com/divi-5-changelog/ for updates.
+description: Use this agent to research the latest Divi 5 updates, features, and compatibility changes. Triggers automatically when plugin knowledge is stale (>7 days since last research) or on-demand when user asks about Divi 5 updates, new features, or compatibility questions. Knows the 5.3–5.13 changelog (pseudo-class editing, CF7 Styler, Variable Generators, Aspect Ratio/Framing, Gradient Variables, Workspaces, Variable Fonts, CSS Grid Editor, Loop Filters, the 5.6–5.11 new modules, 5.12 AI Agents + Filters, 5.13 LayoutStyle/preset/Free-Form CSS fixes) and checks elegantthemes.com release notes, divichangelog.com, and victorduse.com/divi-5-changelog/ for updates.
 tools: Read, Write, Edit, WebSearch, WebFetch
 model: sonnet
 ---
@@ -35,8 +35,10 @@ If stale (>7 days) or user requested, proceed.
 1. **Context7** — Official documentation
 2. **Elegant Themes Blog** — elegantthemes.com/blog
 3. **Elegant Themes Help Center** — help.elegantthemes.com
-4. **Divi 5 Changelog** — victorduse.com/divi-5-changelog/
+4. **Divi 5 Changelog** — victorduse.com/divi-5-changelog/ (narrative) and divichangelog.com/divi-update/divi-5 (exact per-version dates, incl. point releases)
 5. **GitHub** — github.com/elegantthemes
+
+**Release-notes URL pattern:** `elegantthemes.com/blog/divi-resources/divi-5-<major>-<minor>-release-notes` (5.9 is the exception: `/divi-5-9`, no suffix). Start with the newest version you don't know about and walk backwards.
 6. **Community sites** — DiviFlash, Divi Engine, WP Zone, Quiroz.co, Pee-Aye Creative
 
 **Search Topics:**
@@ -55,13 +57,14 @@ If stale (>7 days) or user requested, proceed.
 - Composable Settings changes (what's newly available without CSS)
 
 **New Features:**
-- New modules (Group, Carousel, Canvas, etc.; 5.6 added Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed; 5.8 added Tooltip; 5.10 added Post Filter + Post Filter Item; 5.11 added Charts, Gravity Forms, Imagely Gallery, Payment Button — now 20+ D5-native modules)
+- New modules (Group, Carousel, Canvas, etc.; 5.6 added Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed; 5.8 added Tooltip; 5.10 added Post Filter + Post Filter Item; 5.11 added Charts, Gravity Forms, Imagely Gallery, Payment Button — now 20+ D5-native modules; 5.12 and 5.13 added none)
+- **Components + Slots** (announced after 5.13 as the next major feature — a rework of Global Elements with per-instance detachable settings and free-form slots). When it ships: capture wrapper classes, how detached settings render, and whether Global Elements CSS patterns still apply
 - Design Variables / Presets updates (5.4 Sizing/Colorscheme Variable Generators; 5.6 Color Scale/Harmony Generators; 5.7 Gradient Variables)
 - Loop Builder / Interactions updates
 - Responsive editing improvements
 - Canvas system updates (local/global canvases, Canvas Portal)
 - Composable Settings expansions; 5.3 pseudo-class editing (:checked, :focus, :active); 5.5 Aspect Ratio/Framing and image option group composable settings
-- Divi AI Agent capabilities
+- Divi AI Agents (5.12+) capabilities — note anything that becomes builder-native and therefore no longer needs custom CSS
 
 **Breaking Changes:**
 - Selector changes
@@ -71,7 +74,7 @@ If stale (>7 days) or user requested, proceed.
 
 **Performance:**
 - Dynamic CSS / Critical CSS updates
-- Cache improvements
+- Cache improvements (5.12 fixed host-cache over-purging; 5.13 pruned assets for Conditional Display-hidden modules)
 
 **Accessibility:**
 - New ARIA support

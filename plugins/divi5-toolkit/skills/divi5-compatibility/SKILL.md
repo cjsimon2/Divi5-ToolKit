@@ -1,12 +1,12 @@
 ---
 name: Divi 5 Compatibility
-description: Use this skill when validating CSS for Divi 5 / Divi 5.11 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce, Perfmatters), migrating from Divi 4 to Divi 5, understanding breakpoints, applying the 5.5 Aspect Ratio + Framing settings to prevent CLS, using the 5.3 pseudo-class editing modes (:checked / :focus / :active) instead of custom CSS, the 5.4 Sizing Variable Generator and Relative Colorscheme Generator, the 5.7 Gradient Variables and text effects, the 5.9 Variable Fonts and CSS Grid Editor, the newer modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Gravity Forms, Payment Button, Imagely Gallery), Nested Option Presets, Critical CSS / Dynamic CSS / Inline Stylesheets, or fixing "styles not working" / "button override not working" / "static CSS cache" issues. Provides compatibility rules, validation patterns, specificity fixes, composable settings alternatives, version-specific bug fix history, and a full error-message reference.
+description: Use this skill when validating CSS for Divi 5 / Divi 5.13 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce, Perfmatters), migrating from Divi 4 to Divi 5, understanding breakpoints, applying the 5.5 Aspect Ratio + Framing settings to prevent CLS, using the 5.3 pseudo-class editing modes (:checked / :focus / :active) instead of custom CSS, the 5.4 Sizing Variable Generator and Relative Colorscheme Generator, the 5.7 Gradient Variables and text effects, the 5.9 Variable Fonts and CSS Grid Editor, the 5.12 backdrop-blur / invert / sepia Filters and AI Agents, the 5.13 LayoutStyle unit coverage, preset-class and migrated Free-Form CSS fixes, the newer modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Gravity Forms, Payment Button, Imagely Gallery), Nested Option Presets, Critical CSS / Dynamic CSS / Inline Stylesheets, or fixing "styles not working" / "button override not working" / "static CSS cache" issues. Provides compatibility rules, validation patterns, specificity fixes, composable settings alternatives, version-specific bug fix history, and a full error-message reference.
 user-invocable: false
 ---
 
 # Divi 5 Compatibility Reference
 
-**Divi 5 Version:** 5.11.0 (August 15, 2026 — Divi 5.0 released February 26, 2026; weekly release cadence)
+**Divi 5 Version:** 5.13.1 (September 18, 2026 — Divi 5.0 released February 26, 2026; weekly release cadence)
 **Architecture:** React 18, no Shadow DOM, standard DOM with `et_pb_*` classes
 **Key recent additions:**
 - 5.2 — Composable Settings (toggle any design option on any sub-element)
@@ -19,6 +19,9 @@ user-invocable: false
 - 5.9 — Variable Fonts + new typography controls (drop caps, text columns, hyphenation), visual CSS Grid Editor
 - 5.10 — Post Filter + Post Filter Item modules (front-end Loop Builder filtering), corrected fluid breakpoint sizing, row-granular lazy loading
 - 5.11 — Charts, Gravity Forms, Imagely Gallery, Payment Button modules; flexbox `alignItems` CSS classes on Column/Section/Row/Group
+- 5.12 — AI Agents (natural-language builder automation), backdrop blur / invert / sepia Filters, module presets now emit CSS classes + attributes on the frontend wrapper, WordPress 7.1 block-editor compatibility
+- 5.13 — Maintenance release: expanded LayoutStyle unit coverage (display, gaps, flex), migrated Divi 4 Free-Form CSS now applies on the frontend, Contact Form **Show Labels** option, Slider swipe-controls bar, four security fixes. 5.13.1 refreshed Divi AI models
+- **Announced next:** Components + Slots (a rework of Global Elements with per-instance detachable settings and free-form slots), more modules, AI improvements
 
 ## CSS Feature Support
 
@@ -247,6 +250,21 @@ body .et_pb_button:hover {
 }
 ```
 
+### Issue: The class I set on a module is missing on the frontend (pre-5.12)
+**Symptom:** You add `my-card` under Advanced > Attributes > class, but the frontend wrapper only carries the class from the module's Element/Attributes **preset**, so `.et_pb_blurb.my-card` matches nothing.
+**Cause:** Before Divi 5.12 a CSS class defined in a preset overrode the local module class instead of merging with it. Separately, presets that defined interactions, main-wrapper attributes, or CSS classes did not emit them at all.
+**Fix:** Update to Divi 5.12+ (both fixed). On older versions, move the class from the preset to the module (or vice versa) so only one source sets it, then clear Static CSS.
+
+### Issue: Free-Form CSS migrated from Divi 4 works in the builder but not on the frontend (pre-5.13)
+**Symptom:** After a Divi 4 → 5 migration, a module's Free-Form CSS (using `selector`) renders correctly inside the Visual Builder but is absent from the frontend stylesheet.
+**Cause:** Migrated free-form custom CSS was not emitted on the frontend. Fixed in Divi 5.13 so the frontend matches the builder.
+**Fix:** Update to Divi 5.13+ and clear Static CSS. If you can't update, copy the rule into Theme Options Custom CSS with an explicit class selector as a temporary bridge, then remove it after updating.
+
+### Issue: Theme Builder header/footer background bleeds into page content (pre-5.13)
+**Symptom:** A background set on the Theme Builder header or footer *content area* also paints behind native page content.
+**Cause:** Content-area backgrounds in TB header/footer layouts leaked into the page body. Fixed in 5.13.
+**Fix:** Update to 5.13+. Workaround on older versions: move the background from the layout's content area to the section inside the header/footer template.
+
 ### Issue: Header/menu layout breaks after clearing Static CSS (5.6, field-verified 2026-06-12)
 **Symptom:** A previously centered header menu (e.g., `inline_centered_logo` style) packs to the left on every page immediately after clearing the Static CSS cache. No custom CSS touches the menu.
 **Cause:** Regeneration re-emits the template's flex layout CSS using current defaults (`justify-content: start`). Modules configured before Divi exposed explicit Flex options (or left at "default") inherited centering implicitly; the regenerated CSS doesn't reproduce it. Diagnostic signature: `.et_pb_menu_inner_container` computes `justify-content: start` and `.et_pb_menu__wrap` computes `flex: 0 1 auto` while the stylesheet still contains `flex: 1 1 auto` for it.
@@ -261,6 +279,7 @@ body .et_pb_button:hover {
 
 ### Cache Plugins
 - **WP Rocket + RUCSS**: Divi auto-disables Dynamic CSS when RUCSS is active. Use CSS Safelist to preserve Divi selectors.
+- **Host page caches (Cloudways, Kinsta, etc.)**: Pre-5.12 Divi purged the *entire* third-party page cache on every page save or Visual Builder open. Fixed in 5.12 — update if editors complain about site-wide slowdowns after each save.
 - **LiteSpeed Cache**: May show unstyled HTML initially. Whitelist `admin-ajax.php` in ModSecurity. (Pre-5.8 Divi caused LiteSpeed to purge entire entry sets on every edit — fixed in Divi 5.8.)
 - **Autoptimize**: jQuery deferral can cause fatal errors with Divi.
 - **General rule:** Disable Divi performance options (Static CSS, Dynamic CSS, JS deferral) during development. Enable after finalization.
@@ -271,6 +290,8 @@ body .et_pb_button:hover {
 
 ### WooCommerce
 - Cart/checkout pages may lose formatting after updates.
+- Product **bulk edit** timing out (pre-5.12): Divi cleared its CSS cache on every product save. Fixed in 5.12.
+- Variation image switching in Theme Builder responsive layouts (fixed 5.12); Woo Products modules blank when editing shop/archive templates in the frontend Theme Builder (fixed 5.13).
 - **Fix:** Disable Dynamic CSS in Divi Theme Options > Performance. Divi 5 offers native Woo Cart and Checkout modules.
 
 ## Divi 4 to Divi 5 Migration
@@ -317,7 +338,7 @@ body .et_pb_button:hover {
 ### D5 Dev Tool
 - [github.com/elegantthemes/d5-dev-tool](https://github.com/elegantthemes/d5-dev-tool) — debugging modal for the Visual Builder
 
-## Composable Settings Compatibility (Divi 5.2+ through 5.11)
+## Composable Settings Compatibility (Divi 5.2+ through 5.13)
 
 Composable Settings let you enable any design option for any module sub-element directly in the builder. Before reaching for custom CSS, check if the styling can be achieved natively:
 
@@ -342,6 +363,10 @@ Composable Settings let you enable any design option for any module sub-element 
 | `grid-template-*` / `grid-column: span` layouts | CSS Grid Editor (start/end/span offsets) | 5.9 |
 | Custom JS loop filtering | Post Filter + Post Filter Item modules | 5.10 |
 | `align-items` overrides on rows/columns | Flexbox `alignItems` classes + builder setting | 5.11 |
+| `backdrop-filter: blur()` glass panels, `filter: invert()` / `sepia()` | Design > Filters (backdrop blur, invert, sepia controls) | 5.12 |
+| Hiding/showing Contact Form `<label>` elements with CSS | Contact Form > Show Labels toggle (+ Label Text styles now apply) | 5.13 |
+| Custom slide counter / progress bar CSS on Sliders | Slider swipe-controls bar (formatted counts, segmented progress, swipe label) | 5.13 |
+| `display` / `gap` / flex unit tweaks via custom CSS | LayoutStyle emits the full unit set for display, gaps, and flex | 5.13 |
 
 **When CSS is still needed:**
 - Complex selectors (`:has()`, sibling combinators, attribute selectors)
@@ -417,6 +442,33 @@ If a user reports one of these symptoms, check whether their Divi version predat
 - Desktop breakpoint zoom defaulting incorrectly when the widescreen breakpoint is enabled
 - Theme Builder Shop page rendering with WooCommerce 11.0
 
+### Fixed in 5.12 (September 4, 2026 — 71 fixes total; introduced AI Agents)
+- A CSS class from an Element/Attributes preset overrode the local module class on the frontend (now merged)
+- Module presets defining interactions, custom main-wrapper attributes, or CSS classes now emit them on the frontend wrapper
+- Module-level background gradients could output invalid CSS and fail to override element-preset gradients
+- Timeline Item responsive content always rendered the desktop version on the frontend
+- Post Filter Item search/control fields not rendering when field settings were changed on responsive views
+- Contact Form field Border, Box Shadow, and Filters now apply to the field wrapper; radio/checkbox Spacing padding persists after reload
+- Blog grid featured images rendered at 400×284 instead of 400×250; Portfolio image height applied to the wrapper instead of the image
+- Global number variables entered without a unit missing from most number-field pickers
+- Saving a page / opening the Visual Builder purged the entire third-party page cache on Cloudways-style hosts
+- WooCommerce bulk edit timeouts (repeated Divi CSS cache clearing on every product save); checkout timeout / payment-method error on the confirmation page
+- Charts module frontend JS bundle reduced; shared Sass color functions modernized (no visual change)
+- WordPress 7.1: block-editor styles/assets in the iframed editor, missing "Use The Divi Builder" buttons
+
+### Fixed in 5.13 (September 14, 2026 — 65 fixes total; 5.13.1 on September 18 refreshed Divi AI models)
+- Expanded LayoutStyle unit coverage for `display`, gap, and flex CSS emission
+- Free-Form custom CSS migrated from Divi 4 now applies on the frontend and matches the Visual Builder
+- Theme Builder header/footer content-area backgrounds no longer affect native page content
+- Preset custom ID attributes now appear on the frontend for modules using a module preset; preset options no longer inherit parent values as defaults; default preset design changes live-preview correctly
+- Group Carousel item alignment for custom-width Groups (left/center/right); Testimonial grid column count applies to the description area only
+- Contact Form gained a **Show Labels** option, and Label Text styles now apply to field labels
+- Slider gained a swipe-controls bar (formatted slide counts, segmented progress, customizable swipe label)
+- Hidden modules discarded by Conditional Display no longer load runtime assets or extracted webfonts
+- Sticky posts no longer repeat on every Blog pagination page
+- Visual Builder on WordPress VIP (CodeMirror styles from blocked `node_modules` URLs)
+- Security: SSRF in Divi Cloud token refresh and layout export, unsanitized text-effects image-fill values reaching generated CSS, non-admins changing site-wide AI defaults
+
 ### Pattern
 If a user is on a Divi version older than the fix for their issue, the answer is "update Divi." For users who can't update (compatibility constraints, third-party module dependencies), provide a workaround appropriate to their version.
 
@@ -434,6 +486,9 @@ If a user is on a Divi version older than the fix for their issue, the answer is
 | Loop page CSS missing | Pagination cache conflict | Clear Static CSS; fixed in 5.2 |
 | Linter errors on valid nested CSS | False positives on nested selectors without `&` in Free-Form CSS | Update to 5.8 — the CSS is valid, the linter was wrong |
 | Styles intermittently disappearing | Cache bugs in Dynamic CSS pipeline | Update to 5.8/5.9 (multiple cache fixes); clear Static CSS |
+| Custom class from Attributes panel missing on frontend | Preset class overrode local class (pre-5.12) | Update to 5.12; or set the class in only one place |
+| Migrated Free-Form CSS works in builder, not frontend | Migrated free-form CSS not emitted (pre-5.13) | Update to 5.13; bridge via Theme Options CSS meanwhile |
+| Preset custom ID missing on frontend | Preset ID attributes not emitted (pre-5.13) | Update to 5.13; or set the ID on the module directly |
 
 ## Compatibility Modes
 
@@ -463,6 +518,7 @@ For complete details, see:
 
 - [Elegant Themes Help Center](https://help.elegantthemes.com)
 - [Divi 5 Changelog](https://victorduse.com/divi-5-changelog/)
+- [Divi Changelog (per-version dates)](https://www.divichangelog.com/divi-update/divi-5)
 - [D5 Extension Examples](https://github.com/elegantthemes/d5-extension-example-modules)
 - [D5 Dev Tool](https://github.com/elegantthemes/d5-dev-tool)
 - [WP Zone Divi CSS Guide](https://wpzone.co/the-divi-css-and-child-theme-guide/)

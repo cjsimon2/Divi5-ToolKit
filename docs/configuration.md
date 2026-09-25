@@ -20,7 +20,13 @@ your-project/
     └── divi5-toolkit.local.md
 ```
 
-To create it, copy the template:
+To create it, run the setup command from your project root in Claude Code:
+
+```
+/divi5-toolkit:setup
+```
+
+It detects the installed Divi version, child theme, and CSS prefix and writes the file. Or copy the template by hand:
 
 ```bash
 mkdir -p .claude
@@ -47,7 +53,7 @@ default_format: theme-options         # "theme-options" | "code-module"
 css_prefix: my                        # custom CSS class prefix
 
 # ─── Project Targeting ────────────────────────────────────────────────────
-divi_version: "5.11"                  # "5.0" through "5.11"
+divi_version: "5.13"                  # "5.0" through "5.13"
 active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
   - phone
   - tablet
@@ -63,7 +69,7 @@ flag_composable_alternatives: true    # true | false
 scaffold_style: light                 # "light" | "dark" | "brand"
 
 # ─── Knowledge Base ───────────────────────────────────────────────────────
-last_research: 2026-04-12             # YYYY-MM-DD, auto-updated by /research
+last_research: 2026-09-25             # YYYY-MM-DD, auto-updated by /research
 
 # ─── Auto-populated ───────────────────────────────────────────────────────
 learned_errors: []                    # populated by divi5-error-learner
@@ -129,7 +135,7 @@ Your project's custom CSS class prefix. Generated CSS uses this prefix to avoid 
 
 **Recommendation:** Set it to your client's initials or a short site abbreviation. Avoid `divi`, `et`, `et_pb_` — those are reserved.
 
-**Read by:** `/generate`, `/scaffold`, `/convert`
+**Read by:** `/setup` (writes), `/selector`, `/generate`, `/scaffold`, `/convert`
 
 ---
 
@@ -150,11 +156,13 @@ The Divi version your project targets.
 | `"5.8"` | Adds customizable Workspaces and the Tooltip module. Fixes false CSS linter errors on nested selectors and cache-related style loss. |
 | `"5.9"` | Adds Variable Fonts, new typography controls (drop caps, text columns, hyphenation), and the visual CSS Grid Editor. |
 | `"5.10"` | Adds Post Filter + Post Filter Item modules (front-end Loop Builder filtering), row-granular lazy loading, deferred local videos, corrected fluid breakpoint sizing. |
-| `"5.11"` (recommended) | Adds Charts, Gravity Forms, Imagely Gallery, and Payment Button modules; flexbox `alignItems` CSS classes on Column/Section/Row/Group. |
+| `"5.11"` | Adds Charts, Gravity Forms, Imagely Gallery, and Payment Button modules; flexbox `alignItems` CSS classes on Column/Section/Row/Group. |
+| `"5.12"` | Adds AI Agents and backdrop blur / invert / sepia Filters. Presets emit CSS classes on the frontend and no longer override the module's own class. Host page caches no longer fully purged on save. |
+| `"5.13"` (recommended) | Maintenance release: LayoutStyle unit parity for display/gap/flex, migrated Divi 4 Free-Form CSS applies on the frontend, Contact Form Show Labels, Slider swipe controls, Conditional Display asset pruning, preset custom IDs emitted. 5.13.1 refreshed Divi AI models. |
 
-**Recommendation:** Use `"5.11"`. The plugin tailors its advice to the version you set — `/audit` gates Composable Settings suggestions on 5.2+, the performance agent recommends Aspect Ratio for CLS only on 5.5+, the form CSS examples assume 5.3+ pseudo-class editing, grid advice prefers the Grid Editor on 5.9+, and so on.
+**Recommendation:** Use `"5.13"` — or just run `/divi5-toolkit:setup`, which reads the installed version from the theme's `style.css`. The plugin tailors its advice to the version you set — `/audit` gates Composable Settings suggestions on 5.2+, the performance agent recommends Aspect Ratio for CLS only on 5.5+, the form CSS examples assume 5.3+ pseudo-class editing, grid advice prefers the Grid Editor on 5.9+, and so on.
 
-**Read by:** `/audit`, `/diagnose`, `divi5-performance` agent (feature gating and version-aware advice)
+**Read by:** `/setup` (writes), `/selector`, `/generate`, `/audit`, `/diagnose`, `/responsive`, `divi5-performance` agent (feature gating and version-aware advice)
 
 ---
 
@@ -277,7 +285,7 @@ validation_mode: advisory
 auto_validate: true
 default_format: theme-options
 css_prefix: my
-divi_version: "5.2"
+divi_version: "5.13"
 active_breakpoints: [phone, tablet, desktop]
 accessibility_level: aa
 flag_composable_alternatives: true
@@ -291,7 +299,7 @@ validation_mode: strict
 auto_validate: true
 default_format: child-theme
 css_prefix: acme         # set per client
-divi_version: "5.2"
+divi_version: "5.13"
 active_breakpoints: [phone, tablet, desktop, widescreen]
 accessibility_level: aa
 flag_composable_alternatives: true
@@ -305,7 +313,7 @@ validation_mode: strict
 auto_validate: true
 default_format: child-theme
 css_prefix: gov
-divi_version: "5.2"
+divi_version: "5.13"
 active_breakpoints: [phone, tablet, desktop]
 accessibility_level: aaa
 flag_composable_alternatives: true
@@ -319,7 +327,7 @@ validation_mode: advisory
 auto_validate: true
 default_format: theme-options
 css_prefix: shop
-divi_version: "5.2"
+divi_version: "5.13"
 active_breakpoints: [phone, tablet, desktop, widescreen]
 accessibility_level: aa
 flag_composable_alternatives: true
@@ -333,7 +341,7 @@ validation_mode: advisory
 auto_validate: false      # skip the noise on throwaway code
 default_format: code-module
 css_prefix: tmp
-divi_version: "5.2"
+divi_version: "5.13"
 active_breakpoints: [phone, tablet, desktop]
 accessibility_level: off  # OK for throwaway code
 flag_composable_alternatives: false
@@ -372,10 +380,10 @@ If the file doesn't exist, all defaults apply. There is no error — the plugin 
 |---|---|
 | `validation_mode` | `/validate`, `divi5-validator` |
 | `auto_validate` | PostToolUse hook |
-| `default_format` | `/generate`, `/scaffold`, `/convert` |
-| `css_prefix` | `/generate`, `/scaffold`, `/convert` |
-| `divi_version` | `/audit` |
-| `active_breakpoints` | `/generate`, `/scaffold` |
+| `default_format` | `/setup` (writes), `/generate`, `/scaffold`, `/convert` |
+| `css_prefix` | `/setup` (writes), `/selector`, `/generate`, `/scaffold`, `/convert`, `/diagnose`, `/responsive` |
+| `divi_version` | `/setup` (writes), `/selector`, `/generate`, `/audit`, `/diagnose`, `/responsive`, `divi5-performance` |
+| `active_breakpoints` | `/generate`, `/scaffold`, `/responsive` |
 | `accessibility_level` | `/validate`, `/audit`, `divi5-accessibility` |
 | `flag_composable_alternatives` | `/validate`, `/convert`, `/audit` |
 | `scaffold_style` | `/scaffold` |

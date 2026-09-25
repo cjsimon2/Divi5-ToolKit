@@ -6,7 +6,7 @@ user-invocable: false
 
 # Divi 5 Performance Optimization
 
-**Divi 5 Version:** 5.11.0 (August 2026)
+**Divi 5 Version:** 5.13.1 (September 2026)
 **Core Web Vitals targets:** LCP < 2.5s, INP < 200ms, CLS < 0.1
 
 ## Overview
@@ -36,6 +36,12 @@ Divi 5.10 added engine-level deferral, reducing the need for custom lazy-load wo
 - **Dynamic Assets generation** is memoized, so repeated filter callbacks don't re-run.
 
 On 5.10+, verify the built-in deferral covers your case before adding the IntersectionObserver helper-class pattern below. Also note two cache-related fixes worth updating for: intermittent disappearing styles (fixed across 5.8/5.9) and LiteSpeed purging entire entry sets per edit (fixed in 5.8).
+
+### Conditional Display asset pruning (5.13+) and cache-purge fixes (5.12+)
+
+- **5.13:** modules hidden by **Conditional Display** no longer contribute frontend runtime JS or extracted-font webfont loads. If you were manually dequeueing module scripts or fonts for logged-out/device-specific variants, that workaround is redundant on 5.13+.
+- **5.12:** saving a page or opening the Visual Builder no longer purges the *entire* third-party page cache on Cloudways-style hosts, and WooCommerce product saves no longer clear Divi's CSS cache each time (this was causing bulk-edit timeouts). Editors on busy sites should update.
+- **5.12:** Charts module frontend JS bundle shrank (validation removed from the Chart.js config parse path).
 
 ## Core Web Vitals: What Hurts You in Divi 5
 
@@ -208,6 +214,11 @@ For every image module, set Sizing → Aspect Ratio. The browser reserves space 
 - Enable Object Cache (Redis/Memcached)
 - ESI on Cart/Checkout for WooCommerce
 - CSS/JS Combine OFF for Divi 5 (per-page CSS already optimal)
+
+### Managed-host page caches (Cloudways, Kinsta, WP Engine)
+
+- On Divi < 5.12 every page save / builder open flushed the whole host cache — expect cold-cache TTFB spikes for all visitors after each edit. Update to 5.12+.
+- Keep Divi's own Static CSS enabled in production; host caches serve the HTML, Divi serves the per-page CSS.
 
 ### Autoptimize
 

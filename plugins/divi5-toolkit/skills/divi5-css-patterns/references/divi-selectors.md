@@ -1,6 +1,6 @@
 # Divi 5 CSS Selectors Reference
 
-> **Part of:** the `divi5-css-patterns` skill. See the parent `SKILL.md` for CSS patterns, override strategies, and best practices. Targets Divi 5.11.
+> **Part of:** the `divi5-css-patterns` skill. See the parent `SKILL.md` for CSS patterns, override strategies, and best practices. Targets Divi 5.13.
 
 ## Overview
 
@@ -128,6 +128,18 @@ Modules added on the weekly release cadence after 5.6. Wrapper class names follo
 | `.et_pb_payment_button` | Payment Button (5.11) | Shares Button design parity — `body .et_pb_button` override patterns apply |
 
 Flexbox note (5.11+): Column, Section, Row, and Group modules emit CSS classes reflecting their `alignItems` setting — inspect before overriding alignment.
+
+## 5.12 – 5.13 Selector Notes (September 2026)
+
+No new modules, but three changes affect what you can target:
+
+| Change | Since | What it means for selectors |
+|--------|-------|-----------------------------|
+| Presets emit their CSS classes on the frontend wrapper, merged with the module's own Attributes class | 5.12 | `.et_pb_blurb.preset-card.my-featured` is valid — both classes are present. Before 5.12 the preset class replaced the local one. |
+| Preset custom ID attributes are output on the frontend | 5.13 | `#hero-cta` set in a preset now exists in the DOM. Prefer classes anyway — IDs are unique per page. |
+| Contact Form `<label>` elements can be shown/hidden via **Show Labels** | 5.13 | Target `.et_pb_contact_form label` only for typography beyond the Label Text controls; never `display: none` them for layout. |
+| Slider swipe-controls bar | 5.13 | New inner elements for slide count / progress / swipe label — inspect in DevTools before styling; most of it is design-controlled. |
+| Migrated Divi 4 Free-Form CSS is emitted on the frontend | 5.13 | `selector`-based rules from migrated pages now work without a Theme Options duplicate. |
 
 ## Free-Form CSS Targeting (Divi 5)
 

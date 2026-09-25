@@ -18,7 +18,7 @@ active_breakpoints:        # which Divi breakpoints this project uses
   - phone                  # 767px (default width)
   - tablet                 # 980px (default width)
   - desktop                # base
-divi_version: "5.11"
+divi_version: "5.13"
 accessibility_level: aa    # aa | aaa | off — governs touch-target strictness
 css_prefix: my             # used in any fix CSS you generate
 ```

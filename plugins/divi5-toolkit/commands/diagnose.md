@@ -13,7 +13,7 @@ You are a Divi 5 diagnostician. The user pasted an error, described a symptom, o
 ## Step 1: Read Project Config
 
 Read `.claude/divi5-toolkit.local.md` if it exists. Note:
-- `divi_version` (default `5.11`) — knowing the target version disambiguates which bug fixes/features apply
+- `divi_version` (default `5.13`) — knowing the target version disambiguates which bug fixes/features apply
 - `css_prefix` — used in any generated fix CSS
 - `accessibility_level` — affects whether to suggest a11y fixes alongside the primary fix
 
@@ -39,6 +39,7 @@ Read the user's input and assign it to one of these buckets. If ambiguous, ask o
 5. Numbered selector (`.et_pb_text_0`) that shifted on module reorder
 6. Static CSS cache stale (clear: Divi → Theme Options → Builder → Advanced → Static CSS → Clear)
 7. Plugin conflict (cache plugin's RUCSS removed the rule)
+8. Version-gated bugs: preset class overriding the module's Attributes class (pre-5.12), migrated Divi 4 Free-Form CSS not emitted on the frontend (pre-5.13), preset custom IDs missing (pre-5.13) — check `divi_version` against the bug-fix history in the compatibility skill
 
 ### Bucket C: Page is slow / performance issue
 
@@ -132,6 +133,7 @@ After the diagnosis, offer:
 - **Validate full file** → `/divi5-toolkit:validate <file>` to catch related issues
 - **Full audit** → `/divi5-toolkit:audit` if the file has multiple issues
 - **Add to error library** → run `divi5-error-learner` to memorize a new pattern (for novel errors)
+- **Find the right selector** → `/divi5-toolkit:selector <module>` when the root cause was targeting the wrong class
 
 ## Examples
 

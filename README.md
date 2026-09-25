@@ -2,14 +2,16 @@
 
 The first Claude Code plugin for Divi 5 development. Validates CSS compatibility, generates Divi-ready code, scaffolds page sections, audits project health, checks accessibility, audits Core Web Vitals performance, diagnoses symptoms, learns from errors, and stays current with Divi 5 updates — all powered by Claude instead of GPT-3.5.
 
-**For Divi 5.11+** (11 new modules since 5.6 — Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Gravity Forms, Imagely Gallery, Payment Button — plus Gradient Variables, Variable Fonts, CSS Grid Editor, Loop Filters, Aspect Ratio/Framing, Variable Generators, pseudo-class editing, Composable Settings, Canvas system, Loop Builder)
+**For Divi 5.13+** (11 new modules since 5.6 — Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Gravity Forms, Imagely Gallery, Payment Button — plus Gradient Variables, Variable Fonts, CSS Grid Editor, Loop Filters, Aspect Ratio/Framing, Variable Generators, pseudo-class editing, Composable Settings, Canvas system, Loop Builder)
 
 ## Why This Exists
 
-Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives you Claude's superior code generation with deep Divi 5 knowledge — from your terminal, editor, or CI/CD pipeline. It knows Divi's selectors, specificity rules, breakpoints, Design Variables, Free-Form CSS, Composable Settings, Canvas system, and the full module library so you don't have to provide that context manually.
+Divi's built-in AI Agents (5.12+) only work inside the Visual Builder and only on what the builder exposes. This plugin gives you Claude with deep Divi 5 knowledge where the rest of your work happens — your CSS files, child theme, terminal, editor, and CI/CD pipeline. It knows Divi's selectors, specificity rules, breakpoints, Design Variables, Free-Form CSS, Composable Settings, Canvas system, and the full module library so you don't have to provide that context manually.
 
 ## Features
 
+- **One-Command Setup**: `/divi5-toolkit:setup` detects your installed Divi version, child theme, and CSS prefix and writes the project config for you
+- **Selector Lookup**: `/divi5-toolkit:selector blurb title` returns the wrapper, inner selectors, a paste-ready override, and the Free-Form CSS equivalent in seconds
 - **CSS Generation**: Divi 5-ready CSS in four formats (Theme Options, Code Module, Child Theme, Free-Form CSS)
 - **Section Scaffolding**: Complete page section templates (hero, pricing, FAQ, etc.) with CSS, responsive design, and accessibility baked in
 - **Compatibility Validation**: Checks button specificity, numbered selectors, `!important` usage, CSS variable scope, format correctness, accessibility
@@ -26,15 +28,15 @@ Divi AI uses GPT-3.5 and only works inside the Visual Builder. This plugin gives
 
 Already have the plugin loaded? (See [Installation](#installation) if not.)
 
-```bash
-# 1. From your project root, copy the config template
-mkdir -p .claude
-cp /path/to/Divi5-ToolKit/plugins/divi5-toolkit/templates/divi5-toolkit.local.md .claude/divi5-toolkit.local.md
+From your project root, in Claude Code:
+
+```
+/divi5-toolkit:setup
 ```
 
-Edit `.claude/divi5-toolkit.local.md` and set `css_prefix` to your project's class prefix (e.g., `acme`). Leave the other defaults alone.
+It reads `wp-content/themes/Divi/style.css` for the installed version, finds your child theme and existing CSS class prefix, asks at most three questions, and writes `.claude/divi5-toolkit.local.md`. (Manual alternative: copy `plugins/divi5-toolkit/templates/divi5-toolkit.local.md` to that path and edit `css_prefix`.)
 
-In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 8 commands. Try one:
+Type `/divi5-toolkit:` — autocomplete should show all 10 commands. Try one:
 
 ```
 /divi5-toolkit:generate primary button with gold hover state
@@ -51,6 +53,8 @@ You should get back Divi 5-ready CSS with `body` prefix, `!important`, your cust
 
 | Command | Description |
 |---------|-------------|
+| `/divi5-toolkit:setup` | Create or refresh the project config — auto-detects Divi version, child theme, CSS prefix |
+| `/divi5-toolkit:selector` | Look up the right selector for any module/sub-element, with override + Free-Form patterns |
 | `/divi5-toolkit:generate` | Generate Divi 5-ready CSS for any component |
 | `/divi5-toolkit:validate` | Validate CSS for Divi 5 compatibility |
 | `/divi5-toolkit:convert` | Convert existing CSS to Divi 5 format |
@@ -154,7 +158,7 @@ Internal docs:
 - WooCommerce styling problems
 - Divi 4 to 5 migration patterns
 - Debugging with Safe Mode, DevTools, D5 Dev Tool
-- Divi 5.2–5.11 bug fix history (transform corruption, box-shadow hover, loop CSS, linter false positives, cache-related style loss, and the per-version fixes documented in the compatibility skill)
+- Divi 5.2–5.13 bug fix history (transform corruption, box-shadow hover, loop CSS, linter false positives, cache-related style loss, preset-class override, migrated Free-Form CSS, and the per-version fixes documented in the compatibility skill)
 
 ### CSS Example Library
 - **Button Variants** — primary, secondary, outline, sizes
@@ -222,7 +226,7 @@ Key settings:
 validation_mode: advisory             # "advisory" (warnings) or "strict" (blocking errors)
 default_format: theme-options         # "theme-options" | "code-module" | "child-theme" | "free-form"
 auto_validate: true                   # validate CSS files automatically after Write/Edit
-divi_version: "5.11"                  # target Divi version — read by /research and the validators
+divi_version: "5.13"                  # target Divi version — set by /setup, read by most commands
 css_prefix: my                        # your custom CSS class prefix
 active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
   - phone
@@ -231,7 +235,7 @@ active_breakpoints:                   # which of Divi 5's 7 breakpoints to use
 accessibility_level: aa               # "aa" | "aaa" | "off" — strictness of accessibility checks
 flag_composable_alternatives: true    # suggest builder-native alternatives to custom CSS (Divi 5.2+)
 scaffold_style: light                 # "light" | "dark" | "brand" — default color scheme for /scaffold
-last_research: 2026-08-26             # auto-updated by divi5-researcher
+last_research: 2026-09-25             # auto-updated by divi5-researcher
 ```
 
 **What each setting affects:**
@@ -241,8 +245,8 @@ last_research: 2026-08-26             # auto-updated by divi5-researcher
 | `validation_mode` | `/validate`, `divi5-validator` |
 | `default_format` | `/generate`, `/scaffold`, `/convert` |
 | `auto_validate` | PostToolUse hook |
-| `divi_version` | `/generate`, `/audit`, `/diagnose`, `/responsive`, `divi5-performance` |
-| `css_prefix` | `/generate`, `/scaffold`, `/convert`, `/diagnose`, `/responsive` |
+| `divi_version` | `/setup` (writes), `/selector`, `/generate`, `/audit`, `/diagnose`, `/responsive`, `divi5-performance` |
+| `css_prefix` | `/setup` (writes), `/selector`, `/generate`, `/scaffold`, `/convert`, `/diagnose`, `/responsive` |
 | `active_breakpoints` | `/generate`, `/scaffold`, `/responsive` |
 | `accessibility_level` | `/validate`, `/audit`, `/diagnose`, `/responsive`, `divi5-accessibility` |
 | `flag_composable_alternatives` | `/validate`, `/convert`, `/audit` |
@@ -319,6 +323,8 @@ divi5-toolkit/                            # ← repo root + marketplace root
 │       ├── .claude-plugin/
 │       │   └── plugin.json              # Plugin manifest (name, version)
 │       ├── commands/                     # Slash commands
+│       │   ├── setup.md                 # NEW v2.5.0
+│       │   ├── selector.md              # NEW v2.5.0
 │       │   ├── generate.md
 │       │   ├── validate.md
 │       │   ├── convert.md
@@ -372,12 +378,27 @@ divi5-toolkit/                            # ← repo root + marketplace root
 │   ├── configuration.md                 # Config setting reference
 │   ├── workflows.md                     # Step-by-step scenarios
 │   └── troubleshooting.md               # FAQ + diagnostic steps
+├── scripts/
+│   └── lint.sh                          # Repo lint (frontmatter, JSON, docs coverage) — NEW v2.5.0
+├── .github/workflows/validate.yml        # CI: lint + `claude plugin validate .` — NEW v2.5.0
 ├── CLAUDE.md                             # Developer guidance (working ON the plugin)
 ├── STATE.md                              # Project state snapshot
 └── README.md
 ```
 
 ## Changelog
+
+### v2.5.0 (September 25, 2026)
+
+- **New:** `/divi5-toolkit:setup` — creates (or refreshes) `.claude/divi5-toolkit.local.md` without copying the template by hand. Detects the installed Divi version from `wp-content/themes/Divi/style.css`, finds a child theme (`Template: Divi`) and defaults `default_format` to `child-theme` when present, infers the dominant custom CSS class prefix from existing stylesheets, notices WooCommerce and existing design tokens, and asks at most three questions. Refresh mode adds keys introduced by newer plugin versions while preserving every existing value (including `learned_errors` and `research_notes`).
+- **New:** `/divi5-toolkit:selector` — instant selector lookup ("blurb title", "toggle open", "woo add to cart"). Returns the wrapper class, inner selectors, a paste-ready override scoped to your `css_prefix`, the Free-Form CSS equivalent, a builder-native alternative when one exists, the version the module shipped in, and a verify-in-DevTools caveat for 5.8+ modules. Offline by design. `/diagnose` and `/validate` now point to it when the root cause is targeting the wrong class.
+- **Knowledge base caught up to Divi 5.13.1** (September 18, 2026) from 5.11:
+  - **5.12 (September 4):** **AI Agents** (natural-language builder automation), Filters gained **backdrop blur / invert / sepia**, presets now emit CSS classes / interactions / wrapper attributes on the frontend and no longer override the module's own Attributes class, Contact Form field Border/Box Shadow/Filters apply to the field wrapper, host page caches no longer fully purged on every save, WooCommerce bulk-edit timeouts fixed, WordPress 7.1 block-editor compatibility. 71 fixes.
+  - **5.13 (September 14):** expanded **LayoutStyle unit coverage** for display/gap/flex, **migrated Divi 4 Free-Form CSS now applies on the frontend**, Contact Form **Show Labels** option, Slider swipe-controls bar, Conditional Display-hidden modules no longer load JS/webfonts, Theme Builder header/footer background bleed fixed, preset custom IDs emitted, four security fixes. 65 fixes. **5.13.1 (September 18):** Divi AI model refresh.
+  - Both core skills, the selector reference, and the performance skill document the above; the compatibility skill adds 5 Composable Settings rows, three new "Common Issues" entries (preset class override, migrated Free-Form CSS, TB background bleed), "Fixed in 5.12" / "Fixed in 5.13" histories, and three error-reference rows. The researcher agent and `/research` know the Elegant Themes release-notes URL pattern, use divichangelog.com for exact dates, and watch for the announced **Components + Slots** feature.
+- **CI + lint:** new `scripts/lint.sh` (JSON parse, shell syntax + LF check, command/agent frontmatter ↔ filename, every command/agent documented in README + `docs/usage.md`, every template config key consumed by a component, `plugin.json` version ↔ README changelog ↔ STATE.md, every `${CLAUDE_PLUGIN_ROOT}` reference resolves) and `.github/workflows/validate.yml` running it plus `claude plugin validate .` on every push and PR.
+- **Docs:** README positioning updated for Divi's 5.12 AI Agents (they run inside the builder; this plugin runs on your files and CI). Quickstart and First-Time Setup use `/setup`. Three new troubleshooting entries. `docs/configuration.md` adds 5.12 / 5.13 rows and the `/setup` / `/selector` consumers. Fixed a stale `marketplace.json` path in troubleshooting.
+- **Config:** template default `divi_version` bumped `"5.11"` → `"5.13"`; `last_research` bumped to `2026-09-25`. All agents and commands reference 5.13 as current. No breaking changes.
 
 ### v2.4.0 (August 26, 2026)
 

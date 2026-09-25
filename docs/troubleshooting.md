@@ -39,9 +39,9 @@ These are issues with the Divi5 Toolkit Claude Code plugin itself.
 3. Validate `plugin.json` is well-formed JSON (no trailing commas, all strings quoted).
 
 **If you're using the marketplace approach (`.claude/settings.local.json` or `~/.claude/settings.json`):**
-1. Confirm `marketplace.json` exists at the plugin root. Without it, the directory cannot act as a marketplace.
+1. Confirm `.claude-plugin/marketplace.json` exists at the repo root. Without it, the directory cannot act as a marketplace.
    ```bash
-   ls /path/to/Divi5-ToolKit/marketplace.json
+   ls /path/to/Divi5-ToolKit/.claude-plugin/marketplace.json
    ```
    If missing, you're on a plugin version older than v2.1.3 — `git pull` to update.
 2. Confirm both `extraKnownMarketplaces` and `enabledPlugins` are in your settings file. Both are required:
@@ -80,6 +80,7 @@ These are issues with the Divi5 Toolkit Claude Code plugin itself.
 1. The config file MUST be at `.claude/divi5-toolkit.local.md` in your project root (not in the plugin directory).
 2. Confirm the file starts with `---`, has YAML frontmatter, ends with `---`, and uses 2-space indentation (no tabs).
 3. Run `/divi5-toolkit:validate` and look for "Validation Mode: ..." in the output. If it shows the wrong mode, re-check your file.
+4. Fastest reset: run `/divi5-toolkit:setup --refresh` — it re-validates the YAML, adds any missing keys, and keeps your values.
 
 ### Auto-validation runs on every file, even non-CSS files
 
@@ -375,6 +376,30 @@ Use `/divi5-toolkit:generate` with "loop builder card" as the prompt to get a co
 
 **Fix:** Update to Divi 5.11+. If you can't update, roll WooCommerce back below 11.0 until you can.
 
+### Class from the Attributes panel is missing on the frontend
+
+**Symptom:** You added `acme-card` under Advanced > Attributes > class, but the frontend wrapper only carries the class from the module's preset, so your CSS matches nothing.
+
+**Cause:** Before Divi 5.12, a CSS class defined in an Element/Attributes preset *overrode* the module's own class instead of merging with it. Presets that defined classes, interactions, or wrapper attributes also failed to emit them at all.
+
+**Fix:** Update to Divi 5.12+ — both classes are output. On older versions, set the class in only one place (preset *or* module), then clear Static CSS. `/divi5-toolkit:selector <module>` shows the correct combined selector.
+
+### Free-Form CSS from a migrated Divi 4 page works in the builder but not on the site
+
+**Symptom:** After a Divi 4 → 5 migration, a module's Free-Form CSS (`selector { … }`) looks right in the Visual Builder but is absent on the frontend.
+
+**Cause:** Migrated free-form CSS wasn't emitted on the frontend. Fixed in Divi 5.13.
+
+**Fix:** Update to 5.13+ and clear Static CSS. Until then, duplicate the rule into Theme Options Custom CSS using an explicit class selector, and remove the duplicate after updating.
+
+### Theme Builder header/footer background shows behind page content
+
+**Symptom:** A background set on the Theme Builder header or footer content area also paints behind the page body.
+
+**Cause:** Content-area backgrounds in TB header/footer layouts leaked into native page content. Fixed in 5.13.
+
+**Fix:** Update to 5.13+. Workaround: move the background from the layout's content area to the section inside the template.
+
 ### Contact Form 7 Styler fields look unstyled
 
 **Symptom:** Contact Form 7 fields inside a Divi page ignore your custom CSS after upgrading to Divi 5.3+.
@@ -617,7 +642,7 @@ Yes. Set `default_format: child-theme` in your config and the plugin will produc
 
 ### Can I use this in CI/CD?
 
-Yes for `/validate` and `/audit`. Both are read-only and produce structured reports you can capture in CI logs. The other commands are interactive and don't fit a CI flow as cleanly.
+Yes for `/validate` and `/audit`. Both are read-only and produce structured reports you can capture in CI logs. The other commands are interactive and don't fit a CI flow as cleanly. (The plugin repo itself runs `scripts/lint.sh` and `claude plugin validate .` in GitHub Actions on every push — see `.github/workflows/validate.yml` if you want the same pattern for your own plugins.)
 
 ### Does this plugin send any data to Anthropic?
 

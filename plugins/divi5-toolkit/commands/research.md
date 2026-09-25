@@ -23,8 +23,10 @@ If more than 7 days old or user explicitly requested, proceed with research.
 1. **Context7** — Check for Divi documentation
 2. **Elegant Themes Blog** — https://www.elegantthemes.com/blog
 3. **Elegant Themes Help Center** — https://help.elegantthemes.com
-4. **Divi 5 Changelog** — https://victorduse.com/divi-5-changelog/
+4. **Divi 5 Changelog** — https://victorduse.com/divi-5-changelog/ and https://www.divichangelog.com/divi-update/divi-5 (exact per-version dates)
 5. **Divi GitHub Repos** — https://github.com/elegantthemes
+
+Official release notes follow `elegantthemes.com/blog/divi-resources/divi-5-<major>-<minor>-release-notes` (5.9 is the exception: `/divi-5-9`). The plugin currently documents through **5.13.1** — start from the next version up.
 
 ### Community Sources
 - **Divi Engine** — https://diviengine.com
@@ -53,8 +55,9 @@ If more than 7 days old or user explicitly requested, proceed with research.
 - Builder field changes?
 
 ### Topic 2: New Features
-- New modules added? (5.6 added Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed; 5.8 Tooltip; 5.10 Post Filter + Post Filter Item; 5.11 Charts, Gravity Forms, Imagely Gallery, Payment Button — total now 20+ D5-native modules)
-- New design options (e.g., 5.5 Aspect Ratio/Framing, 5.4 Sizing/Colorscheme Variable Generators, 5.6 Color Scale/Harmony Generators, 5.7 Gradient Variables + text effects, 5.9 Variable Fonts + CSS Grid Editor)?
+- New modules added? (5.6 added Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed; 5.8 Tooltip; 5.10 Post Filter + Post Filter Item; 5.11 Charts, Gravity Forms, Imagely Gallery, Payment Button — total now 20+ D5-native modules; 5.12/5.13 added none)
+- Has **Components + Slots** (announced after 5.13) shipped? If so, document wrapper classes and how detached per-instance settings render
+- New design options (e.g., 5.5 Aspect Ratio/Framing, 5.4 Sizing/Colorscheme Variable Generators, 5.6 Color Scale/Harmony Generators, 5.7 Gradient Variables + text effects, 5.9 Variable Fonts + CSS Grid Editor, 5.12 backdrop-blur/invert/sepia Filters, 5.13 Contact Form Show Labels + Slider swipe controls)?
 - New breakpoints or responsive tools?
 - Performance improvements?
 - Interactions and animation updates?
@@ -104,7 +107,9 @@ If significant findings, update:
 1. **divi5-compatibility skill** — Add new rules or fix outdated info
 2. **divi5-css-patterns skill** — Add new patterns or selectors
 3. **divi-selectors.md** — Add new module selectors
-4. **Local settings** — Update last_research date
+4. **divi5-performance skill** — Cache / lazy-loading / asset-loading changes
+5. **Config template** — bump the `divi_version` default + comment list in `${CLAUDE_PLUGIN_ROOT}/templates/divi5-toolkit.local.md` and its `last_research` value
+6. **Local settings** — Update last_research date
 
 ### Update Settings File
 ```yaml

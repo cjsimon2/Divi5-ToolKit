@@ -1,6 +1,6 @@
 ---
 name: Divi 5 CSS Patterns
-description: Use this skill when writing CSS for Divi 5 / Divi 5.11, styling Divi modules (buttons, sections, rows, blurbs, toggles, forms including the 5.3 Contact Form 7 Styler and 5.11 Gravity Forms module), the newer modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Payment Button, Imagely Gallery), working with Free-Form CSS and the `selector` keyword, overriding `.et_pb_*` classes, setting up design tokens or dark mode, using the 5.4 Sizing Variable Generator or Relative Colorscheme Generator, the 5.7 Gradient Variables and text effects (text-stroke, gradient/image text fills), the 5.9 Variable Fonts and CSS Grid Editor, applying the 5.5 Aspect Ratio / Framing settings, adding animations with reduced-motion, styling WooCommerce with Divi, the 5.3 pseudo-class editing modes (:checked, :focus, :active), Nested Option Presets, building accessible layouts, or developing a Divi child theme. Provides CSS patterns, class naming conventions, selector specificity guidance, Composable Settings alternatives, Canvas and Loop Builder patterns (including 5.10 front-end Loop Filters), and full example files for buttons, design tokens, animations, dark mode, WooCommerce, accessibility, forms, Loop Builder, and the 5.6–5.11 new modules.
+description: Use this skill when writing CSS for Divi 5 / Divi 5.13, styling Divi modules (buttons, sections, rows, blurbs, toggles, forms including the 5.3 Contact Form 7 Styler and 5.11 Gravity Forms module), the newer modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Payment Button, Imagely Gallery), working with Free-Form CSS and the `selector` keyword, overriding `.et_pb_*` classes, setting up design tokens or dark mode, using the 5.4 Sizing Variable Generator or Relative Colorscheme Generator, the 5.7 Gradient Variables and text effects (text-stroke, gradient/image text fills), the 5.9 Variable Fonts and CSS Grid Editor, the 5.12 backdrop-blur / invert / sepia Filters, the 5.13 Contact Form Show Labels and Slider swipe controls, applying the 5.5 Aspect Ratio / Framing settings, adding animations with reduced-motion, styling WooCommerce with Divi, the 5.3 pseudo-class editing modes (:checked, :focus, :active), Nested Option Presets, building accessible layouts, or developing a Divi child theme. Provides CSS patterns, class naming conventions, selector specificity guidance, Composable Settings alternatives, Canvas and Loop Builder patterns (including 5.10 front-end Loop Filters), and full example files for buttons, design tokens, animations, dark mode, WooCommerce, accessibility, forms, Loop Builder, and the 5.6–5.11 new modules.
 user-invocable: false
 ---
 
@@ -8,7 +8,7 @@ user-invocable: false
 
 ## Overview
 
-**Divi 5** (released February 26, 2026, current version 5.11.0 as of August 15, 2026 — weekly release cadence) is a complete architecture overhaul:
+**Divi 5** (released February 26, 2026, current version 5.13.1 as of September 18, 2026 — weekly release cadence) is a complete architecture overhaul:
 - **React 18-based Visual Builder** — no Shadow DOM, standard DOM with `et_pb_*` classes
 - **Flexbox-first layout** — sections, rows, columns use Flexbox by default
 - **Native CSS Grid support** — convertible from Flexbox in builder; 5.6 added full CSS track values (`grid-auto-columns`, `grid-auto-rows`); 5.9 added a visual **CSS Grid Editor**
@@ -24,9 +24,9 @@ user-invocable: false
 - **Interaction Builder** — cross-canvas interactions with Click, Mouse, Viewport, Load triggers
 - **Loop Builder** — native repeating content loops with CSS Grid for dynamic layouts
 - **Page Manager** — create/edit/duplicate/delete pages without leaving the builder
-- **Divi AI Agent** — AI tool sets integrated into the builder (5.2; 5.5 added canvas AI tools for natural-language workflows)
+- **Divi AI Agents (5.12)** — natural-language agents inside the builder that build layouts, edit modules, update design settings, create pages, manage menus, and edit Theme Builder templates (5.13 added in-chat approval tokens for page updates / menus / font installs; 5.13.1 refreshed the models). They complement this toolkit: agents act inside the Visual Builder, this plugin works on your CSS files, child theme, and CI from the terminal.
 
-## Divi 5.3 – 5.11 Additions (Use Builder First)
+## Divi 5.3 – 5.13 Additions (Use Builder First)
 
 The skill auto-activates for any Divi CSS task, but many things that previously required custom CSS now have native equivalents. Reach for these first:
 
@@ -86,6 +86,23 @@ The skill auto-activates for any Divi CSS task, but many things that previously 
 - **Imagely Gallery** — NextGEN gallery module with Dynamic Assets-aware resource loading.
 - **Payment Button** — PayPal/Stripe payment buttons with Button design parity.
 - **Flexbox `alignItems` CSS classes** added to Column, Section, Row, and Group modules.
+
+### 5.12 (September 4, 2026) — AI Agents + Filters
+- **AI Agents** — natural-language automation inside the builder (layouts, module edits, design settings, pages, menus, Theme Builder templates; can use screenshots/websites as design references). Not a CSS feature, but it changes the answer to "should I write CSS for this?" — if an agent can set the option, it is a builder-native option.
+- **Filters gained backdrop blur, invert, and sepia** with matching builder + frontend CSS. Glassmorphism panels (`backdrop-filter: blur()`) no longer need custom CSS.
+- **Presets now emit CSS classes, interactions, and main-wrapper attributes** on the frontend wrapper — you can target `.et_pb_blurb.preset-class` reliably. Also fixed: a preset class no longer *overrides* the module's own Attributes class; both are output.
+- **Contact Form** field Border / Box Shadow / Filters apply to the field wrapper (so wrapper-level custom CSS for those is unnecessary).
+- **Fixed**: module-level background gradients could emit invalid CSS; Timeline Item responsive content; Post Filter Item responsive controls; Blog grid image dimensions; Portfolio image height targeting.
+
+### 5.13 (September 14, 2026) — Maintenance + layout CSS parity
+- **LayoutStyle unit coverage** expanded for `display`, gaps, and flex emission — unit values you set in builder layout fields now come through as written. Re-check custom CSS that was compensating for missing units.
+- **Migrated Divi 4 Free-Form CSS now applies on the frontend** and matches the builder. After updating, remove any Theme Options duplicates you added as a workaround.
+- **Contact Form → Show Labels** option; Label Text styles now apply to `<label>` elements. Don't hide/show labels with CSS.
+- **Slider swipe-controls bar** — formatted slide counts, segmented progress, customizable swipe label — replaces hand-rolled slide counters.
+- **Conditional Display** — hidden modules no longer load their runtime JS or extracted webfonts (a free performance win; see the performance skill).
+- **Fixed**: Theme Builder header/footer content-area backgrounds bleeding into page content; preset custom IDs missing on the frontend; Group Carousel alignment for custom-width groups; Testimonial grid column count.
+- **5.13.1 (September 18)** — Divi AI image/text/code models refreshed; AI image generation produces one image at a time.
+- **Coming next (announced):** Components + Slots — Global Elements reimagined with per-instance detachable settings and free-form slots. Expect new wrapper classes; verify in DevTools when it ships.
 
 ## CSS Integration Methods
 
@@ -299,6 +316,8 @@ Use a unique prefix to avoid conflicts with Divi's classes:
 | Gravity Forms (5.11) | Native Gravity Forms rendering + styling |
 | Imagely Gallery (5.11) | NextGEN galleries with Dynamic Assets loading |
 | Payment Button (5.11) | PayPal/Stripe payment buttons |
+
+No new modules shipped in 5.12 or 5.13; those releases changed how existing modules emit CSS (presets, Free-Form CSS, LayoutStyle units) — see the 5.12 / 5.13 sections above.
 
 ## Divi 5 Design Variable System
 
@@ -609,6 +628,7 @@ selector {
 5. **Use Gradient Variables (5.7+)** instead of repeating `linear-gradient()` values, and builder text effects instead of `background-clip: text` CSS
 6. **Use the CSS Grid Editor (5.9+)** for explicit grid layouts; reserve custom grid CSS for `auto-fit`/`minmax()` intrinsic grids
 7. **Use builder typography controls (5.9+)** for variable fonts, drop caps, text columns, and hyphenation
+   - and **Design > Filters (5.12+)** for backdrop blur / invert / sepia instead of `backdrop-filter` / `filter` custom CSS
 8. **Use Free-Form CSS** with `selector` keyword for per-element styling
 9. **Use `body` prefix and `!important`** when overriding Divi buttons and module styles
 10. **Prefix all custom classes** to avoid conflicts (e.g., `my-btn`)

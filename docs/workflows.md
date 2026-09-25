@@ -64,21 +64,22 @@ Same JSON, but in `~/.claude/settings.json`. The plugin loads in every Claude Co
 
 ### Step 2 — Create the plugin's project config
 
-This is a separate file from the Claude Code settings above. It tells the plugin commands which prefix, breakpoints, and accessibility level to use for THIS project.
+This is a separate file from the Claude Code settings above. It tells the plugin commands which prefix, breakpoints, and accessibility level to use for THIS project. Let the plugin write it:
 
-```bash
-cp /path/to/Divi5-ToolKit/plugins/divi5-toolkit/templates/divi5-toolkit.local.md .claude/divi5-toolkit.local.md
+```
+/divi5-toolkit:setup
 ```
 
-Then open `.claude/divi5-toolkit.local.md` and edit:
-- `css_prefix` — change `my` to your project's short prefix (e.g., `acme`)
-- `divi_version` — set to `"5.11"` if you're current
+It detects the installed Divi version (from the theme's `style.css`), your child theme, and the CSS class prefix you already use, then asks at most three questions. Review the summary it prints — in particular:
+- `css_prefix` — accept the detected prefix or give your project's short prefix (e.g., `acme`)
 - `accessibility_level` — `aa` for most projects, `aaa` for healthcare/government
-- `active_breakpoints` — leave defaults unless you need more
+- `divi_version` — should match what's installed; if it's newer than the plugin knows, run `/divi5-toolkit:research` next
+
+Manual alternative: copy `plugins/divi5-toolkit/templates/divi5-toolkit.local.md` to `.claude/divi5-toolkit.local.md` and edit those keys yourself.
 
 ### Step 3 — Verify
 
-In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 8 commands (generate, validate, convert, diagnose, research, scaffold, audit, responsive).
+In Claude Code, type `/divi5-toolkit:` — autocomplete should show all 10 commands (setup, selector, generate, validate, convert, diagnose, research, scaffold, audit, responsive).
 
 **Verify by running:**
 ```
@@ -145,7 +146,7 @@ You have an existing Divi 4 child theme and need to bring it forward.
 
 In `.claude/divi5-toolkit.local.md`:
 ```yaml
-divi_version: "5.11"
+divi_version: "5.13"
 ```
 
 ### Step 2 — Convert the existing CSS file
@@ -593,10 +594,10 @@ The research report tells you what changed. If there are new modules, breaking c
 
 ### Step 3 — Bump `divi_version` if needed
 
-If a new Divi version came out and you're now targeting it, update your config:
+If a new Divi version came out and you're now targeting it, run `/divi5-toolkit:setup --refresh` (it re-reads the installed version and offers the bump) or edit your config:
 
 ```yaml
-divi_version: "5.3"
+divi_version: "5.13"
 ```
 
 ### Step 4 — Re-validate your existing CSS

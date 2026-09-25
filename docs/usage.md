@@ -21,8 +21,8 @@ The Divi5 Toolkit is a Claude Code plugin made of five kinds of components:
 | **Commands** | Slash commands you run interactively | Type `/divi5-toolkit:<name>` in the chat |
 | **Agents** | Autonomous subagents Claude spawns for focused tasks | Triggered automatically by hooks or by Claude when context matches |
 | **Skills** | Auto-activating knowledge bundles | Loaded silently by Claude when their description matches the conversation |
-| **Hooks** | Event handlers that run on specific Claude Code events | Fire automatically on `Write`/`Edit` and at session start |
-| **Templates** | Files you copy into your own project | Manual: copy from `templates/` into `.claude/` |
+| **Hooks** | Event handlers that run on specific Claude Code events | Fire automatically on `Write`/`Edit` |
+| **Templates** | The config file `/divi5-toolkit:setup` generates for your project | Run `/divi5-toolkit:setup`, or copy from `templates/` into `.claude/` by hand |
 
 You don't need to memorize this taxonomy — you mostly just type slash commands. The agents, skills, and hooks work behind the scenes.
 
@@ -31,6 +31,90 @@ You don't need to memorize this taxonomy — you mostly just type slash commands
 ## Commands
 
 All commands are invoked with the `/divi5-toolkit:` namespace. Type `/divi5-toolkit:` in the Claude Code chat and your editor will autocomplete the available commands.
+
+### `/divi5-toolkit:setup` (NEW in v2.5.0)
+
+**Purpose:** Create or refresh `.claude/divi5-toolkit.local.md` with values detected from your project, so you never copy the template by hand.
+
+**When to use it:**
+- First time you use the plugin in a project
+- After updating the plugin, to pick up config keys added in newer versions (`--refresh`)
+- After upgrading Divi, to bump `divi_version` to what's actually installed
+
+**Arguments:** `[--refresh]` — optional; refresh mode is also used automatically when the file already exists.
+
+**What it detects:**
+
+| Signal | Source | Sets |
+|---|---|---|
+| Installed Divi version | `wp-content/themes/Divi/style.css` `Version:` header | `divi_version` (major.minor) |
+| Child theme | any `style.css` with `Template: Divi` | `default_format: child-theme` |
+| Custom class prefix | dominant `.{prefix}-*` pattern in existing CSS (ignores `et_pb`, `wp`, `wc`, `gform`, …) | `css_prefix` |
+| WooCommerce | `plugins/woocommerce/woocommerce.php` | `scaffold_style: brand` (proposed) |
+| Design tokens | `--color-primary` in CSS | `scaffold_style: brand` (proposed) |
+
+It asks at most three questions (prefix, accessibility level, output format) and only when detection found no signal. Everything else uses template defaults. In refresh mode it never overwrites values you set, `learned_errors`, `research_notes`, or `last_research`.
+
+**Example:**
+```
+/divi5-toolkit:setup
+```
+
+**Sample output (abbreviated):**
+```
+DETECTED:
+  Divi version:   5.13.1 → "5.13"  (from wp-content/themes/Divi/style.css)
+  Child theme:    wp-content/themes/divi-child
+  CSS prefix:     acme (42 matches)
+WRITTEN:
+  divi_version: "5.13"  default_format: child-theme  css_prefix: acme ...
+```
+
+If the installed Divi is newer than the plugin's knowledge, it says so and recommends `/divi5-toolkit:research`. If it finds Divi 4, it stops and points you at the migration workflow.
+
+**Tools used:** `Read`, `Write`, `Edit`, `Glob`, `Grep`
+
+---
+
+### `/divi5-toolkit:selector` (NEW in v2.5.0)
+
+**Purpose:** Answer "what do I target to style X?" in one card — wrapper class, inner selectors, override pattern, Free-Form CSS equivalent, and whether a builder setting makes the CSS unnecessary.
+
+**When to use it:**
+- You know what you want to style but not Divi's class for it
+- `/validate` or `/diagnose` says you're targeting the wrong element
+- You want the Free-Form `selector` form for a per-module tweak
+
+**Arguments:** `<module-or-element>` — plain language: `blurb title`, `toggle open state`, `woo add to cart`, `timeline marker`, `contact form label`.
+
+**What it does:**
+1. Reads `css_prefix` and `divi_version` from your config
+2. Searches the selector reference, the module CSS examples (new-modules, woocommerce, forms), and the css-patterns skill
+3. Applies the override rules: `body` prefix + `!important` for the button family, custom-class scoping for everything else, never a numbered class
+4. Flags modules newer than your `divi_version` and adds a verify-in-DevTools note for 5.8+ modules
+5. Checks the Composable Settings table and shows a builder-native path when one exists
+
+**Example:**
+```
+/divi5-toolkit:selector blurb title
+```
+
+**Sample output:**
+```
+SELECTOR: Blurb — title
+WRAPPER   .et_pb_blurb
+TARGET    .et_pb_blurb .et_pb_module_header
+OVERRIDE  .et_pb_blurb.acme-feature .et_pb_module_header { font-size: 1.25rem; }
+          → add class "acme-feature" via Advanced > Attributes > class
+FREE-FORM selector .et_pb_module_header { font-size: 1.25rem; }
+BUILDER   Design > Title Text covers size/color — no CSS needed for those.
+```
+
+Offline by design — it never searches the web. Unknown module → it says so and gives the DevTools recipe, then suggests `/divi5-toolkit:research`.
+
+**Tools used:** `Read`, `Grep`, `Glob`
+
+---
 
 ### `/divi5-toolkit:generate`
 
@@ -497,7 +581,7 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 
 ### `divi5-css-patterns`
 
-**Activates when:** Writing CSS for Divi 5 / Divi 5.11, styling Divi modules (buttons, sections, rows, blurbs, toggles, forms including the 5.3 Contact Form 7 Styler and 5.11 Gravity Forms module), the newer modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Payment Button, Imagely Gallery), working with Free-Form CSS and the `selector` keyword, overriding `.et_pb_*` classes, setting up design tokens or dark mode, using the 5.4 Sizing Variable Generator or Relative Colorscheme Generator, the 5.7 Gradient Variables and text effects, the 5.9 Variable Fonts and CSS Grid Editor, applying the 5.5 Aspect Ratio / Framing settings, the 5.3 pseudo-class editing modes (`:checked`, `:focus`, `:active`), Nested Option Presets, adding animations, styling WooCommerce, building accessible layouts, or developing a Divi child theme.
+**Activates when:** Writing CSS for Divi 5 / Divi 5.13, styling Divi modules (buttons, sections, rows, blurbs, toggles, forms including the 5.3 Contact Form 7 Styler and 5.11 Gravity Forms module), the newer modules (Timeline, Breadcrumbs, SVG, Table of Contents, Instagram Feed, Tooltip, Post Filter, Charts, Payment Button, Imagely Gallery), working with Free-Form CSS and the `selector` keyword, overriding `.et_pb_*` classes, setting up design tokens or dark mode, using the 5.4 Sizing Variable Generator or Relative Colorscheme Generator, the 5.7 Gradient Variables and text effects, the 5.9 Variable Fonts and CSS Grid Editor, the 5.12 Filters (backdrop blur / invert / sepia), applying the 5.5 Aspect Ratio / Framing settings, the 5.3 pseudo-class editing modes (`:checked`, `:focus`, `:active`), Nested Option Presets, adding animations, styling WooCommerce, building accessible layouts, or developing a Divi child theme.
 
 **What it provides:**
 - Divi 5 architecture overview (React 18, Flexbox-first, Dynamic CSS, Composable Settings)
@@ -532,7 +616,7 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 
 ### `divi5-compatibility`
 
-**Activates when:** Validating CSS for Divi 5 / Divi 5.11 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce, Perfmatters), migrating from Divi 4 to Divi 5, understanding breakpoints, applying the 5.5 Aspect Ratio + Framing for CLS prevention, using the 5.3 pseudo-class editing modes, the 5.4 Variable Generators, the 5.7 Gradient Variables, the 5.9 Variable Fonts and CSS Grid Editor, Nested Option Presets, Critical CSS / Dynamic CSS / Inline Stylesheets, or fixing "styles not working" issues.
+**Activates when:** Validating CSS for Divi 5 / Divi 5.13 compatibility, checking unsupported features or units, troubleshooting Divi CSS that isn't applying, debugging plugin conflicts (WP Rocket, LiteSpeed, Wordfence, WooCommerce, Perfmatters), migrating from Divi 4 to Divi 5, understanding breakpoints, applying the 5.5 Aspect Ratio + Framing for CLS prevention, using the 5.3 pseudo-class editing modes, the 5.4 Variable Generators, the 5.7 Gradient Variables, the 5.9 Variable Fonts and CSS Grid Editor, Nested Option Presets, Critical CSS / Dynamic CSS / Inline Stylesheets, or fixing "styles not working" issues.
 
 **What it provides:**
 - CSS unit support (dropdown vs. advanced/custom CSS)
@@ -544,8 +628,8 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 - Plugin conflict reference (cache plugins, security plugins, WooCommerce)
 - Divi 4 → Divi 5 migration checklist
 - Debugging techniques (DevTools, Safe Mode, Static CSS, D5 Dev Tool)
-- Composable Settings compatibility table (what CSS Composable Settings replaces, through 5.11)
-- Known Divi 5.2–5.11 bug fix history
+- Composable Settings compatibility table (what CSS Composable Settings replaces, through 5.13)
+- Known Divi 5.2–5.13 bug fix history (including the 5.12 preset-class merge and 5.13 migrated Free-Form CSS fixes)
 - Error messages reference
 
 **Supporting files (loaded on demand):**
@@ -563,7 +647,8 @@ Skills are auto-activating knowledge bundles. You don't invoke them — Claude l
 - Critical CSS strategy and a ≤14KB hand-crafted template
 - Local font loading with `size-adjust` / `ascent-override` for CLS prevention
 - Image optimization: lazy-load background-image pattern, preload + `fetchpriority="high"` for LCP image, Aspect Ratio (5.5+)
-- Cache plugin compatibility matrix (Perfmatters, WP Rocket, LiteSpeed, Autoptimize, WP-Optimize, Hummingbird, W3 Total Cache)
+- Cache plugin compatibility matrix (Perfmatters, WP Rocket, LiteSpeed, Autoptimize, WP-Optimize, Hummingbird, W3 Total Cache) plus managed-host page caches (5.12 over-purge fix)
+- 5.13 Conditional Display asset pruning (hidden modules load no JS/webfonts)
 - Auditing checklist (Lighthouse ≥ 90, LCP < 2.5s, INP < 200ms, CLS < 0.1, no render-blocking CSS, no external font requests)
 - Common misconfigurations and "Divi is slow because of X" myths
 
@@ -720,9 +805,9 @@ Each section is independent — paste only the modules you use. Selectors for th
 **Purpose:** A configuration template you copy into your project to customize plugin behavior.
 
 **How to use:**
-1. Copy `plugins/divi5-toolkit/templates/divi5-toolkit.local.md` (from the Divi5-ToolKit repo) to `.claude/divi5-toolkit.local.md` in your project root.
+1. Run `/divi5-toolkit:setup` — it generates `.claude/divi5-toolkit.local.md` from this template with detected values. (Manual alternative: copy the template to that path and edit it.)
 2. Edit any settings you want to override.
-3. The plugin will read it on every command/agent run.
+3. The plugin will read it on every command/agent run. Re-run `/divi5-toolkit:setup --refresh` after plugin updates to pick up new keys.
 
 See [`docs/configuration.md`](configuration.md) for a full reference of every setting.
 

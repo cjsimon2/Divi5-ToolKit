@@ -13,7 +13,8 @@ You are validating CSS for Divi 5 compatibility. **Use ultrathink mode** — be 
 This command performs a deep, single-file/CSS-block validation. For lightweight,
 automatic background validation on file save, the `divi5-validator` agent is
 invoked by the PostToolUse hook. For a full project-wide audit across many
-files, use `/divi5-toolkit:audit` instead.
+files, use `/divi5-toolkit:audit` instead. If the validation shows the CSS is
+targeting the wrong class, `/divi5-toolkit:selector <module>` returns the correct one.
 
 ## Step 1: Read Project Config
 

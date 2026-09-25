@@ -1,6 +1,7 @@
 ---
 # Divi5 Toolkit Configuration
-# Copy this file to .claude/divi5-toolkit.local.md in your project
+# Run /divi5-toolkit:setup to generate this file with detected values,
+# or copy it to .claude/divi5-toolkit.local.md in your project by hand
 
 # Validation Mode
 # - advisory: Report issues as warnings, allow proceeding
@@ -20,11 +21,11 @@ auto_validate: true
 
 # Last Research Date
 # Auto-updated by divi5-researcher agent
-last_research: 2026-08-26
+last_research: 2026-09-25
 
 # Divi Version
 # Track which Divi version this project targets
-# Supported: "5.0" through "5.11"
+# Supported: "5.0" through "5.13"
 # 5.3 added: Contact Form 7 module, pseudo-class editing (:checked/:focus/:active),
 #           Nested Option Presets, harmonized form fields
 # 5.4 added: Sizing Variable Generator, Relative Colorscheme Generator
@@ -36,7 +37,10 @@ last_research: 2026-08-26
 # 5.9 added: Variable Fonts, new typography controls, CSS Grid Editor
 # 5.10 added: Post Filter + Post Filter Item modules, native lazy loading
 # 5.11 added: Charts, Gravity Forms, Imagely Gallery, Payment Button modules
-divi_version: "5.11"
+# 5.12 added: AI Agents, backdrop blur/invert/sepia Filters, presets emit classes on frontend
+# 5.13 added: LayoutStyle unit parity, migrated Free-Form CSS on frontend, Contact Form Show Labels
+# Tip: /divi5-toolkit:setup reads this from wp-content/themes/Divi/style.css
+divi_version: "5.13"
 
 # Project Design Tokens (optional)
 # Define your project's CSS variable prefix
@@ -85,6 +89,8 @@ This file stores project-specific settings for the Divi5 Toolkit plugin.
 ## Quick Reference
 
 ### Commands
+- /divi5-toolkit:setup - Create or refresh this config with auto-detected values
+- /divi5-toolkit:selector - Look up the right selector for any Divi module/sub-element
 - /divi5-toolkit:generate - Generate Divi 5-ready CSS
 - /divi5-toolkit:validate - Validate CSS compatibility
 - /divi5-toolkit:convert - Convert CSS to Divi 5 format
@@ -117,6 +123,7 @@ Go to **Advanced > Attributes** (not the old CSS ID & Classes field).
 - Use pseudo-class editing in the builder for :checked/:focus/:active (Divi 5.3+)
 - Use Gradient Variables instead of repeated linear-gradient() values (Divi 5.7+)
 - Use the CSS Grid Editor before writing grid-template-* CSS (Divi 5.9+)
+- Use Design > Filters for backdrop blur / invert / sepia (Divi 5.12+)
 - Include `prefers-reduced-motion` with animations
 - Add `:focus-visible` styles for keyboard navigation
 

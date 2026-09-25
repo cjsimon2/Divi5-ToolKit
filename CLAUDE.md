@@ -4,7 +4,7 @@ Guidance for developers working **on** the Divi5 Toolkit plugin itself (not end 
 
 ## Project Type
 
-Claude Code **plugin** for Divi 5 (WordPress page builder, currently 5.11) development. This repository is composed of markdown, JSON, and CSS — there is no compiled code, no build step, and no runtime beyond what Claude Code provides when the plugin is loaded.
+Claude Code **plugin** for Divi 5 (WordPress page builder, currently 5.13) development. This repository is composed of markdown, JSON, and CSS — there is no compiled code, no build step, and no runtime beyond what Claude Code provides when the plugin is loaded.
 
 ## Architecture
 
@@ -36,6 +36,8 @@ Claude Code **plugin** for Divi 5 (WordPress page builder, currently 5.11) devel
 │       ├── hooks/hooks.json           # PostToolUse handler (CSS auto-validate)
 │       ├── templates/                 # Files users copy into their projects
 │       └── .mcp.json                  # Plugin-local MCP server stub (empty)
+├── .github/workflows/validate.yml     # CI: scripts/lint.sh + claude plugin validate
+├── scripts/lint.sh                    # Deterministic repo lint (run before pushing)
 ├── docs/                              # End-user documentation, repo-level
 │   ├── usage.md                       # Detailed component reference
 │   ├── configuration.md               # Config setting reference
@@ -55,7 +57,9 @@ Claude Code **plugin** for Divi 5 (WordPress page builder, currently 5.11) devel
 
 **Why the subdirectory:** Claude Code's directory-source loader requires the plugin to live in a subdirectory of the marketplace, not at the marketplace root. The two manifests cannot coexist in the same `.claude-plugin/` directory. The official Anthropic walkthrough at https://code.claude.com/docs/en/plugin-marketplaces uses the same `plugins/<plugin-name>/` convention.
 
-**Validating the marketplace:** After any change to `marketplace.json` or the plugin structure, run `claude plugin validate .` from the repo root. It checks the marketplace schema and surfaces errors before users hit them. CI should run this on every PR.
+**Validating the marketplace:** After any change to `marketplace.json` or the plugin structure, run `claude plugin validate .` from the repo root. It checks the marketplace schema and surfaces errors before users hit them. CI (`.github/workflows/validate.yml`) runs it on every push and PR.
+
+**Repo lint:** `bash scripts/lint.sh` (also run by CI) checks what the schema validator doesn't: JSON parses, shell scripts have valid syntax and LF endings, every command/agent's frontmatter `name` matches its filename (agents prefixed `divi5-`), every command and agent is mentioned in `README.md` and `docs/usage.md`, every key in the config template is consumed by some command/agent/hook, the `plugin.json` version has a matching README changelog entry and STATE.md line, and every `${CLAUDE_PLUGIN_ROOT}/...` reference resolves to a real file. Run it before every push; a release that fails lint is a release with a doc gap.
 
 ## File Conventions
 
@@ -111,10 +115,11 @@ Then manually exercise `/divi5-toolkit:<command>` and agents against a sample Di
 ## Versioning
 
 1. Bump `version` in `plugins/divi5-toolkit/.claude-plugin/plugin.json`. (`.claude-plugin/marketplace.json` does NOT carry a version field — version lives only in `plugin.json`.)
-2. Run `claude plugin validate .` from the repo root. Must report `✔ Validation passed`.
+2. Run `bash scripts/lint.sh` and `claude plugin validate .` from the repo root. Both must pass.
 3. Add a new entry at the top of the **Changelog** section in `README.md`, dated `YYYY-MM-DD`.
 4. Update `STATE.md` with the new version and release date.
 5. Commit with a message that names the version, then tag: `git tag vX.Y.Z && git push --tags`.
+6. Publish a GitHub release for the tag (`gh release create vX.Y.Z --title ... --notes-file ...`) using the README changelog entry as the body. Tags without releases (v2.2.2–v2.4.0 were like this) don't show up in the repo's Releases page or notify watchers.
 
 Follow semantic versioning: patch for typo/doc fixes, minor for new commands/agents/skills, major for breaking changes to command names, agent interfaces, or config schema.
 
@@ -153,7 +158,7 @@ The plugin reads runtime configuration from `.claude/divi5-toolkit.local.md` in 
 3. Add config-reading instructions to the consuming command/agent (use a "Read Project Config" step early in the file).
 4. Decide what happens when the key is missing — always provide a safe default rather than failing.
 
-Currently consumed keys: `validation_mode`, `default_format`, `auto_validate`, `divi_version`, `css_prefix`, `active_breakpoints`, `accessibility_level`, `flag_composable_alternatives`, `scaffold_style`, `last_research`. Two further keys are agent-maintained storage rather than user settings: `learned_errors` (written by `divi5-error-learner`, read by `/diagnose` as the error library) and `research_notes` (written by `divi5-researcher`/`/research`).
+Currently consumed keys: `validation_mode`, `default_format`, `auto_validate`, `divi_version`, `css_prefix`, `active_breakpoints`, `accessibility_level`, `flag_composable_alternatives`, `scaffold_style`, `last_research`. `/setup` writes every key (from the template) and is the only component that creates the file; `/selector` reads `css_prefix` and `divi_version`. `scripts/lint.sh` check 8 enforces the no-orphan-keys rule mechanically. Two further keys are agent-maintained storage rather than user settings: `learned_errors` (written by `divi5-error-learner`, read by `/diagnose` as the error library) and `research_notes` (written by `divi5-researcher`/`/research`).
 
 ## Knowledge Currency
 
@@ -162,4 +167,5 @@ Divi ships updates frequently. Keeping the plugin accurate matters more than shi
 - The `divi5-researcher` agent runs on-demand via `/divi5-toolkit:research` and refreshes knowledge in the skill files.
 - Manual research (new modules, spec changes, bug fixes you learn about) goes into `skills/divi5-css-patterns/SKILL.md` or `skills/divi5-compatibility/SKILL.md` — whichever is more appropriate.
 - Bump `last_research` in the config template (`plugins/divi5-toolkit/templates/divi5-toolkit.local.md`) when you do a knowledge refresh.
+- Release-notes URLs follow `elegantthemes.com/blog/divi-resources/divi-5-<major>-<minor>-release-notes` (5.9 is the exception: `/divi-5-9`). divichangelog.com lists exact per-version dates including point releases; the Elegant Themes blog post date can differ from the actual release date by a day or two — the plugin uses the blog dates.
 - v2.1.0–v2.1.5 had a `SessionStart` hook that warned users when `last_research` was more than 7 days stale. v2.1.6 removed it because Claude Code's `prompt`-type hooks require a `ToolUseContext` that doesn't exist at session start; the hook was throwing a startup error in every session. Keep the freshness honest by actually updating `last_research` on every research run, since users no longer get an automatic nudge.
