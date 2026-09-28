@@ -55,9 +55,9 @@ Read the user's input and assign it to one of these buckets. If ambiguous, ask o
 
 ### Bucket E: Builder/UI behavior
 
-**Signals:** "Visual Builder won't load", "module not saving", "drag-drop broken", "Composable Settings not appearing", "preset not applying".
+**Signals:** "Visual Builder won't load", "module not saving", "drag-drop broken", "Composable Settings not appearing", "preset not applying", "my page content disappeared after saving", "I deleted a section and History can't undo it".
 
-**Route to:** Knowledge in the `divi5-compatibility` skill (`${CLAUDE_PLUGIN_ROOT}/skills/divi5-compatibility/SKILL.md`), "Common Issues & Fixes" section. If unmatched, research via WebSearch.
+**Route to:** Knowledge in the `divi5-compatibility` skill (`${CLAUDE_PLUGIN_ROOT}/skills/divi5-compatibility/SKILL.md`), "Common Issues & Fixes" section. For lost or deleted content, use the "Page content or layout disappeared" entry — Divi 5 keeps the layout in `post_content`, so WordPress Revisions are the first recovery path; the builder History panel only helps while the original tab is still open. If unmatched, research via WebSearch.
 
 ### Bucket F: Migration from Divi 4
 

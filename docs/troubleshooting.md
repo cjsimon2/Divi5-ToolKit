@@ -299,6 +299,20 @@ body .et_pb_button:hover {
 
 **Fix:** Hover over the WordPress admin bar at the top — that area allows right-click. Click "Inspect" from there to open DevTools.
 
+### Page content disappeared after saving, or a deleted section can't be undone
+
+**Symptom:** Sections vanish after Publish/Update, or you deleted a section and the builder's History panel is empty (or the tab was closed).
+
+**Cause:** Divi 5 stores the page layout in `post_content` as block markup (`<!-- wp:divi/... -->`), not in postmeta. The builder's History panel is session-only and resets on reload. WordPress Revisions snapshot `post_content`, so they hold the full layout from every earlier save.
+
+**Fix:**
+1. Pages → All Pages → Edit → *Revisions* (right sidebar) → step back to a revision from before the mistake → *Restore This Revision*
+2. If Revisions is missing or empty, check `WP_POST_REVISIONS` in `wp-config.php`
+3. Theme Builder header/footer/body layouts are separate posts — page revisions won't help; re-import your last Theme Builder JSON export instead
+4. Hosting backup as a last resort
+
+Run `/divi5-toolkit:diagnose "page content disappeared"` for the full checklist, including WP-CLI commands to verify a revision before restoring it.
+
 ### Loop Builder posts not showing or showing wrong posts
 
 **Symptom:** The Loop Builder module renders no posts, or shows posts from the wrong category/status.

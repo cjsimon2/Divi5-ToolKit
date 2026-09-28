@@ -388,6 +388,10 @@ divi5-toolkit/                            # ← repo root + marketplace root
 
 ## Changelog
 
+### Unreleased
+
+- **Knowledge:** new "Page content or layout disappeared" recovery entry in the compatibility skill, verified against Elegant Themes' Divi 5 recovery guide and Migrator docs. Divi 5 stores the layout in `post_content` as block markup, so WordPress Revisions can restore it; the builder History panel is session-only; Theme Builder layouts live in their own `et_*_layout` posts. `/diagnose` routes "content disappeared" symptoms to it; matching `docs/troubleshooting.md` entry added.
+
 ### v2.5.0 (September 25, 2026)
 
 - **New:** `/divi5-toolkit:setup` — creates (or refreshes) `.claude/divi5-toolkit.local.md` without copying the template by hand. Detects the installed Divi version from `wp-content/themes/Divi/style.css`, finds a child theme (`Template: Divi`) and defaults `default_format` to `child-theme` when present, infers the dominant custom CSS class prefix from existing stylesheets, notices WooCommerce and existing design tokens, and asks at most three questions. Refresh mode adds keys introduced by newer plugin versions while preserving every existing value (including `learned_errors` and `research_notes`).
